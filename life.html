@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <div id="bs-console"></div>
+        <div id="canvas-container">
+            <canvas width="400" height="400" id="life"></canvas>
+        </div>
+        <div>
+            <button onClick="biwascheme.evaluate('(start)')">start</button>
+            <button onClick="biwascheme.evaluate('(stop)')">stop</button>
+            <button onClick="biwascheme.evaluate('(reset)')">reset</button>
+        </div>
+
+        <script src="biwascheme.js"></script>
+
+        <script id="scheme"  type="text/scheme">
+(define canvas (dom-element "#life"))
+(define ctx (js-invoke canvas "getContext" "2d"))
+(define width (js-ref canvas "width"))
+(define height (js-ref canvas "height"))
+
+(define cell-size 10)
+(define num-rows (/ width cell-size))
+(define num-cols (/ height cell-size))
+(define grid-size (* num-rows num-cols))
+
+(define iterations 0)
+(define states (make-vector 3))
+(vector-set! states 0 (make-vector grid-size))
+(vector-set! states 1 (make-vector grid-size))
+
+(define (init-states)
+    (begin
+        (vector-fill! (vector-ref states 0) #f)
+        (vector-fill! (vector-ref states 1) #f)))
+
+(define (swap-states)
+    (begin
+        (vector-set! states 3 (vector-ref states 0))
+        (vector-set! states 0 (vector-ref states 1))
+        (vector-set! states 1 (vector-ref states 0))))
+
+(define (grid-index x y)
+    (+ (* y num-rows) x))
+
+(define (transition state x y)
+    (not (vector-ref state (grid-index x y))))
+
+;; result new state in 0, old state in 1
+(define (next-state i j)
+    (cond ((>= j num-rows) (swap-states))
+          ((>= i num-cols) (next-state 0 (+ j 1)))
+          (else
+            (begin
+                (let ((current (vector-ref states 0)) (next (vector-ref states 1)))
+                    (vector-set! next (grid-index i j) (transition current i j)))
+                (next-state (+ i 1) j)))))
+
+(define (draw-cell x y fill)
+    (let ((x (* x cell-size)) (y (* y cell-size)))
+        (begin
+            (if fill
+                (js-invoke ctx "fillRect" x y cell-size cell-size)
+                (js-invoke ctx "clearRect" x y cell-size cell-size)))
+            (js-invoke ctx "strokeRect" x y cell-size cell-size)))
+
+(define (draw-state state i j)
+    (cond ((>= j num-rows) null)
+          ((>= i num-cols) (draw-state state 0 (+ j 1)))
+          (else (begin
+            (draw-cell i j (vector-ref state (grid-index i j)))
+            (draw-state state (+ i 1) j)))))
+
+(define (step)
+    (begin
+        (next-state 0 0)
+        (draw-state (vector-ref states 0) 0 0)))
+
+
+;; set a position in the state to a certain value
+(define (state-set! i j v)
+    (let ((state (vector-ref states 0)) (index (grid-index i j)))
+        (begin
+            (vector-set! state index v)
+            (vector-set! states 0 state))))
+
+(define (state-ref i j)
+    (let ((state (vector-ref states 0)))
+        (vector-ref state (grid-index i j))))
+
+(define (int-div a b)
+    (floor (/ a b)))
+
+(define offset-left (js-ref canvas "offsetLeft"))
+(define offset-top (js-ref canvas "offsetTop"))
+
+(add-handler! canvas "click" (lambda (ev)
+    (let* ((x (- (js-ref ev "pageX") offset-left))
+              (y (- (js-ref ev "pageY") offset-top))
+              (i (int-div x cell-size))
+              (j (int-div y cell-size))
+              (v (not (state-ref i j))))
+                (begin
+                    (state-set! i j v)
+                    (draw-cell i j v)))))
+
+(init-states)
+
+(define (start)
+    (begin
+        (step)
+        (set! iterations (+ iterations 1))))
+
+(define (stop) (print "stop"))
+(define (reset) (print "reset"))
+        </script>
+
+        <script type="text/javascript">
+var biwascheme = new BiwaScheme.Interpreter(function(e) {
+    console.log(e.message)
+});
+
+biwascheme.evaluate(document.getElementById('scheme').innerHTML);
+       </script>
+    </body>
+</html>
