@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
     <body>
-        <div id="bs-console"></div>
         <div id="canvas-container">
-            <canvas width="400" height="400" id="life"></canvas>
+            <canvas width="100" height="100" id="life"></canvas>
         </div>
         <div>
             <button onClick="biwascheme.evaluate('(start)')">start</button>
             <button onClick="biwascheme.evaluate('(stop)')">stop</button>
             <button onClick="biwascheme.evaluate('(reset)')">reset</button>
         </div>
+        <div id="bs-console"></div>
 
         <script src="biwascheme.js"></script>
 
@@ -43,18 +43,39 @@
 (define (grid-index x y)
     (+ (* y num-rows) x))
 
+(define (neighbor-alive state x y)
+    (let ((index (grid-index x y)))
+        (if (and (< index grid-size) (>= index 0)
+                (vector-ref state index))
+                     1 0)))
+
+(define (count-neighbors state x y)
+    (+ (neighbor-alive state (+ x 1) y)
+       (neighbor-alive state (- x 1) y)
+       (neighbor-alive state (+ x 1) (+ y 1))
+       (neighbor-alive state (+ x 1) (- y 1))
+       (neighbor-alive state (- x 1) (+ y 1))
+       (neighbor-alive state (- x 1) (- y 1))
+       (neighbor-alive state x (+ y 1))
+       (neighbor-alive state x (- y 1))))
+
 (define (transition state x y)
-    (not (vector-ref state (grid-index x y))))
+    (let ((is-populated (vector-ref state (grid-index x y)))
+          (num-neighbors (count-neighbors state x y)))
+          (begin (print num-neighbors " " x " " y)
+          (cond ((and is-populated (= num-neighbors 2)) #t)
+                ((and is-populated (= num-neighbors 3)) #t)
+                ((and (not is-populated) (= num-neighbors 3)) #t)
+                (else #f)))))
 
 ;; result new state in 0, old state in 1
-(define (next-state i j)
+(define (next-state current i j)
     (cond ((>= j num-rows) (swap-states))
-          ((>= i num-cols) (next-state 0 (+ j 1)))
+          ((>= i num-cols) (next-state current 0 (+ j 1)))
           (else
             (begin
-                (let ((current (vector-ref states 0)) (next (vector-ref states 1)))
-                    (vector-set! next (grid-index i j) (transition current i j)))
-                (next-state (+ i 1) j)))))
+                (state-set! 1 i j (transition current i j)))
+                (next-state current (+ i 1) j))))
 
 (define (draw-cell x y fill)
     (let ((x (* x cell-size)) (y (* y cell-size)))
@@ -65,7 +86,7 @@
             (js-invoke ctx "strokeRect" x y cell-size cell-size)))
 
 (define (draw-state state i j)
-    (cond ((>= j num-rows) null)
+    (cond ((>= j num-rows) '())
           ((>= i num-cols) (draw-state state 0 (+ j 1)))
           (else (begin
             (draw-cell i j (vector-ref state (grid-index i j)))
@@ -73,16 +94,16 @@
 
 (define (step)
     (begin
-        (next-state 0 0)
+        (next-state (vector-ref states 0) 0 0)
         (draw-state (vector-ref states 0) 0 0)))
 
 
 ;; set a position in the state to a certain value
-(define (state-set! i j v)
-    (let ((state (vector-ref states 0)) (index (grid-index i j)))
+(define (state-set! slot i j v)
+    (let ((state (vector-ref states slot)) (index (grid-index i j)))
         (begin
             (vector-set! state index v)
-            (vector-set! states 0 state))))
+            (vector-set! states slot state))))
 
 (define (state-ref i j)
     (let ((state (vector-ref states 0)))
@@ -101,17 +122,20 @@
               (j (int-div y cell-size))
               (v (not (state-ref i j))))
                 (begin
-                    (state-set! i j v)
+                    (state-set! 0 i j v)
                     (draw-cell i j v)))))
 
 (init-states)
 
 (define (start)
     (begin
+        (print "------" iterations "-------")
         (step)
         (set! iterations (+ iterations 1))))
 
-(define (stop) (print "stop"))
+(define (stop)
+    (draw-state (vector-ref states 0) 0 0))
+
 (define (reset) (print "reset"))
         </script>
 
