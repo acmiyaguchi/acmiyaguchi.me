@@ -2,7 +2,7 @@
 <html>
     <body>
         <div id="canvas-container">
-            <canvas width="100" height="100" id="life"></canvas>
+            <canvas width="200" height="200" id="life"></canvas>
         </div>
         <div>
             <button onClick="biwascheme.evaluate('(start)')">start</button>
@@ -25,57 +25,60 @@
 (define grid-size (* num-rows num-cols))
 
 (define iterations 0)
-(define states (make-vector 3))
-(vector-set! states 0 (make-vector grid-size))
-(vector-set! states 1 (make-vector grid-size))
+
+(define (make-state w h)
+    (make-vector (* w h) #f))
+
+(define s0 (make-state num-rows num-cols))
+(define s1 (make-state num-rows num-rows))
+
+;; set a position in the state to a certain value
+(define (state-set! state i j v)
+    (vector-set! state (grid-index i j) v))
+
+(define (state-ref state i j)
+    (let ((index (grid-index i j)))
+        (if (or (< index 0) (>= index grid-size)) #f
+            (vector-ref state (grid-index i j)))))
 
 (define (init-states)
     (begin
-        (vector-fill! (vector-ref states 0) #f)
-        (vector-fill! (vector-ref states 1) #f)))
+        (vector-fill! s0 #f)
+        (vector-fill! s1 #f)))
 
-(define (swap-states)
-    (begin
-        (vector-set! states 3 (vector-ref states 0))
-        (vector-set! states 0 (vector-ref states 1))
-        (vector-set! states 1 (vector-ref states 0))))
+(define (swap-states!)
+    (let ((tmp s0))
+        (set! s0 s1)
+        (set! s1 tmp)))
 
 (define (grid-index x y)
-    (+ (* y num-rows) x))
-
-(define (neighbor-alive state x y)
-    (let ((index (grid-index x y)))
-        (if (and (< index grid-size) (>= index 0)
-                (vector-ref state index))
-                     1 0)))
+    (+ (* y num-cols) x))
 
 (define (count-neighbors state x y)
-    (+ (neighbor-alive state (+ x 1) y)
-       (neighbor-alive state (- x 1) y)
-       (neighbor-alive state (+ x 1) (+ y 1))
-       (neighbor-alive state (+ x 1) (- y 1))
-       (neighbor-alive state (- x 1) (+ y 1))
-       (neighbor-alive state (- x 1) (- y 1))
-       (neighbor-alive state x (+ y 1))
-       (neighbor-alive state x (- y 1))))
+    (length (filter
+        (lambda (coords) (state-ref state (car coords) (cdr coords)))
+        (quasiquote
+          ((,(- x 1) . ,(+ y 1)) (,x . ,(+ y 1)) (,(+ x 1) . ,(+ y 1))
+          (,(- x 1) . ,y) (,(+ x 1) . ,y)
+          (,(- x 1) . ,(- y 1)) (, x . ,(- y 1)) (,(+ x 1) . ,(- y 1)))))))
 
 (define (transition state x y)
-    (let ((is-populated (vector-ref state (grid-index x y)))
+    (let ((is-populated (state-ref state x y))
           (num-neighbors (count-neighbors state x y)))
-          (begin (print num-neighbors " " x " " y)
+          (grid-index x y)
           (cond ((and is-populated (= num-neighbors 2)) #t)
                 ((and is-populated (= num-neighbors 3)) #t)
                 ((and (not is-populated) (= num-neighbors 3)) #t)
-                (else #f)))))
+                (else #f))))
 
 ;; result new state in 0, old state in 1
 (define (next-state current i j)
-    (cond ((>= j num-rows) (swap-states))
+    (cond ((>= j num-rows) '())
           ((>= i num-cols) (next-state current 0 (+ j 1)))
           (else
             (begin
-                (state-set! 1 i j (transition current i j)))
-                (next-state current (+ i 1) j))))
+                (state-set! s1 i j (transition current i j))
+                (next-state current (+ i 1) j)))))
 
 (define (draw-cell x y fill)
     (let ((x (* x cell-size)) (y (* y cell-size)))
@@ -88,26 +91,14 @@
 (define (draw-state state i j)
     (cond ((>= j num-rows) '())
           ((>= i num-cols) (draw-state state 0 (+ j 1)))
-          (else (begin
-            (draw-cell i j (vector-ref state (grid-index i j)))
-            (draw-state state (+ i 1) j)))))
+          (else
+            (draw-cell i j (state-ref state i j))
+            (draw-state state (+ i 1) j))))
 
 (define (step)
-    (begin
-        (next-state (vector-ref states 0) 0 0)
-        (draw-state (vector-ref states 0) 0 0)))
-
-
-;; set a position in the state to a certain value
-(define (state-set! slot i j v)
-    (let ((state (vector-ref states slot)) (index (grid-index i j)))
-        (begin
-            (vector-set! state index v)
-            (vector-set! states slot state))))
-
-(define (state-ref i j)
-    (let ((state (vector-ref states 0)))
-        (vector-ref state (grid-index i j))))
+    (next-state s0 0 0)
+    (swap-states!)
+    (draw-state s0 0 0))
 
 (define (int-div a b)
     (floor (/ a b)))
@@ -120,23 +111,22 @@
               (y (- (js-ref ev "pageY") offset-top))
               (i (int-div x cell-size))
               (j (int-div y cell-size))
-              (v (not (state-ref i j))))
+              (v (not (state-ref s0 i j))))
                 (begin
-                    (state-set! 0 i j v)
+                    (state-set! s0 i j v)
                     (draw-cell i j v)))))
 
-(init-states)
-
 (define (start)
-    (begin
-        (print "------" iterations "-------")
-        (step)
-        (set! iterations (+ iterations 1))))
+    (step)
+    (set! iterations (+ iterations 1)))
 
-(define (stop)
-    (draw-state (vector-ref states 0) 0 0))
+(define (stop) (print "stop!"))
 
-(define (reset) (print "reset"))
+(define (reset)
+    (init-states)
+    (draw-state s0 0 0))
+
+(reset)
         </script>
 
         <script type="text/javascript">
