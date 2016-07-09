@@ -2,7 +2,7 @@
 <html>
     <body>
         <div id="canvas-container">
-            <canvas width="200" height="200" id="life"></canvas>
+            <canvas width="400" height="400" id="life"></canvas>
         </div>
         <div>
             <button onClick="biwascheme.evaluate('(start)')">start</button>
@@ -19,7 +19,7 @@
 (define width (js-ref canvas "width"))
 (define height (js-ref canvas "height"))
 
-(define cell-size 10)
+(define cell-size 20)
 (define num-rows (/ width cell-size))
 (define num-cols (/ height cell-size))
 (define grid-size (* num-rows num-cols))
@@ -39,7 +39,7 @@
 (define (state-ref state i j)
     (let ((index (grid-index i j)))
         (if (or (< index 0) (>= index grid-size)) #f
-            (vector-ref state (grid-index i j)))))
+            (vector-ref state index))))
 
 (define (init-states)
     (begin
@@ -65,20 +65,19 @@
 (define (transition state x y)
     (let ((is-populated (state-ref state x y))
           (num-neighbors (count-neighbors state x y)))
-          (grid-index x y)
           (cond ((and is-populated (= num-neighbors 2)) #t)
                 ((and is-populated (= num-neighbors 3)) #t)
                 ((and (not is-populated) (= num-neighbors 3)) #t)
                 (else #f))))
 
 ;; result new state in 0, old state in 1
-(define (next-state current i j)
-    (cond ((>= j num-rows) '())
-          ((>= i num-cols) (next-state current 0 (+ j 1)))
-          (else
-            (begin
+(define (next-state current)
+    (let loop ((i 0) (j 0))
+        (cond ((>= j num-rows) '())
+              ((>= i num-cols) (loop 0 (+ j 1)))
+              (else
                 (state-set! s1 i j (transition current i j))
-                (next-state current (+ i 1) j)))))
+                (loop (+ i 1) j)))))
 
 (define (draw-cell x y fill)
     (let ((x (* x cell-size)) (y (* y cell-size)))
@@ -88,17 +87,18 @@
                 (js-invoke ctx "clearRect" x y cell-size cell-size)))
             (js-invoke ctx "strokeRect" x y cell-size cell-size)))
 
-(define (draw-state state i j)
-    (cond ((>= j num-rows) '())
-          ((>= i num-cols) (draw-state state 0 (+ j 1)))
-          (else
-            (draw-cell i j (state-ref state i j))
-            (draw-state state (+ i 1) j))))
+(define (draw-state state)
+    (let loop ((i 0) (j 0))
+        (cond ((>= j num-rows) '())
+              ((>= i num-cols) (loop 0 (+ j 1)))
+              (else
+                (draw-cell i j (state-ref state i j))
+                (loop (+ i 1) j)))))
 
 (define (step)
-    (next-state s0 0 0)
+    (next-state s0)
     (swap-states!)
-    (draw-state s0 0 0))
+    (draw-state s0))
 
 (define (int-div a b)
     (floor (/ a b)))
@@ -124,7 +124,7 @@
 
 (define (reset)
     (init-states)
-    (draw-state s0 0 0))
+    (draw-state s0))
 
 (reset)
         </script>
