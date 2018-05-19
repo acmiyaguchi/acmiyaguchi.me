@@ -1,12 +1,10 @@
-#!/usr/local/env bash
+#!/bin/bash
 
 set -x
 
-export JEKYLL_ENV=production
-
 pushd .;
 cd blog
-jekyll build
+JEKYLL_ENV=production bundle exec jekyll build
 popd;
 
 rsync -avh . /var/www --delete
