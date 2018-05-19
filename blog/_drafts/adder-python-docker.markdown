@@ -1,10 +1,9 @@
 ---
 layout: post
-title:  Building Portable Python Applications - Tutorial
-date:   2018-05-18 20:00:45 -0800
+title:  "Building Portable Python Applications"
+date:   2018-05-18 18:00:45 -0700
 categories: first tutorial python docker application
 ---
-# Building portable Python applications using Pipenv and Docker
 
 A collection of python scripts with dependencies on external libraries can be difficult to wrestle with as they grow into a large and complex system. Fortunately in the age of containers and infrastructure as a service, the tools to tackle these problems are only several commands away. In this post, we build a single-file application to explore the available tooling.
 
@@ -67,15 +66,15 @@ if __name__ == '__main__':                                  # [8]
 ```
 
 Commentary
-* [1] Allow this script to be run as a shell script by setting the executable bit with `chmod +x`
-* [2] Import the click library for creating the CLI
-* [3] The essence of the Adder as a function
-* [4] This decorator function (`@` syntax) returns a new function that initializes Click.
-* [5] Required options can be read from the environment, as opposed to arguments which are required parameters.
-* [6] The main function is the application entrypoint
-* [7] Here, results are printed to standard output, but there are better ways of passing data between applications.
-* [8] Idiomatic python for single script python entrypoints. 
-* [9] Tell `click` to read options from the environment with a prefix.
+1. Allow this script to be run as a shell script by setting the executable bit with `chmod +x`
+2. Import the click library for creating the CLI
+3. The essence of the Adder as a function
+4. This decorator function (`@` syntax) returns a new function that initializes Click.
+5. Required options can be read from the environment, as opposed to arguments which are required parameters.
+6. The main function is the application entrypoint
+7. Here, results are printed to standard output, but there are better ways of passing data between applications.
+8. Idiomatic python for single script python entrypoints. 
+9. Tell `click` to read options from the environment with a prefix.
 
 We're now able to run this from the shell. 
 ```
@@ -112,13 +111,13 @@ def test_add(runner):                                       # [5]
 ```
 
 Commentary
-* [1] The `pytest` package forms the basis of the tests. `unittest` is an alternative that is included in the standard library.
-* [2] The `click` package includes useful testing harnesses for invoking wrapped functions
-* [3] Here, we use a relative import syntax. Since our root folder is not a module (missing `__init__.py`), we will invoke the intepreter with the `-m` flag.
-* [4] Fixtures are testing objects that are shared across tests. For example, a static resource can be read from a file and passed as a fixture between testing routines.
-* [5] Tests are prefixed with `test_`. Pytest will detect these at runtime.
-* [6] The fixture is the return type of the fixture function. Here, the `click` runner is invoking the application with parameters.
-* [7] Note the newline. It's probably better practice to use `sys.stdout` to avoid buffering and other unwanted data manipulation
+1. The `pytest` package forms the basis of the tests. `unittest` is an alternative that is included in the standard library.
+2. The `click` package includes useful testing harnesses for invoking wrapped functions
+3. Here, we use a relative import syntax. Since our root folder is not a module (missing `__init__.py`), we will invoke the intepreter with the `-m` flag.
+4. Fixtures are testing objects that are shared across tests. For example, a static resource can be read from a file and passed as a fixture between testing routines.
+5. Tests are prefixed with `test_`. Pytest will detect these at runtime.
+6. The fixture is the return type of the fixture function. Here, the `click` runner is invoking the application with parameters.
+7. Note the newline. It's probably better practice to use `sys.stdout` to avoid buffering and other unwanted data manipulation
 
 The test is run by telling the python interpreter to treat the current directory as a module using `-m`. 
 ```bash
