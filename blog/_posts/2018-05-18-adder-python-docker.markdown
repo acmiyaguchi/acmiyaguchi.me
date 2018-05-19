@@ -2,7 +2,8 @@
 layout: post
 title:  "Building Portable Python Applications"
 date:   2018-05-18 20:00:45 -0700
-categories: first tutorial python docker application
+category: Engineering
+tags: tutorial python docker application software
 ---
 
 A benign collection of scripts with dependencies can quickly become hard to maintain. A build and release process can help manage complexity by making it easy to create something new. Fortunately, the "write once, deploy everywhere" philosophy is not unique to Java. The layers of abstraction in the software stack make it possible to develop complex systems and processes. In this tutorial, we will create create a small data-processing application in Python. 
