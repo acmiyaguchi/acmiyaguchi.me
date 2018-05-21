@@ -6,21 +6,22 @@ category: Engineering
 tags: tutorial python docker application software
 ---
 
-A benign collection of scripts with dependencies can quickly become hard to maintain. A build and release process can help manage complexity by making it easy to create something new. Fortunately, the "write once, deploy everywhere" philosophy is not unique to Java. The layers of abstraction in the software stack make it possible to develop complex systems and processes. In this tutorial, we will create create a small data-processing application in Python. 
+Scripts are a collection of commands that run in sequence when executed. Scripts can be used to drive interactions between characters in a video game or to set a web-server to a desired state. The character and the server are both actors on a shared stage, changing the environment as they perform according to the script. You will often find scripts in large and complex systems, where they are necessary to scale. Software projects accrue scripts out of necessity to avoid memorizing the many incantations for building, testing, and releasing code. Fortunately, the "write once, run everywhere" philosophy is not unique to Java. In this tutorial, we will create a data-processing application in Python that can be run in a reproducible way using Pipenv and Docker.
+
+Python has been a dominating language in scientific community with projects like SciPy and Anaconda providing a reproducible environment for data processing and analysis. The language is designed to be general purpose, but the [Zen of Python](https://www.python.org/dev/peps/pep-0020/) makes it a suitable choice for new programmers and experienced ones alike. Notebook computing, popularized by IPython and later Jupyter, [is a paradigm shift](https://blog.jupyter.org/jupyter-receives-the-acm-software-system-award-d433b0dfe3a2) in the we interact with computers. However, the notebook can be thought as a script for reproducing a particular experiment or procedure.
+
+The POSIX shell language and CMD batching together run on most computers today. However, shell likely runs on more virtualized copies of systems due to the prevalence of Infrastructure as a Service (IaaS). The [success of Amazon Web Service](https://www.forbes.com/sites/roberthof/2016/03/22/ten-years-later-amazon-web-services-defies-skeptics/#c6b15ee6c447) fits well with the nature of computation today -- distributed and heterogenous. Many large sites will offload massive amounts of traffic, computation, and data to servers owned by different companies across the globe. Despite the complexity of software today, it's never been easier to create robust and reproducible applications using both Python and shell. 
 
 
 {:refdef: style="text-align: center;"}
 ![The program environment]({{ "/assets/blog-00-program-environment.svg" | absolute_url }})
+
+_**Figure:** A typical computer can support many applications by layering software to handle orthogonal tasks. An application is contained within an environment.__
 {: refdef}
 
 
-The Python program runs on the Python intepreter as byte-code, with access to the packages and libraries installed in it's local environment. The package manager and the virtual environment tool generally suffice for portability. However, tools that run at the operating system level such as chroot jails and Docker provide an extra layer of compatibility. There are lower levels of the stack such as hypervisors like KVM, but they rarely useful when building applications.
-
-## Meet the Adder
-
-While a data-processing application sounds large and complex, adding two numbers is not. The Adder takes two numbers as options and prints the result to standard out.
-
-The project structure for the source-code is fairly minimal.
+## An Adding Machine
+While a data-processing application can be large and complex, we can look at the construction of a simple one. An adding machine takes two numbers as options and prints the result to standard out. The Adder is a Python application that implements an adding machine. The project is flat and every file is single purposed. Large projects grow from a similar base with defined processes and a nested folder structure.
 
 ```bash
 adder/
@@ -32,35 +33,36 @@ adder/
 └── test_adder.py
 ```
 
-Before starting a new project, make sure that the `pip` is up to date on your system. We install an upgraded version of package manager to a user-owned binary directory.
+Before starting a new project, make sure that the `pip` is up to date on your system. If not already up-to-date, install the upgraded version in the user executable folder (e.g. `$HOME/.local/bin`).
 
 ```bash
 pip install --user --upgrade pip
 ```
 
-On most Linux distributions, `pip` will install to `/home/$USER/.local/bin`. You may want to double check the `PATH` environment variable if there are issues running command line tools installed from pip.
-
-To prevent dependency conflicts, write a new project to a new virtual environment. [Pipenv](https://docs.pipenv.org/) integrates `pip` and `virtualenv` to create a human-centered development workflow. It turns out that it's a great tool for managing autonomous workflows too. The `pipenv` package does not require adminstrative privileges. 
+We will be using Pipenv to manage the Python environment and dependencies. [Pipenv](https://docs.pipenv.org/) integrates `pip` and `virtualenv` to create a human-centered development workflow. It turns out that it's a great tool for managing autonomous workflows too. This tool increases the portability of a Python application by isolating dependencies management and execution into userland i.e. root administrators are not required. 
 
 ```bash
 $ pip install --user pipenv
 ```
 
-Create a new project for a simple adder. 
+If there are issues with the `--user` option, check that the `PATH` variable is set correctly. 
+
+Create a new project for the Adder. 
 ```bash
 $ mkdir adder
 $ cd adder
 $ pipenv sync
 ```
 
-The best way to interact with a non-interactive program is through stdin and stdout. [Click](http://click.pocoo.org/5/) is a package for creating command-line interfaces for Python applications. It provides ways to build out interfaces and can recieve input from arguments, options, and environment variables. Its composable design makes it easy to create tools with rich interfaces.
+We will be observing the adding machine through the standard terminal input and output (stdin and stdout or file descriptors 1 and 2). [Click](http://click.pocoo.org/5/) is a library for creating command-line interfaces for Python applications. Like a script, the idea of the command is central to the Click API. It provides a simple way to create interfaces and can take input from arguments, options, and environment variables. 
 
+To add a library to a project, `install` it.
 
 ```bash
 $ pipenv install click
 ```
 
-The implementation below has been commented, but it is simple in structure.
+Python and Click can be used to write the Adder implementation.
 
 {% highlight python %}
 #!/usr/bin/env python                                       # [1]
@@ -80,17 +82,17 @@ if __name__ == '__main__':                                  # [8]
     main(auto_envvar_prefix='ADDER')                        # [9]
 {% endhighlight %}
 
-1. Allow this script to be run as a shell script by setting the executable bit with `chmod +x`
-2. Import the click library for creating the CLI
-3. The essence of the Adder as a function
-4. This decorator function (`@` syntax) returns a new function that initializes Click.
-5. Required options can be read from the environment, as opposed to arguments which are required parameters.
-6. The main function is the application entrypoint
-7. Here, results are printed to standard output, but there are better ways of passing data between applications.
-8. Idiomatic python for single script python entrypoints. 
-9. Tell `click` to read options from the environment with a prefix.
+1. Run the file using Python from the user environment. This is run by settting the executable bit via `chmod +x`.
+2. Import Click library to create the Command Line Interface (CLI).
+3. The core functionality of an adding machine.
+4. The `@` is notation for the application of a decorator function. This returns `main`  wrapped with `click` initialization.
+5. This convention should be adopted when running applications through Docker. See [9].
+6. The application entrypoint
+7. Printing to stdout is one way to pass data between applications. Files and sockets are also widely used.
+8. The script is run standalone when the `__main__` script entrypoint is defined. 
+9. `click` will read variables from the environment when the `auto_envvar_prefix` is defined. 
 
-We're now able to run this from the shell. 
+We're can now run the application in the wild. 
 ```bash
 $ chmod +x adder.py
 $ pipenv run ./adder.py --port-A 3 --port-B 4
@@ -99,16 +101,17 @@ $ pipenv run ADDER_PORT_A=3 ADDER_PORT_B=4 ./adder.py
 >7
 ```
 
-Great, lets write a simple test to verify that everything is working as expected.
+Great, everything looks correct on first glance. Because we're writing software that's executed more often than it's read, lets verify the behavior with a test.
 
-## Writing a Test
+## Adder Verification
 
-We will write the tests using `py.test`, a low boilerplate framework for writing tests. The `pipenv install` command includes an option for separating the development dependencies from the application dependencies.
+There's a wide toolbox to choose from when testing Python software. Here, we choose a low boilerplate framework called [`pytest`](https://docs.pytest.org/en/latest/) to write tests. We can keep these dependencies separate from the production dependencies by adding the `--dev` option to the `install` command.
 
 ```bash
 $ pipenv install --dev pytest
 ```
 
+Again, here is a breakdown the anatomy of the code.
 
 {% highlight python %}
 # test_adder.py
@@ -127,14 +130,15 @@ def test_add(runner):                                               # [5]
 {% endhighlight %}
 
 1. The `pytest` package forms the basis of the tests. `unittest` is an alternative that is included in the standard library.
-2. The `click` package includes useful testing harnesses for invoking wrapped functions
-3. Here, we use a relative import syntax. Since our root folder is not a module (missing `__init__.py`), we will invoke the intepreter with the `-m` flag.
+2. The `click` package [includes useful testing harnesses](http://click.pocoo.org/5/testing/) for invoking wrapped functions
+3. The relative import syntax is used here. Because `__init__.py` is missing, we need to supply the intepreter a hint to treat the current folder as a module using the `-m` flag.
 4. Fixtures are testing objects that are shared across tests. For example, a static resource can be read from a file and passed as a fixture between testing routines.
 5. Tests are prefixed with `test_`. Pytest will detect these at runtime.
-6. The fixture is the return type of the fixture function. Here, the `click` runner is invoking the application with parameters.
-7. Note the newline. It's probably better practice to use `sys.stdout` to avoid buffering and other unwanted data manipulation
+6. The `runner` type is the same as the return type of the `runner()` fixture function.
+7. Note the newline. One possible improvement is to ignore whitespace or write directly to stdout.
 
-The test is run by telling the python interpreter to treat the current directory as a module using `-m`. 
+Run the test using pytest. Remember that the current directory should treated as a module using `python -m`. 
+
 ```bash
 pipenv run python -m pytest
 ```
@@ -152,13 +156,15 @@ test_adder.py .                                                          [100%]
 =========================== 1 passed in 0.02 seconds ===========================
 {% endhighlight %}
 
-Tests are a good way of verifying whether the environment is set up correctly and is indispensible for enabling a reproducible workflow. 
+Tests are a good way of verifying whether the environment is set up correctly and is indispensible for enabling a reproducible workflow.
 
-# Running in Docker
+Tests is a dark art of itself. If you had to reverse engineer the Adder blackbox, how you generate the minimal set of statements needed to validate its hypothesized behavior?
 
-Now that the software is ready to be release, it needs to be packaged where it can be easily deployed. Docker is a containerization layer that can be the foundation of a deployment process. The application can only communicate through the file-system, network-sockets, or the environment when running in a Docker container. The Adder communicates with the host using the environment and standard out, but long running applications like servers should coordinate over the network.
+## Running in Docker
 
-To dockerize a project, drop in a `Dockerfile` to the root directory. 
+Now that the Python adding machine can be run and tested the shell, we can package the entire environment in an operating system container. Docker creates application environments that share the host kernel but are isolated from all system resources like the file system and process manager. Container configuration can be set through environment variables, allowing various flags to be set at initialization.
+
+To start your container fleet, drop a `Dockerfile` to the project directory.
 
 {% highlight docker %}
 from python:3.6-slim
@@ -174,15 +180,15 @@ RUN pipenv sync
 CMD pipenv run adder --port-A 1 --port-B 1
 {% endhighlight %}
 
-These steps should look familiar. The `Dockerfile` is a good place to document bootstrapping the system from scratch.
+These steps should look familiar. The `Dockerfile` is a source of end-to-end system documentation.
  
 The container is managed locally with two commands. To create the docker image, run `build` in the current directory.
 ```bash
 docker build -t adder:latest .
 ```
-This will generate an image according to the `Dockerfile` and give it a tag `adder:latest`.
+This will generate an image and tag it as `adder:latest`.
 
-The adder can be run the same as before. There is special syntax to pass environment variables into the container on start.
+The adding machine can be operated through the running image's shell. There is also a syntax to pass environment variables into the container on start.
 
 ```bash
 $ docker run -it adder:latest \
@@ -221,7 +227,3 @@ __Links__
 - [Click: a command line library for Python. ](http://click.pocoo.org/5/)
 - [pytest: helps you write better programs](https://docs.pytest.org/en/latest/)
 - [Docker: Build, Ship, and Run Any App, Anywhere](https://www.docker.com/what-docker)
-
-
-See also: [testing click applications](http://click.pocoo.org/5/testing/)
-
