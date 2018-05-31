@@ -36,6 +36,7 @@ Graphics Processing Units (GPUs) and Tensor Processing Units (TPUs) are designed
 They are able to take advantage of data parallelism and linear algebra to process very high bandwidth signals.
 Algorithms such as deep neural networks and kernel methods can be implemented efficiently in hardware.
 
+
 Satellite imagery requires efficient usage of computation.
 One example may be to detect large changes in areas of land such as the Amazon to monitor the progress of illegal forestry.
 This can be done by comparing the spectral components of an image against each other with a simple threshold.
@@ -43,7 +44,51 @@ The fourier transformation can be applied to spectral data in an efficient way.
 This algorithm reduced the complexity of a computing the spectrum from O(n^2) to O(nlogn).
 This is a massive speedup.
 
+
 The reason that this works so well is because there is a relationship between points in space.
+The convolution operator works great, the kernel trick in SVMs are proof of this.
 The laplace and fourier transformation are often seen in the context of linear and time invariant systems in the context of time.
 This is because these systems are dependent on values relative to the current time.
 These transformations also work in space, but the interpretation is slightly different.
+They represent the geometry of the space in more than one dimension.
+
+
+If you discretize space and weight it properly, you can treat the problem as a graph.
+This type of approach is used to build graphical models that can perform image segmentation.
+There is a bijection between a graph representation of nodes and edges to an adjency list.
+This is often used to cluster graphs.
+One way to cluster a graph is to run the SVD or CUR decomposition to obtain a lower dimensional representation of the graph.
+This latent space can be used to find appropriate partitions in a graph to cluster by.
+This form of dimensionality reduction helps tame the massive datasets that are being created everyday.
+
+
+A more difficult problem than change detection is forecast prediction.
+The remote sensing data collected by a fleet of satellites can be used to predict the weather.
+These models are done in small blocks, where they are created using complex dynamical models.
+Satellite data can be reduced in dimension to reduce the complexity of non-linear models.
+The globe is chunked into parts, and each part is reduced in dimension separately.
+
+
+Each cell can vary with each other at various different resolutions.
+We can reduce the large covariance matrix by using a lasso.
+The lasso solves for a specific problem.
+The inverse of the covariance matrix is an even easier problem to solve for.
+The induced sparsity improves the time-series analysis and makes it tractable.
+
+
+In practice, weather is actually a very difficult problem.
+Even though we have a large data collection capacity, the resources are difficult for most individuals to access.
+The models are also very complex and is a very deep domain.
+Data driven models are having success, see the predicted trajectory of hurricane paths.
+SVD is used often because data is high dimensional.
+Techniques for processing large amounts of spatial and time series data are generally useful for simulations.
+This is cutting edge stuff.
+
+
+This type of model is common in other areas where there are a large number of signals.
+While weather forecasting is one example of large scale data collection, there are other fields.
+Econometrics looks at the status of many small indicators to monitor the health of the entire economy.
+If all transactions were captured, the resolution of the data would be very fine and hard to compute.
+These market based models are useful fo things such as traffic modeling and predicting quanties.
+Data is quickly becoming larger than we could ever hope to process.
+We have to become efficient at recognizing patterns so we can take action.
