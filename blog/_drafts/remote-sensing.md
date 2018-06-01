@@ -70,10 +70,14 @@ The globe is chunked into parts, and each part is reduced in dimension separatel
 
 
 Each cell can vary with each other at various different resolutions.
-We can reduce the large covariance matrix by using a lasso.
-The lasso solves for a specific problem.
+We can reduce the large covariance matrix by penalizing for sparsity.
+This is a problem of l1 regularization.
 The inverse of the covariance matrix is an even easier problem to solve for.
 The induced sparsity improves the time-series analysis and makes it tractable.
+
+Laplacian Eigenmaps find a low-dimensional manifold by taking into account the geometry of the data.
+This is because there is some neighborhood-effect, or areas of localized phenomena.
+
 
 
 In practice, weather is actually a very difficult problem.
@@ -82,7 +86,6 @@ The models are also very complex and is a very deep domain.
 Data driven models are having success, see the predicted trajectory of hurricane paths.
 SVD is used often because data is high dimensional.
 Techniques for processing large amounts of spatial and time series data are generally useful for simulations.
-This is cutting edge stuff.
 
 
 This type of model is common in other areas where there are a large number of signals.
@@ -92,3 +95,29 @@ If all transactions were captured, the resolution of the data would be very fine
 These market based models are useful fo things such as traffic modeling and predicting quanties.
 Data is quickly becoming larger than we could ever hope to process.
 We have to become efficient at recognizing patterns so we can take action.
+
+
+soft thresholding
+fftlasso
+convolution sparse coding
+spectral clustering
+precision matrix
+laplacian eigenmap to determine lower dimensional embedding
+textures
+
+http://www.goes.noaa.gov/GSSLOOPS/wcwv.html
+
+http://scikit-learn.org/stable/auto_examples/covariance/plot_sparse_cov.html
+
+http://scikit-learn.org/stable/auto_examples/linear_model/plot_logistic_l1_l2_sparsity.html
+
+http://papers.nips.cc/paper/5626-learning-convolution-filters-for-inverse-covariance-estimation-of-neural-network-connectivity.pdf
+
+GENERALIZED LAPLACIAN PRECISION MATRIX ESTIMATION FOR GRAPH SIGNAL
+PROCESSING
+https://pdfs.semanticscholar.org/4e77/48cfd19e115de495fc2d2801fa661b5c1b7c.pdf
+
+https://graphics.stanford.edu/courses/cs468-10-fall/LectureSlides/16_spectral_methods1.pdf
+
+Markov Random Fields in Image Segmentation
+https://inf.u-szeged.hu/~ssip/2008/presentations2/Kato_ssip2008.pdf
