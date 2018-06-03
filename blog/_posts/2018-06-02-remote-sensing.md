@@ -24,16 +24,17 @@ Bats and dolphins use echolocation to map their environment where eyes would typ
 They can detect slight shifts in the pitch of the sound as it bounces back from moving objects.
 We have been able to apply our understanding of this Doppler effect to map the earth's oceans and surfaces through ship, plane, and satellite.
 For example, the Sentinel-1 constellation collects high-resolution synthetic-aperture radar (SAR) imagery for monitoring land and sea.
-The satellites can support monitoring of icebergs and map oil spills through reliable measurements.[3]
+The satellites can support monitoring of icebergs and map oil spills through reliable measurements.[2]
 Action and the option to act rely on sense through awareness in any system.
 
 {:refdef: style="text-align: center;"}
 ![hmm]({{ "/assets/blog-01/GSSLOOPS-wcwv-1.jpg" | absolute_url }})
+_**Figure**: A map of water moisture and cloud cover from the NOASS_
 
 Analysis of the data requires a network of computers to run in a reasonable length of time.
-A recent study of high-performance computing (HPC) software used data from the Climate Forecast System at a 360 x 720 x 41 (latitude x longitude x depth) by 6-hour resolution yielding a 2.2TB matrix of known variables. [4]
+A recent study of high-performance computing (HPC) software used data from the Climate Forecast System at a 360 x 720 x 41 (latitude x longitude x depth) by 6-hour resolution yielding a 2.2TB matrix of known variables. [3]
 The amount of data is even higher if we consider imaging data, like the earth view of Google Maps.
-A San Francisco startup, Planet, collects over 5TB of data a day in the form of images collected by a constellation of small cube satellites. [5]
+A San Francisco startup, Planet, collects over 5TB of data a day in the form of images collected by a constellation of small cube satellites. [4]
 Fortunately, the infrastructure to support computational needs are become more mature.
 
 Graphics and Tensor Processing Units (GPUs and TPUs) have become commonplace in computer vision and neural networks.
@@ -43,7 +44,7 @@ The global flux of FLOPS has increased through GPUs to support demand for digita
 The GPU started as a dedicated coprocessor designed to paint an image to a screen quickly.
 Designed to perform basic image manipulation tasks, they also formed the basis for general-purpose computing on GPUs.
 
-General-purpose computing on GPUs relies on the solid foundations of linear algebra to exploit inherent data parallelism. The OpenCV, computer vision software with a community of over 47 thousand, is a library for writing efficient, real-time applications. [6]
+General-purpose computing on GPUs relies on the solid foundations of linear algebra to exploit inherent data parallelism. The OpenCV, computer vision software with a community of over 47 thousand, is a library for writing efficient, real-time applications. [5]
 Linear operators like convolutions can be used to apply filters or kernels to images.
 Convoluting an edge-detection kernel with an image produces another image where the values represent the likelihood of being an edge.
 The TensorFlow library is another software library that was designed for machine learning.
@@ -55,29 +56,19 @@ The programming interface is more powerful than the hardware it supports, so it'
 #images {
     white-space: nowrap;
 }
-img {
-    max-width: 100%
-    max-height: 100%
-    height: auto;
-}
-.array {
-    width: 25%;
-    text-align: center;
-}
 </style>
 
 <div id="images" class="array">
-<img src="/assets/blog-01/Vd-Orig.png">
-<img src="/assets/blog-01/Vd-Edge1.png">
-<img src="/assets/blog-01/Vd-Edge2.png">
-<img src="/assets/blog-01/Vd-Edge3.png">
+<a title="By Michael Plotke [CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)], from Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Vd-Orig.png"><img width="50%" alt="Vd-Orig" src="https://upload.wikimedia.org/wikipedia/commons/5/50/Vd-Orig.png"></a>
+
+<a title="By Michael Plotke [CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)], from Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Vd-Edge1.png"><img width="50%" alt="Vd-Edge1" src="https://upload.wikimedia.org/wikipedia/commons/8/8d/Vd-Edge1.png"></a>
 </div>
 
-Images sourced from https://en.wikipedia.org/wiki/Kernel_(image_processing)
+_**Figure**: An image and the image convolved with an edge-detection kernel. Images from [Kernel (Image Processing), Wikimedia Commons](https://en.wikipedia.org/wiki/Kernel_(image_processing))_
 
 Distributed data processing libraries like Spark have reduced the complexity of managing powerful computing clusters.
 By utilizing a network of computers and available global mapping information, we can build systems to detect changes on a large scale.
-For example, satellite imagery can be used to determine areas of conservation based on historical patterns of deforestation in the Southern Tropic. [7]
+For example, satellite imagery can be used to determine areas of conservation based on historical patterns of deforestation in the Southern Tropic. [6]
 There are many techniques for processing large datasets, but one particularly efficient one is to treat image data as spectral data.
 The colors and intensity of an image can be used to extract meaningful patterns.
 Sometimes infrared and ultrasonic waves are measured in a process called hyperspectral imaging.
@@ -94,11 +85,13 @@ This theorem is the foundation for efficient signals processing techniques.
 
 <a title="By Brian Amberg [CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0) or GFDL (http://www.gnu.org/copyleft/fdl.html)], from Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Convolution_of_box_signal_with_itself.gif"><img width="100%" alt="Convolution of box signal with itself" src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Convolution_of_box_signal_with_itself.gif"></a>
 
+_**Figure**: The convolution of a box signal with itself runs in time proportional to the number of discrete samples taken. From Wikimedia Commons._
+
 In space, we can use this to look at the spectrum of different stars.
 If we a hyperspectral image of the night sky, we can apply a Fourier transform to look at the range and intensities of star radiation.
 By looking for discontinuities in this data, we have generated the terrain of the sky by breaking it into areas and categorizing the stars.
 The fast Fourier transform (FFT) calculates an orthonormal base in the frequency domain in order n*log(n) time complexity where n is the product of image dimensions.
-Because of its efficiency and broad scientific use, the FFT has been described as "the most important numerical algorithm in our lifetime." [8]
+Because of its efficiency and broad scientific use, the FFT has been described as "the most important numerical algorithm in our lifetime." [7]
 This process of transforming between domains is useful for mastering the shortcomings of otherwise powerful techniques.
 
 Another technique for mapping terrain in a large scale dataset is to partition the data into cells, and the treat each of the cells as a node in a graph.
@@ -106,11 +99,13 @@ The edges of the graph represent the distances between the current cell and its 
 This topological approach can be used to build spectral and graphical models for clustering and segmentation.
 As the spatial and frequency domains in the Fourier transform, there is a natural transformation between graphs and their matrix form.
 By removing the diagonal of the graph matrix, we obtain a similar spatial image of the graph called the Laplacian matrix.
-In fact, the eigenvectors of this matrix have a similar interpretation to the Fourier transform. [9]
+In fact, the eigenvectors of this matrix have a similar interpretation to the Fourier transform. [8]
 Both of these transformations form an orthonormal basis in a spectral domain that can be processed using the same toolbox.
 
 {:refdef: style="text-align: center;"}
 ![sparsity]({{ "/assets/blog-01/sphx_glr_plot_logistic_l1_l2_sparsity_001.png" | absolute_url }})
+
+_**Figure**: The effect of regularization on sparsity in a logistic regression of the MNIST dataset from [scikit-learn](http://scikit-learn.org/stable/auto_examples/linear_model/plot_logistic_l1_l2_sparsity.html)_
 
 This spectral decomposition has extensive uses because there are efficient algorithms for processing trillions of sparse data points in space.
 For example, the PageRank algorithm pioneered by Google uses a method called power iteration to find the eigenpairs of the web hyperlink matrix.
@@ -122,13 +117,15 @@ In addition to being able to determine the lay of the land and contrast differen
 The weather forecast is often done by analyzing data over a large area in small cells and modeling the complex dynamical system.
 The broader problem of forecasting from many, high-resolution streams of data falls under high-dimensional time series analysis.
 The Climate Forecast System is one example, where each dimension represents a variable or state.
-However, analyzing thousands of variables at the same time is difficult for most time-series algorithms. [10]
+However, analyzing thousands of variables at the same time is difficult for most time-series algorithms. [9]
 One way to tackle this problem is to aggregate streams of data together by clustering similar series.
-The covariance matrix and the inverse precision matrix can be used to see how different variables correlate and partially correlate with each other.
+The covariance matrix and the inverse precision matrix can be used to see how different variables correlate and partially correlate with each other. [10]
 Inducing sparsity in the precision matrix can remove spurious relationships between series, while the eigenvectors of the covariance matrix aid in clustering.
 
 {:refdef: style="text-align: center;"}
 ![water]({{ "/assets/blog-01/CFS - 1-15March1993_Atmospheric_Precipitable_Water-small.gif" | absolute_url }})
+
+_**Figure**: A simulation of precipitable water from the NOAA at [1]_
 
 In practice, the complexity of the data with our current computational resources prevents us from producing confident weather forecasts beyond a few weeks.
 Despite the growing amount of available information, computational power and domain intuition are still limiting resources.
@@ -147,4 +144,3 @@ When paired with standard techniques for dimensionality reduction and time serie
 * [8] https://pdfs.semanticscholar.org/4e77/48cfd19e115de495fc2d2801fa661b5c1b7c.pdf
 * [9] https://www.cs.utexas.edu/~rofuyu/papers/tr-mf-nips.pdf
 * [10] https://repositori.upf.edu/bitstream/handle/10230/560/691.pdf?sequence=1
-
