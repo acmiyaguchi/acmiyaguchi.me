@@ -23,7 +23,7 @@ The sensory adaptions formed out of biological systems.
 Bats and dolphins use echolocation to map their environment where eyes would typically fail.
 They can detect slight shifts in the pitch of the sound as it bounces back from moving objects.
 We have been able to apply our understanding of this Doppler effect to map the earth's oceans and surfaces through ship, plane, and satellite.
-The [Sentinel-1 constellation](https://earth.esa.int/web/guest/missions/esa-operational-eo-missions/sentinel-1) [2] collects high-resolution [synthetic-aperture radar (SAR)](https://en.wikipedia.org/wiki/Synthetic-aperture_radar) imagery that can track icebergs and map oil spills.[2]
+The [Sentinel-1 constellation](https://earth.esa.int/web/guest/missions/esa-operational-eo-missions/sentinel-1) [2] collects high-resolution [synthetic-aperture radar (SAR)](https://en.wikipedia.org/wiki/Synthetic-aperture_radar) imagery that can track icebergs and map oil spills.
 This data-driven awareness provides the option to act through increased understanding of interactions and patterns.
 
 ## A Parallel Programming Model
@@ -35,7 +35,7 @@ This data-driven awareness provides the option to act through increased understa
 Analysis of the data requires a network of computers to run in a reasonable length of time.
 A recent study of high-performance computing (HPC) software used data from the Climate Forecast System at a 360 x 720 x 41 (latitude x longitude x depth) by 6-hour resolution yielding a 2.2TB matrix of known variables. [3]
 The amount of data is even higher if we consider imaging data, like the earth view of Google Maps.
-Planet [4], a San Francisco startup, uses a cube satellite constellation to collect over 5TB of images everyday.
+[Planet](https://www.planet.com/) [4], a San Francisco startup, uses a cube satellite constellation to collect over 5TB of images everyday.
 Fortunately, the infrastructure to support computational needs are become more mature.
 
 Graphics and Tensor Processing Units ([GPUs](https://en.wikipedia.org/wiki/Graphics_processing_unit) and [TPUs](https://en.wikipedia.org/wiki/Tensor_processing_unit)) have become commonplace in computer vision and neural networks.
@@ -149,7 +149,7 @@ When paired with standard techniques for dimensionality reduction and time serie
 
 [4] Planet -- Platform. (2018, May 07). Retrieved May 31, 2018, from [https://www.planet.com/products/platform/]()
 
-[5] Jouppi, N. P., Young, C., Patil, N., Patterson, D., Agrawal, G., Bajwa, R., ... & Boyle, R. (2017, June). In-datacenter performance analysis of a tensor processing unit. In Proceedings of the 44th Annual International Symposium on Computer Architecture (pp. 1-12). ACM.
+[5] Jouppi, N. P., Young, C., Patil, N., Patterson, D., Agrawal, G., Bajwa, R., ... & Boyle, R. (2017, June). [In-datacenter performance analysis of a tensor processing unit.](https://dl.acm.org/citation.cfm?id=3080246) In Proceedings of the 44th Annual International Symposium on Computer Architecture (pp. 1-12). ACM.
 
 [6] Allnutt, T. F., Asner, G. P., Golden, C. D., & Powell, G. V. (2013). [Mapping recent deforestation and forest disturbance in northeastern Madagascar.](http://journals.sagepub.com/doi/abs/10.1177/194008291300600101) Tropical Conservation Science, 6(1), 1-15.
 
