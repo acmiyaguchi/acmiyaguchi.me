@@ -27,9 +27,11 @@ For example, the Sentinel-1 constellation collects high-resolution synthetic-ape
 The satellites can support monitoring of icebergs and map oil spills through reliable measurements.[2]
 Action and the option to act rely on sense through awareness in any system.
 
-{:refdef: style="text-align: center;"}
-![hmm]({{ "/assets/blog-01/GSSLOOPS-wcwv-1.jpg" | absolute_url }})
-_**Figure**: A map of water moisture and cloud cover from the NOASS_
+## A Parallel Programming Model
+
+| ![hmm]({{ "/assets/blog-01/GSSLOOPS-wcwv-1.jpg" | absolute_url }}) |
+|:--:|
+| *__Figure__: A map of water moisture and cloud cover from the NOASS* |
 
 Analysis of the data requires a network of computers to run in a reasonable length of time.
 A recent study of high-performance computing (HPC) software used data from the Climate Forecast System at a 360 x 720 x 41 (latitude x longitude x depth) by 6-hour resolution yielding a 2.2TB matrix of known variables. [3]
@@ -44,7 +46,8 @@ The global flux of FLOPS has increased through GPUs to support demand for digita
 The GPU started as a dedicated coprocessor designed to paint an image to a screen quickly.
 Designed to perform basic image manipulation tasks, they also formed the basis for general-purpose computing on GPUs.
 
-General-purpose computing on GPUs relies on the solid foundations of linear algebra to exploit inherent data parallelism. The OpenCV, computer vision software with a community of over 47 thousand, is a library for writing efficient, real-time applications. [5]
+General-purpose computing on GPUs relies on the solid foundations of linear algebra to exploit inherent data parallelism.
+OpenCV, computer vision software with a community of over 47 thousand, is a library for writing efficient, real-time applications. [5]
 Linear operators like convolutions can be used to apply filters or kernels to images.
 Convoluting an edge-detection kernel with an image produces another image where the values represent the likelihood of being an edge.
 The TensorFlow library is another software library that was designed for machine learning.
@@ -64,7 +67,7 @@ The programming interface is more powerful than the hardware it supports, so it'
 <a title="By Michael Plotke [CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)], from Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Vd-Edge1.png"><img width="50%" alt="Vd-Edge1" src="https://upload.wikimedia.org/wikipedia/commons/8/8d/Vd-Edge1.png"></a>
 </div>
 
-_**Figure**: An image and the image convolved with an edge-detection kernel. Images from [Kernel (Image Processing), Wikimedia Commons](https://en.wikipedia.org/wiki/Kernel_(image_processing))_
+*__Figure__: An image and the image convolved with an edge-detection kernel. From [Kernel (Image Processing), Wikimedia Commons](https://en.wikipedia.org/wiki/Kernel_(image_processing))*
 
 Distributed data processing libraries like Spark have reduced the complexity of managing powerful computing clusters.
 By utilizing a network of computers and available global mapping information, we can build systems to detect changes on a large scale.
@@ -74,6 +77,8 @@ The colors and intensity of an image can be used to extract meaningful patterns.
 Sometimes infrared and ultrasonic waves are measured in a process called hyperspectral imaging.
 The spectrum recorded to a map, where every group of observations has a neighbor.
 This data has a natural grid-like form, where little effort is necessary to parallelize processing.
+
+## Finding Patterns in Earth's Image
 
 With a full image of the surface of the earth, we can start to ask questions about the state of the environment.
 For example, a health model of the earth may include a distribution of terrain and how they change over time.
@@ -102,10 +107,9 @@ By removing the diagonal of the graph matrix, we obtain a similar spatial image 
 In fact, the eigenvectors of this matrix have a similar interpretation to the Fourier transform. [8]
 Both of these transformations form an orthonormal basis in a spectral domain that can be processed using the same toolbox.
 
-{:refdef: style="text-align: center;"}
-![sparsity]({{ "/assets/blog-01/sphx_glr_plot_logistic_l1_l2_sparsity_001.png" | absolute_url }})
-
-_**Figure**: The effect of regularization on sparsity in a logistic regression of the MNIST dataset from [scikit-learn](http://scikit-learn.org/stable/auto_examples/linear_model/plot_logistic_l1_l2_sparsity.html)_
+| ![sparsity]({{ "/assets/blog-01/sphx_glr_plot_logistic_l1_l2_sparsity_001.png" | absolute_url }}) |
+|:--:|
+| *__Figure__: The effect of regularization on sparsity in a logistic regression of the MNIST dataset from [scikit-learn](http://scikit-learn.org/stable/auto_examples/linear_model/plot_logistic_l1_l2_sparsity.html)* |
 
 This spectral decomposition has extensive uses because there are efficient algorithms for processing trillions of sparse data points in space.
 For example, the PageRank algorithm pioneered by Google uses a method called power iteration to find the eigenpairs of the web hyperlink matrix.
@@ -122,10 +126,11 @@ One way to tackle this problem is to aggregate streams of data together by clust
 The covariance matrix and the inverse precision matrix can be used to see how different variables correlate and partially correlate with each other. [10]
 Inducing sparsity in the precision matrix can remove spurious relationships between series, while the eigenvectors of the covariance matrix aid in clustering.
 
-{:refdef: style="text-align: center;"}
-![water]({{ "/assets/blog-01/CFS - 1-15March1993_Atmospheric_Precipitable_Water-small.gif" | absolute_url }})
+## Thoughts
 
-_**Figure**: A simulation of precipitable water from the NOAA at [1]_
+| ![water]({{ "/assets/blog-01/CFS - 1-15March1993_Atmospheric_Precipitable_Water-small.gif" | absolute_url }}) |
+|:--:|
+| *__Figure__: A simulation of precipitable water from the NOAA at [1]* |
 
 In practice, the complexity of the data with our current computational resources prevents us from producing confident weather forecasts beyond a few weeks.
 Despite the growing amount of available information, computational power and domain intuition are still limiting resources.
@@ -133,6 +138,8 @@ However, models driven by massive data have bootstrapped a feedback loop necessa
 In particular, there are ways to exploit the geometry of spatial data to increase the overall knowledge about the state of the earth.
 When paired with standard techniques for dimensionality reduction and time series, remote sensing becomes a tool that can help chart a path to coexistence with our environment.
 
+
+## References
 
 * [1] https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/climate-forecast-system-version2-cfsv2
 * [2] https://earth.esa.int/web/guest/missions/esa-operational-eo-missions/sentinel-1
