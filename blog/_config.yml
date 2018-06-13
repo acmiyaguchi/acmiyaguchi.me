@@ -25,7 +25,7 @@ linkedin_username: acmiyaguchi
 # Build settings
 markdown: kramdown
 theme: minima
-plugins:
+plugins_dir:
   - jekyll-feed
 
 google_analytics: UA-119562682-1

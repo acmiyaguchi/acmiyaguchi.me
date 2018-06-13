@@ -1,7 +1,7 @@
 ---
 layout: post
 title: High Dimensional Time Series Analysis
-date:   2018-06-01 20:00:45 -0700
+date:   2018-07-01 20:00:45 -0700
 category: Science
 tags:
     - time series
