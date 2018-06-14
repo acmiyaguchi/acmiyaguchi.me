@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Who validates the schema validators?
+title: Diagnosing a bug in python-rapidjson
 date:   2018-06-08 4:50:00 -0700
 category: Engineering
 tags:
@@ -9,21 +9,80 @@ tags:
     - Software Release
 ---
 
-Building a CI
+Subtle bugs in software can lead to long, frustrating debugging sessions.
+I recently ran into a bug while building a system to validate JSON schemas against small samples of data.
+The standalone project is designed to be run locally to increase the amount of feedback when developing schemas.
+Batches of JSON are fed through an endpoint that returns a status code reflecting the result of validation.
 
-I also sampled documents to check the health of the schemas.
-There are enough documents that it only takes a few seconds to get feedback.
-There was a strange result that was caught during review where the validation error rate was 100%.
-If this were the case, we would be dropping pings at a much higher rate.
-I was using the same library as ingestion, but using a python wrapper.
-Fortunately, the reports that were being generated for testing small samples of data were useful for also testing the schemas.
-The easy-to-parse differences between reports made it possible to narrow down the commit and pull request that introduced the errors.
+Let's consider a toy example of performing schema validating on a phonebook.
+The phonebook is represented as a collection of JSON strings delimited by newlines.
 
+```json
+{"first_name": "Dwight", "last_name": "Melton", "phone": "260-475-9121"}
+{"first_name": "Jeffrey", "last_name": "Quinn", "phone": "323-636-8611"}
+{"first_name": "Sandra", "last_name": "Bouck", "phone": "818-481-2026"}
 ```
-schema for bug
+
+The structure of these documents can be captured by a JSON Schema in the following way.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "first_name": {"type": "string"},
+    "last_name": {"type": "string"},
+    "phone": {
+      "type": "string", 
+      "pattern": "^[0-9]{3}-[0-9]{3}-[0-9]{4}$"
+    }
+  },
+  "additionalProperties": false
+}
 ```
 
-Out of the types of measurements that I see regularly, histograms are the most complex.
+The phonebook entry is an object containing three typed fields.
+The `phone` entry must match the pattern, or else it will be flagged by a validator.
+
+
+In the Data Platform at Mozilla, schemas are used to validate browser telemetry at ingestion.
+While there are currently 7 drafts of the specification, the JSON Schema draft v4 spec has the most implementations.
+Our ingestion service validates the documents using a lua-binding of the rapidjson library.
+The `edge-validator` uses the same library through a python binding to improve the cross project compatability.
+At least, this was the intention when the validation varied wildly between the two applications.
+
+In review of a recent PR, the validation error rate of the `edge-validator` on a sample of a particular document type was 100%.
+If this were the case, we wouldn't have seen any data on our servers.
+Something was inconsistent.
+Fortunately, the generated integration reports were also useful for identifying issues in the application.
+The errors on the main telemetry ping all shared a similar error message:
+
+--- | ---
+Type | additionalProperties
+Schema Path |   #/properties/payload/properties/processes/properties/content/properties/histograms/additionalProperties/properties/values
+Instance Path |  #/payload/processes/content/histograms/CYCLE_COLLECTOR_MAX_PAUSE/values/3
+
+It looked like histogram measurements in telemetry were causing validation errors. 
+This is the same data that can be found when looking at `about:telemetry` in Firefox.
+The reporting tool for the validator included a comparison utility, designed to be the main feedback signal for developers.
+Reports are generated between the master and local branch on a schema repo and diffed.
+When I ran this comparison against master and dev, I noticed that the errors had increased between the two.
+
+I later found out that the master branch was no longer being updated.
+The dev branch was the defactor master and had diverged significantly.
+By narrowing down the range through successive comparisons, I found the specific revision where things started to break down.
+Earlier in the year, the histogram schema was made more strict.
+
+
+```json
+{
+  "type": "object",
+  "additionalProperties": false,
+  "patternProperties": {
+    "^[0-9]+": { "type": "integer" }
+  }
+}
+```
+
 The additional properties and patternProperties were used to verify that values in a histogram were being enforced.
 I had a hunch, but now I had evidence that something was afoot.
 Quickly, I saw myself in the same situation that had been resolved swiftly.

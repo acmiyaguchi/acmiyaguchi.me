@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Bringing a Continuous Schema Integration System Online
-date:   2018-06-08 4:50:00 -0700
+date:   2018-07-08 4:50:00 -0700
 category: Engineering
 tags:
     - System
