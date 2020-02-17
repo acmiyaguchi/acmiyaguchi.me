@@ -1,21 +1,22 @@
 ---
 layout: post
-title: Inducing Wikipedia Subgraphs with GraphFrames
-date:   2020-02-17 17:00:00 -0800
+title: Inducing Entity Subgraphs from Wikipedia with GraphFrames
+date:   2020-02-17 15:50:00 -0800
 category: Engineering
 tags:
-    - spark
+    - apache spark
     - graphframes
     - wikipedia
+    - named entity recognition
+    - network analysis
 ---
 
-I've been toying around with building a tool for analyzing news articles through the relationship of [named entities][named-entity] in the text.
+I've been toying with the idea of analyzing news through [named entities][named-entity] extracted from written articles.
 A named entity is a real world object that has a proper name (e.g. the Royal Palace of Madrid). 
-A good rule of thumb is that if it's significant enough to have a Wikipedia page, then it's likely to be a named entity.
-The test subject of my news analysis have been arbitrary articles from the Associated Press (AP).
-For the data processing pipeline that I've built, I consider the [AP news article about Jimmy Hoffa][hoffa]. 
-With a script to parse the page and [extract the entities][ner], I have a group of entities that we can start drawing relationships from. 
-I clean up results [`NLTK`][nlkt] by passing them into the Wikipedia search API to get a list of article ids and titles.
+A rule of thumb is that if it's significant enough to have a Wikipedia page, then it's likely to be a named entity.
+For the data processing pipeline that I've built, I use a recent [Associated Press news article about Jimmy Hoffa][hoffa]. 
+I gather a group of entities using a script to parse the page and [extract the entities][ner].
+I clean up the results from the [Natural Language Toolkit (`NLTK`)][nltk] by passing them into the Wikipedia search API to get a list of article ids and titles.
 
 ```csv
 Id,Label
@@ -32,21 +33,20 @@ Id,Label
 ...
 ```
 
-I now start to build up a graph, armed with entities referenced in the Jimmy Hoffa article.
-
+Now, armed with entities referenced in the Jimmy Hoffa article, I build up a graph of relationships.
+My approach is to generate an edge (or a link) between the articles if there is a hyperlink between them.
 I start with the `pages` and `pagelinks` data sets that I extracted from the 2019-08-20 dump of English Wikipedia.
 In this dump, there are 5.9 million articles and 490 million links between them.
-The pages data set contains information about each article in the database, most importantly the unique id and title.
-The pagelinks data set is an adjacency list that represents the hyperlinks between articles.
-This forms the basis of building up the graph of relationships between articles in Wikipedia.
-I took [some notes][wiki-notes] on extracting the data from the SQL dumps using the [epfl-lts2/sparkwiki](https://github.com/epfl-lts2/sparkwiki) project.
+The `pages` data set contains metadata about the article, such as the unique identifier and title.
+The `pagelinks` data set is an adjacency list that represents the hyperlinks between articles.
+This is the core of what makes Wikipedia such a great resource for referencing obscure pieces of information.
+I took [some notes][wiki-notes] on extracting the data from the [SQL dumps][dumps] using the [epfl-lts2/sparkwiki][sparkwiki] project.
 
-With this, I put together a simple script to generate a [induced subgraph][induced-subgraph].
-This will draw an edge between two articles if a hyperlink exists in the `pagelinks` data.
-I started with [`graphframes`][graphframes] to search for these relationships, because I already had most of the code lying around.
+With this, I put together a script to generate an [induced subgraph][induced-subgraph] of Wikipedia articles referenced in the AP news article.
+I used [`graphframes`][graphframes] to search for edges, because of prior experience working with the tool. 
+In the domain-specific language, I search for the relationship: `(a)->[]->(b)`.
+This will return all nodes `a` and `b` that are joined by a single unnamed edge.
 
-I enjoy using Spark because I'm familiar with the API and the execution model.
-It's also great for manipulating data on a local machine.
 Here's a mostly complete fragment demonstrating the use of `graphframes`.
 
 ```python
@@ -76,9 +76,14 @@ edgelist = (
 )
 ```
 
+One of the neat properties of running `graphframes` is that the queries are run through Spark's optimizer.
+In the query plan below, the self-join on the pagelinks dataset against the input articles is evident.
+
 ![Query plan]({{ "/assets/2020-02-17/query-plan.png" | absolute_url }})
 
-This gets run with a small Powershell script, after the appropriate dependencies are installed (`pip install pyspark`).
+This page is useful for understanding what is happening underneath the hood, and where parameters can be tuned to increase performance.
+To actually run the job, I use the following Powershell script to wrap `spark-submit`.
+Note that `SPARK_HOME` is set to the local directory of `pyspark` installed via pip (e.g. `pip install pyspark`).
 
 ```powershell
 $filename = "scripts/generate_graph.py"
@@ -93,7 +98,7 @@ spark-submit `
 ```
 
 This job completes in roughly 10 minutes on my desktop.
-When run on an `n1-standard-16` machine on [Google Cloud Dataproc][dataproc], this takes closer to 4 minutes.
+In a later diversion, I tested a version of this script on a `n1-standard-16` machine with a local SSD in [Google Cloud Dataproc][dataproc] that took 3 minutes
 
 The result is an edge table that can be imported directly into [Gephi][gephi], a tool for graph analysis and visualization. 
 
@@ -108,9 +113,18 @@ Source,Target,Weight
 ...
 ```
 
-With some minor fiddling, we can compute some nice statistics about the resulting entity graph from the original news article.
+With a few tweaks to compute communities, we get a visualization of the entity graph from the news article.
 
 ![Wikipedia relations for the AP news article]({{ "/assets/2020-02-17/hoffa.png" | absolute_url }})
+
+I'm still hacking away at this code, so there are some areas that I'd like to write about in more detail.
+For example, computing second-order relationships in the graph requires more memory than I have locally (1TB of SDD and 2 TB of HDD).
+BigQuery has solved my memory issues, but it does require setting up the pipeline differently.
+
+I am also aiming to do a bit of network analysis, in particular about the geometric shape of these entity graphs.
+I have been researching [graphlet][graphlets]-based measurements, which have applications in determining similarity in protein-protein interaction and global-trade networks.
+Based on the over (or under) expression of certain graphlets, the Jimmy Hoffa article I used for this post might fall under "Obituaries" based on the entities involved.
+Even if measuring the statistic proves fruitless, it will make for an interesting resource for referencing current events.
 
 
 [hoffa]: https://apnews.com/1673463e5dd7eff87d2dc53e06ec9c24
@@ -118,7 +132,10 @@ With some minor fiddling, we can compute some nice statistics about the resultin
 [ner]: https://www.nltk.org/book/ch07.html#sec-ner
 [nltk]: https://www.nltk.org/
 [wiki-notes]: https://github.com/acmiyaguchi/cs229-f19-wiki-forecast/blob/master/NOTES.md
+[dumps]: https://dumps.wikimedia.org/
+[sparkwiki]: https://github.com/epfl-lts2/sparkwiki
 [induced-subgraph]: https://en.wikipedia.org/wiki/Induced_subgraph
 [graphframes]: https://graphframes.github.io/graphframes/docs/_site/user-guide.html#motif-finding
 [dataproc]: https://cloud.google.com/dataproc
 [gephi]: https://gephi.org/
+[graphlets]: https://en.wikipedia.org/wiki/Graphlets
