@@ -8,6 +8,7 @@ import babel from "@rollup/plugin-babel";
 import { terser } from "rollup-plugin-terser";
 import config from "sapper/config/rollup.js";
 import pkg from "./package.json";
+import { string } from "rollup-plugin-string";
 
 const mode = process.env.NODE_ENV;
 const dev = mode === "development";
@@ -41,6 +42,13 @@ export default {
       resolve({
         browser: true,
         dedupe: ["svelte"],
+        preferBuiltins: false,
+      }),
+      string({
+        include: "**/*.txt",
+      }),
+      string({
+        include: "**/*.scm",
       }),
       commonjs(),
 
@@ -103,6 +111,12 @@ export default {
         dedupe: ["svelte"],
       }),
       commonjs(),
+      string({
+        include: "**/*.txt",
+      }),
+      string({
+        include: "**/*.scm",
+      }),
     ],
     external: Object.keys(pkg.dependencies).concat(
       require("module").builtinModules

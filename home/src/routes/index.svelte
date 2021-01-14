@@ -1,50 +1,32 @@
 <script>
-  import successkid from "images/successkid.jpg";
+  import geospiza from "../assets/geospiza.txt";
+  import pubkey from "../assets/gpg-pubkey.txt";
+  import { mandelbrot } from "./mandelbrot.js";
+  let mandelbrotCanvas;
+  $: mandelbrotCanvas && mandelbrot(mandelbrotCanvas);
 </script>
 
 <style>
-  h1,
-  figure,
-  p {
-    text-align: center;
-    margin: 0 auto;
-  }
 
-  h1 {
-    font-size: 2.8em;
-    text-transform: uppercase;
-    font-weight: 700;
-    margin: 0 0 0.5em 0;
-  }
-
-  figure {
-    margin: 0 0 1em 0;
-  }
-
-  img {
-    width: 100%;
-    max-width: 400px;
-    margin: 0 0 1em 0;
-  }
-
-  p {
-    margin: 1em auto;
-  }
-
-  @media (min-width: 480px) {
-    h1 {
-      font-size: 4em;
-    }
-  }
 </style>
 
 <svelte:head>
-  <title>Sapper project template</title>
+  <title>Anthony Miyaguchi's corner of the internet</title>
 </svelte:head>
 
-<h1>Great success!</h1>
+<h1>Here be dragons</h1>
+<p>Things to do, things to write.</p>
 
-<figure>
-  <img alt="Success Kid" src={successkid} />
-  <figcaption>Have fun with Sapper!</figcaption>
-</figure>
+<p>
+  You may also be interested in my
+  <a href="https://blog.acmiyaguchi.me">blog</a>
+  or
+  <a href="https://github.com/acmiyaguchi">github proyfile</a>
+  .
+</p>
+
+<canvas id="mandelbrot" width="480" height="320" bind:this={mandelbrotCanvas} />
+
+<pre style="font: 10px/5px monospace;">{geospiza}</pre>
+
+<pre>{pubkey}</pre>
