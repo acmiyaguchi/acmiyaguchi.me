@@ -18,12 +18,20 @@
 <p>Things to do, things to write.</p>
 
 <p>
-  You may also be interested in my
+  You may be interested in my
   <a href="https://blog.acmiyaguchi.me">blog</a>
   or
-  <a href="https://github.com/acmiyaguchi">github proyfile</a>
+  <a href="https://github.com/acmiyaguchi">github profile</a>
   .
 </p>
+
+<h2>Miscellaneous</h2>
+
+<ul>
+  <li>
+    <a href="life">Game of life in scheme</a>
+  </li>
+</ul>
 
 <canvas id="mandelbrot" width="480" height="320" bind:this={mandelbrotCanvas} />
 

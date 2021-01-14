@@ -10,6 +10,13 @@
   });
 </script>
 
+<h1>Game of life</h1>
+
+<p>
+  This is an implementation of the game of life in biwascheme. This is a work in
+  progress, so things may not work as intended.
+</p>
+
 <div id="canvas-container">
   <canvas width="400" height="400" id="life" />
 </div>
