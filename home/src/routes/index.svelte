@@ -6,10 +6,6 @@
   $: mandelbrotCanvas && mandelbrot(mandelbrotCanvas);
 </script>
 
-<style>
-
-</style>
-
 <svelte:head>
   <title>Anthony Miyaguchi's corner of the internet</title>
 </svelte:head>
