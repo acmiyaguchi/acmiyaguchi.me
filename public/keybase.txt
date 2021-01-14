@@ -1,0 +1,74 @@
+==================================================================
+https://keybase.io/acmiyaguchi
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://acmiyaguchi.me
+  * I am acmiyaguchi (https://keybase.io/acmiyaguchi) on keybase.
+  * I have a public key with fingerprint A4EB A869 A93C 0409 2CBD  9BB8 C3BD 35E4 6DD4 5DA5
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "0101386cb904422f6da51e8ead849cc5157c4332b996e7cb2a966d4e9d62aae0df490a",
+      "fingerprint": "a4eba869a93c04092cbd9bb8c3bd35e46dd45da5",
+      "host": "keybase.io",
+      "key_id": "c3bd35e46dd45da5",
+      "kid": "0101386cb904422f6da51e8ead849cc5157c4332b996e7cb2a966d4e9d62aae0df490a",
+      "uid": "c3176410d5fac5293e67637117a40a19",
+      "username": "acmiyaguchi"
+    },
+    "service": {
+      "hostname": "acmiyaguchi.me",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 1
+  },
+  "ctime": 1527746215,
+  "expire_in": 157680000,
+  "prev": "cb1e06bf06952c18800ce614c9573d3d1ab9d465f004f08ee1a01b395bbdf4aa",
+  "seqno": 17,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.0.77
+Comment: https://keybase.io/crypto
+
+yMNCAnicrVJtUFRVGN6FwKBiSTQJBsHrqAMteL8/dqZmGIHBSKRdGhSh7X6cXa4s
+u+vdXT6CzREZwLWC+GEYgWYaC+gME9hMTsrHOtBAMeWQESEGpBGJwMi4wlB0r2O/
+6mfnz5nzvs/zvM/7zLn+XKAqVO27SvxaNJp/QT3c1+xSHdK831oOcTahDNKVQ4Xg
+8QUsAnA4jYWiAOkgGIERjCZ5joFxHEVNpMASCKABK9A4w/MEQlA8jmEoxzAkoHgO
+ZRmSFHDACCTKsgAWTDgDs5AWMolWM5Dskmh1yrIsDjiWJhmWwXgYhxmU5wSG42ge
+4wSMADgpCDghj5KJBTaHwpDNcawDJIk2uSY/jI/t/Qf+f/btejIHoUgcgQXCxPIE
+ymCApEiMQhCKxWEWYRSgA0hWtggo2/FFYhlrdvEFIuTWQnKjWOSBkq2yzL9BSXJB
+C9klm9PG2yxyr8DptDt0CtdZZlfAJYAzPpExcqJVkMOUGcVAcog2K6RDZCTvFBVd
+hEApCidRhNBCoNQuSsAoKgiCImlYPsocUKysxCEAJjkTTDIEyiO03OUBieA8Q1CY
+gAkIyzECThImGMZNMA0AwsIIhzEEx8nhsEo2DnDEapO1Kdkna5Y1HaLZyjpdEoDc
+/X15T6nUoargoADll6lCQ8L/+Xttq5r1DMubb+dUlcZ7Z6UXZ1JuzD+45x+KMaj9
+/ssh18elz1Wb2ruX+155hysp3IC0T3smu8+cej48Zvf2rMmIoDfmUk5E3vHe6bvg
+runIyww+7o97sPOo70ZC9qJjY12zfXlkwdv82XYNVDkAbw3qXTi20vTlmPma5/x+
+Q9fgnvSRnJoXWqa+W0ibSkoCU279/Mmlq8P5J38P3Nud/tLS5vRvcwfbGsrLY/UV
+O7dozsy1e2ae9nfsrwtvOVJ598cYzcRaujTjYW4lfNOW+EtUVexD8tXSxqgPL2e7
+m47tyelYTfSeiG7ZlTgx3lgcpwvO3PFs//JPJTnegkhfUGt1f1Cqtqe8NvPj1+Ia
+zteqatbYPjQLq3vPYMnNXh7IOmc6rP9hI60e/OoP/cWe27UlFl1R1unR8cW706+3
+XVxoTQuYSsiPtEuWmiunpkea4g/uStF8nXvpt82NdOqBitv3N0SpVkIW27uO31sL
+23dr/t2qsPr4tN5J/qOG0h222LcOVT7UbxvqceUOzPq+0P45dFCf+mmuR/UovuWD
+m+DosI8NTA5wdSaOjRvWU9Yufe+dy4lG8mydn9TbHWn0qnh4NPwZzVnDtp+74Znd
+K7PnIs1hedWbrhhPJyMG9T59pHHVH1ji6ez9aywqxr13uKIhY8k8F91Vfz8C0mYk
+b6k+oLt57eWJiLOPuK3rfwOK4sa9
+=wyuq
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/acmiyaguchi
+
+==================================================================
