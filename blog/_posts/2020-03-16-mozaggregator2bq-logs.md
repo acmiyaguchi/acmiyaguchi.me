@@ -2,7 +2,7 @@
 layout: post
 title: Walking through `mozaggregator2bq`
 date:   2020-03-16 17:00:00 -0800
-category: mozilla
+category: Engineering
 tags:
     - spark
     - bigquery
