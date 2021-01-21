@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Clustering Existing BigQuery Tables
+title: Clustering existing BigQuery tables
 date:   2021-01-20 17:00:00 -0800
 category: Engineering
 tags:
