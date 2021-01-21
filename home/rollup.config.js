@@ -9,6 +9,7 @@ import { terser } from "rollup-plugin-terser";
 import config from "sapper/config/rollup.js";
 import pkg from "./package.json";
 import { string } from "rollup-plugin-string";
+import { mdsvex } from "mdsvex";
 
 const mode = process.env.NODE_ENV;
 const dev = mode === "development";
@@ -34,6 +35,8 @@ export default {
           dev,
           hydratable: true,
         },
+        extensions: [".svelte", ".svx"],
+        preprocess: mdsvex(),
       }),
       url({
         sourceDir: path.resolve(__dirname, "src/node_modules/images"),
@@ -101,6 +104,8 @@ export default {
           hydratable: true,
         },
         emitCss: false,
+        extensions: [".svelte", ".svx"],
+        preprocess: mdsvex(),
       }),
       url({
         sourceDir: path.resolve(__dirname, "src/node_modules/images"),
