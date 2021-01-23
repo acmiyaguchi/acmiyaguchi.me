@@ -53,6 +53,9 @@ export default {
       string({
         include: "**/*.scm",
       }),
+      string({
+        include: "**/*.pl",
+      }),
       commonjs(),
 
       legacy &&
@@ -121,6 +124,9 @@ export default {
       }),
       string({
         include: "**/*.scm",
+      }),
+      string({
+        include: "**/*.pl",
       }),
     ],
     external: Object.keys(pkg.dependencies).concat(
