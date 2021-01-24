@@ -20,7 +20,7 @@ profile](https://github.com/acmiyaguchi)
 
 ## Changelog
 
-I keep track of site [on Github][source]. Here are the last 10 commits.
+I keep track of the site [on Github][source]. Here are the [last 10 commits][commits].
 
 <pre>
 <code>
@@ -29,3 +29,4 @@ I keep track of site [on Github][source]. Here are the last 10 commits.
 </pre>
 
 [source]: https://github.com/acmiyaguchi/acmiyaguchi.me/tree/main/home
+[commits]: https://github.com/acmiyaguchi/acmiyaguchi.me/commits/main/home
