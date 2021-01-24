@@ -8,6 +8,8 @@
 
 _2020-01-21_
 
+[Problem](https://adventofcode.com/2020/day/1)
+
 This first problem took me far longer than I would have liked. I had to figure
 out how to parse the data to event start asking my questions. The `append/3`
 solution was not my first choice, but I couldn't figure out why my original
