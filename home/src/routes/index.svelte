@@ -1,6 +1,6 @@
 <script context="module">
   export async function preload() {
-    let resp = await this.fetch("api/v1/git-logs.json");
+    let resp = await this.fetch("api/v1/git-logs.txt");
     return { logs: await resp.text() };
   }
 </script>
