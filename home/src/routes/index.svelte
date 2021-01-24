@@ -1,8 +1,18 @@
+<script context="module">
+  export async function preload() {
+    let resp = await this.fetch("git-logs.json");
+    return { logs: await resp.text() };
+  }
+</script>
+
 <script>
   import FrontMatter from "./FrontMatter.svx";
   import geospiza from "../assets/geospiza.txt";
   import pubkey from "../assets/gpg-pubkey.txt";
   import { mandelbrot } from "./mandelbrot.js";
+
+  export let logs;
+
   let mandelbrotCanvas;
   $: mandelbrotCanvas && mandelbrot(mandelbrotCanvas);
 </script>
@@ -11,7 +21,7 @@
   <title>Anthony Miyaguchi's corner of the internet</title>
 </svelte:head>
 
-<FrontMatter />
+<FrontMatter {logs} />
 
 <h2>Miscellaneous</h2>
 
