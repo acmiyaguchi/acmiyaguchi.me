@@ -2,7 +2,7 @@
 layout: post
 title: Troubles with Protosaur and Svelte
 date: 2021-01-22 22:24:00 -0800
-category: mozilla
+category: engineering
 tags:
   - web-development
   - svelte
