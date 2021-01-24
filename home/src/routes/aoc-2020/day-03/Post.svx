@@ -1,0 +1,17 @@
+<script>
+  import Nav from "../components/Nav.svelte"
+  import Editor from "../components/Editor.svelte";
+  import solution from "./solution.pl";
+</script>
+
+# Day 3
+
+_2020-01-23_
+
+## Solution
+
+<Editor text={solution} />
+
+## Index
+
+<Nav />
