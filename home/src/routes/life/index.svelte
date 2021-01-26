@@ -1,6 +1,7 @@
 <script>
   import life from "./life.scm";
   import { onMount } from "svelte";
+  import BiwaScheme from "biwascheme";
 
   let biwascheme;
 
@@ -15,6 +16,10 @@
 <p>
   This is an implementation of the game of life in biwascheme. This is a work in
   progress, so things may not work as intended.
+</p>
+
+<p>
+  <a href="/">Go to the homepage.</a>
 </p>
 
 <div id="canvas-container">
