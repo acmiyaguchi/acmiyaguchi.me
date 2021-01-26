@@ -1,6 +1,6 @@
 <script>
   export let index = false;
-  let days = [...Array(5).keys()].map(i => String(i + 1).padStart(2, "0"));
+  let days = [...Array(6).keys()].map(i => String(i + 1).padStart(2, "0"));
 </script>
 
 <ul class="nav">

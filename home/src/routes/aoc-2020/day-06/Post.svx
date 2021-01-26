@@ -1,0 +1,33 @@
+<script>
+  import Nav from "../components/Nav.svelte"
+  import Editor from "../components/Editor.svelte";
+  import solution from "./solution.pl";
+</script>
+
+# Day 6
+
+_2020-01-25_
+
+[Problem](https://adventofcode.com/2020/day/6)
+
+I decided to go the route of using a single inductive predicate to solve the
+problem. `union/2` and `intersection/2` were useful, but I did have to modify my
+predicate with an extra rule to handle the null set, else the sum of group
+answers be zero.
+
+One thing that has hampered my learning progress in Prolog in the past was my
+insistence on writing most predicates from scratch. Using standard library
+functions is 100% the way to go when trying to learn something new. Why write
+something from scratch when you can build from a robust toolset? Once I got the
+hang of the common patterns, I think I'll be able to go back to the [Ninety-Nine
+Prolog
+Problems](https://www.ic.unicamp.br/~meidanis/courses/mc336/2009s2/prolog/problemas/)
+with more appreciation.
+
+## Solution
+
+<Editor text={solution} />
+
+## Index
+
+<Nav />
