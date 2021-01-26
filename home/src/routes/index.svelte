@@ -1,7 +1,18 @@
+<script context="module">
+  export async function preload() {
+    let resp = await this.fetch("api/v1/git-logs.txt");
+    return { logs: await resp.text() };
+  }
+</script>
+
 <script>
+  import FrontMatter from "./FrontMatter.svx";
   import geospiza from "../assets/geospiza.txt";
   import pubkey from "../assets/gpg-pubkey.txt";
   import { mandelbrot } from "./mandelbrot.js";
+
+  export let logs;
+
   let mandelbrotCanvas;
   $: mandelbrotCanvas && mandelbrot(mandelbrotCanvas);
 </script>
@@ -10,22 +21,16 @@
   <title>Anthony Miyaguchi's corner of the internet</title>
 </svelte:head>
 
-<h1>Here be dragons</h1>
-<p>Things to do, things to write.</p>
-
-<p>
-  You may be interested in my
-  <a href="https://blog.acmiyaguchi.me">blog</a>
-  or
-  <a href="https://github.com/acmiyaguchi">github profile</a>
-  .
-</p>
+<FrontMatter {logs} />
 
 <h2>Miscellaneous</h2>
 
 <ul>
   <li>
     <a href="life">Game of life in scheme</a>
+  </li>
+  <li>
+    <a href="aoc-2020">Advent of Code 2020 (in progress)</a>
   </li>
 </ul>
 

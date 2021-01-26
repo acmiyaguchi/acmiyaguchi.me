@@ -1,0 +1,32 @@
+<script>
+    export let logs;
+</script>
+
+# Here be dragons
+
+Things to do, things to write.
+
+Now halfway through the Covid-19 pandemic, I've been using the time stolen away
+from productive hobbies like [Brazilian jiu-jitsu][bjj] into incredibly [grindy
+MMORPGs][mmorpg] and small programming projects.
+
+I also write open-source software for Mozilla as a Data Engineer.
+
+You may be interested in my [blog](https://blog.acmiyaguchi.me) or [github
+profile](https://github.com/acmiyaguchi)
+
+[bjj]: https://en.wikipedia.org/wiki/Brazilian_jiu-jitsu
+[mmorpg]: https://en.wikipedia.org/wiki/Massively_multiplayer_online_role-playing_game
+
+## Changelog
+
+I keep track of the site [on Github][source]. Here are the [last 10 commits][commits].
+
+<pre>
+<code>
+{logs}
+</code>
+</pre>
+
+[source]: https://github.com/acmiyaguchi/acmiyaguchi.me/tree/main/home
+[commits]: https://github.com/acmiyaguchi/acmiyaguchi.me/commits/main/home
