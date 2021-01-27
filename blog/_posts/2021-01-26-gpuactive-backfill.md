@@ -1,27 +1,49 @@
 ---
 layout: post
-title: Backfilling rejected GPUActive telemetry data
+title: Backfilling rejected GPUActive Telemetry data
 date: 2021-01-26 16:44:00 -0800
 category: Engineering
 tags:
   - bigquery
   - data engineering
+  - ingestion
 ---
+
+Data ingestion is a process that involves decompressing, validating, and
+transforming millions of documents an hour. The schemas of data coming into our
+systems are constantly evolving, sometimes causing partial outages of data
+availablility when the conditions are ripe. In this post, I'll go over how we
+discovered and backfilled data rejected in our ingestion pipeline due to a small
+change in the format of a Telemetry ping.
 
 ## Catching and fixing the error
 
+Every Monday, a group of data engineers pours over a set of dashboards and plots
+that are indicative of data ingestion health. On 2020-08-04, we filed a bug where
+we observed an [elevated rate of schema validation errors coming from
+`environment/system/gfx/adapters/N/GPUActive`][error-bug]. For errors like these
+that are small fractions of our overall volume, partial outages are typically
+not urgent (as in "we need to drop everything right now and resolve this stat!"
+urgent). We called the subject experts and found out that [code responsible for
+reporting multiple GPUs in the environment][source-bug] had changed.
+
+An intern reached out to me about a DNS study that he was running a few weeks
+after the bug was file. I helped figure out that his external monitor setup with
+his Macbook was causing rejections like the ones that we had seen weeks before.
+[One PR and one deploy later][fix-pr], I watched the error rates for the
+GPUActive field drop to zero.
+
 ![Plot of GPUActive errors](/assets/2021-01-26/gpuactive-error-plot.png)
+_**Figure**: Error counts for `environment/system/gfx/adapters/N/GPUActive`_
 
-The number of errors drops abruptly on 2020-08-20, which corresponds to the
-deploy date of the PR. I'll be filing a follow up bug for potential backfill.
+The mispecification of the schema resulted in 4.1 million documents between
+2020-07-04 and 2020-08-20 to be sent to our error stream, awaiting reprocessing.
 
-## Running backfill
+## Running a backfill
 
-So now a good 3 or 4 months later, we went ahead and performed the backfill.
-
-We ran the backfill in the `moz-fx-data-backfill-7` project.
-
-First, we determine the backfill range by querying the relevant error table:
+In January of 2021, we ran the [backfill of the GPUActive
+rejects][backfill-bug]. First, we determine the backfill range by querying the
+relevant error table:
 
 ```sql
 SELECT
@@ -40,11 +62,10 @@ ORDER BY
   1
 ```
 
-That showed the affected range as `2020-07-04` through `2020-08-20`.
+This helped verify date range of the errors and their counts: `2020-07-04`
+through `2020-08-20`. The following tables were affected:
 
-The following tables are affected:
-
-```
+```bash
 crash
 dnssec-study-v1
 event
@@ -57,8 +78,9 @@ update
 voice
 ```
 
-Next, we create destination tables via the `mirror-prod-tables` script and
-we populate the `backfill_input` table via query:
+We isolate the error documents into a backfill project named
+`moz-fx-data-backfill-7` and mirror our production BigQuery datasets and tables
+into it.
 
 ```sql
 SELECT
@@ -72,69 +94,30 @@ WHERE
   AND error_message LIKE '%GPUActive%'
 ```
 
-Attempting to filter client ids using `udf_js.gunzip` may cause issues with
-exceeding the call stack. We avoid filtering on deletion requests until later.
-
-Next, we construct a suitable Dataflow job configuration in
-`launch-dataflow-gpu-active` and run the script.
-
-It may be useful to do a quick run with a subset of data in order to make
-sure the scripts are all properly configured by writing a subset of the backfill
-input to a table and then running the script on the subset. An important thing to
-remember to do is to delete the data written in the test; clean up can be done
-by rerunning the `mirror-prod-tables` script.
-
-```sql
-SELECT
-  *
-FROM7.payload_bytes_error.backfill_input`
-LIMIT
-  1000
-```
-
-We visit the GCP console, choose the `moz-fx-data-backfill-7` project
-and go to the Dataflow section to watch the progress of the job.
-It took about 31 minutes to run to completion.
-We validate the results by checking counts per day:
-
-```sql
-SELECT
-  DATE(submission_timestamp),
-  COUNT(*)
-FROM
-  telemetry_live.main_v4
-GROUP BY
-  1
-ORDER BY
-  1
-```
-
-We can then run copy_deduplicate (in the bigquery repo) for the tables in the
-backfill project. Be sure to change the default project for queries to run in
-the correct project.
+Now we can run a suitable [Dataflow job][dataflow] to populate our tables using
+the same ingestion code as the current jobs in our production envrionment. It
+took about 31 minutes to run to completion. Now copy and deduplicate the data
+into a dataset that closely mirrors our production environment.
 
 ```bash
 gcloud config set project moz-fx-data-backfill-7
-# calculate the date range in this ugly one liner
 dates=$(python3 -c 'from datetime import datetime as dt, timedelta; \
   start=dt.fromisoformat("2020-07-04"); \
   end=dt.fromisoformat("2020-08-21"); \
   days=(end-start).days; \
   print(" ".join([(start + timedelta(i)).isoformat()[:10] for i in range(days)]))')
-# NOTE: prune tables in the live dataset for efficiency, see note below
 ./script/copy_deduplicate --project-id moz-fx-data-backfill-7 --dates $(echo $dates)
 ```
 
-This query was slow (hours) because it required iterating over every table in
-the project for a period of ~50 days. In the future, it is advisable to prune
-all of the unnecessary tables before running the script. Before running
-shredder, we'll delete all of the empty stable tables.
+This query took hours because it iterated over all tables over a period ~50
+days, regardless of whether it contained data. Future backfills should probably
+remove empty tables before kicking off this script.
 
-```bash
-./prune-empty-tables
-```
-
-Now we run shredder from the bigquery-etl root.
+Now that we have populated tables, we need to make sure to handle any data
+deletion requests that have come in since the time of the intial error. The
+self-service deletion requests are served by a module in [BigQuery
+ETL](https://github.com/mozilla/bigquery-etl/issues). We run shredder from the
+bigquery-etl root.
 
 ```bash
 script/shredder_delete \
@@ -161,10 +144,11 @@ INFO:root:Scanned 286924248 bytes and deleted 10 rows from moz-fx-data-backfill-
 INFO:root:Scanned 175822424583 and deleted 68203 rows in total
 ```
 
-We will need append these results to each of the shared prod stable tables
-(requires ops-level permissions). Now stable tables are backfilled, so we can
-delete the rows in the error table corresponding to the backfilled pings from
-the `backfill-7` project.
+After this is all done, we append each of these tables to the tables in the
+production location. This requires super-user permissions, so this gets handed
+off to another engineer to finalize the deed. Afterwards, we can delete the rows
+in the error table corresponding to the backfilled pings from the `backfill-7`
+project.
 
 ```sql
 DELETE
@@ -177,8 +161,8 @@ WHERE
   AND error_message LIKE '%GPUActive%'
 ```
 
-We also need to update the error table with any errors that occurred during
-the backfill (requires ops-level permissions):
+Finally, we update the production errors with new errors generated from the
+backfill process.
 
 ```
 bq cp --append_table \
@@ -186,7 +170,23 @@ bq cp --append_table \
   moz-fx-data-shared-prod:payload_bytes_error.telemetry
 ```
 
+Now those rejected pings are available for analysis down the line. For the
+unadulterated backfill logs, see [this PR to bigquery-backfill][backfill-pr].
+
+## Conclusions
+
+No system is perfect, but the processes that we have in place allows us
+understand the surface area of issues and to address failures in a systematic
+way. Our health check meeting improves our situational awareness of changes
+upstream in applications like Firefox, while our backfill logs in
+bigquery-backfill allows us to practice dealing with the complexities of
+recovering from partial outages. These underlying processes and systems are the
+same ones that faciliate the broader Glean ecosystem at Mozilla, and will
+continue to exist as long as the data flows.
+
 [source-bug]: https://bugzilla.mozilla.org/show_bug.cgi?id=1651425
 [error-bug]: https://bugzilla.mozilla.org/show_bug.cgi?id=1657142
+[fix-pr]: https://github.com/mozilla-services/mozilla-pipeline-schemas/pull/596
+[dataflow]: https://github.com/mozilla/gcp-ingestion/tree/master/ingestion-beam
 [backfill-bug]: https://bugzilla.mozilla.org/show_bug.cgi?id=1661565
 [backfill-pr]: https://github.com/mozilla/bigquery-backfill/pull/11
