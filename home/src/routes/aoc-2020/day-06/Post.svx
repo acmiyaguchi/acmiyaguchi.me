@@ -13,7 +13,8 @@ _2020-01-25_
 I decided to go the route of using a single inductive predicate to solve the
 problem. `union/2` and `intersection/2` were useful, but I did have to modify my
 predicate with an extra rule to handle the null set, else the sum of group
-answers be zero.
+answers be zero. There was also a base case that was missing (and had missed
+when I initially posted this).
 
 One thing that has hampered my learning progress in Prolog in the past was my
 insistence on writing most predicates from scratch. Using standard library
