@@ -33,7 +33,6 @@ main2(Input, Output):-
     maplist(length, Groups, Counts),
     sumlist(Counts, Output).
 
-
 sample("abc
 
 a
