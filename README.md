@@ -1,10 +1,17 @@
 # acmiyaguchi.me
 
-These are the deep, dark secrets that lie behind my server deployment. Currently I'm running on DigitalOcean using Jekyll, but I might consider running something that is a bit easier to handle in the future.
+These are the deep, dark secrets that lie behind my server deployment. Many of
+the sites are running on Netlify.
 
-## Quickstart
+## quickstart
 
 ```bash
 cd blog
 bundle exec jekyll serve --future --livereload
+
+cd home
+npm run dev
+
+cd terraform/project
+terraform apply
 ```
