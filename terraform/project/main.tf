@@ -15,7 +15,7 @@ provider "google" {
   region  = local.region
 }
 
-resource "google_storage_bucket" "acmiyaguchi" {
+resource "google_storage_bucket" "default" {
   name                        = local.project_id
   location                    = "US"
   uniform_bucket_level_access = true
@@ -31,7 +31,24 @@ resource "google_storage_bucket" "acmiyaguchi" {
   }
 }
 
+resource "google_storage_bucket_iam_binding" "default-public" {
+  bucket = google_storage_bucket.default.name
+  role   = "roles/storage.objectViewer"
+  members = [
+    "allUsers"
+  ]
+}
+
 resource "google_storage_bucket" "logs" {
   name     = "${local.project_id}-logs"
   location = "US"
+}
+
+
+// An object that can be used counting page visits
+resource "google_storage_bucket_object" "ping" {
+  name          = "ping"
+  content       = "pong"
+  bucket        = google_storage_bucket.default.name
+  cache_control = "no-cache"
 }
