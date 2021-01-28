@@ -46,8 +46,7 @@ can write code to access this route.
 ```
 
 This is great when I want to include pieces of data from the system or an
-external source at build time e.g. a version from `package.json`.
-It's important to note that running fetch outside of `preload` in the module
-script will not be loaded by `sapper export`. It will work fine in development
-or when running on a server, so take the time to understand the different
-options.
+external source at build time e.g. a version from `package.json`. It's important
+to note that running fetch outside of `preload` in the module script will not be
+loaded by `sapper export`. It will work fine in development or when running on a
+server, so take the time to understand the different options.
