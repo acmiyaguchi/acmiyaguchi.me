@@ -10,7 +10,7 @@ import config from "sapper/config/rollup.js";
 import pkg from "./package.json";
 import { string } from "rollup-plugin-string";
 import { mdsvex } from "mdsvex";
-import globImport from "rollup-plugin-glob-import";
+import globImport from "./rollup.glob.js";
 
 const mode = process.env.NODE_ENV;
 const dev = mode === "development";
@@ -119,13 +119,8 @@ export default {
       resolve({
         dedupe: ["svelte"],
       }),
-      globImport({
-        format: "default",
-        rename(_, id) {
-          return `_${path.basename(id)}`.replace(/[^\w]/g, "_");
-        },
-      }),
       commonjs(),
+      globImport(),
       string({
         include: "**/*.txt",
       }),
