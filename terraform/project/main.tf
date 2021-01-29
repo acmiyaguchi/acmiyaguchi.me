@@ -39,16 +39,22 @@ resource "google_storage_bucket_iam_binding" "default-public" {
   ]
 }
 
-resource "google_storage_bucket" "logs" {
-  name     = "${local.project_id}-logs"
-  location = "US"
-}
-
-
 // An object that can be used counting page visits
 resource "google_storage_bucket_object" "ping" {
   name          = "ping"
   content       = "pong"
   bucket        = google_storage_bucket.default.name
   cache_control = "no-cache"
+}
+
+
+resource "google_storage_bucket" "logs" {
+  name     = "${local.project_id}-logs"
+  location = "US"
+}
+
+resource "google_storage_bucket_iam_member" "log_bucket_writer" {
+  bucket = google_storage_bucket.logs.name
+  role   = "roles/storage.legacyBucketWriter"
+  member = "group:cloud-storage-analytics@google.com"
 }
