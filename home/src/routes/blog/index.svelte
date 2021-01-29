@@ -9,6 +9,8 @@
   export let metadata;
 </script>
 
+<p>This is a work in progress.</p>
+
 <ul>
   {#each metadata as row}
     <li>
@@ -16,3 +18,7 @@
     </li>
   {/each}
 </ul>
+
+<p>
+  <a href="/">Go to the homepage.</a>
+</p>
