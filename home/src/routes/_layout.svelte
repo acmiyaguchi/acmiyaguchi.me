@@ -1,3 +1,12 @@
+<script>
+  import { stores } from "@sapper/app";
+
+  const { page } = stores();
+  $: process.browser &&
+    $page &&
+    fetch(`https://storage.googleapis.com/acmiyaguchi/ping`).then();
+</script>
+
 <style>
   main {
     font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen,
@@ -5,7 +14,6 @@
     max-width: 800px;
     background-color: white;
     margin: 0 auto;
-    /* box-sizing: border-box; */
   }
 </style>
 
