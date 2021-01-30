@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Sapper export and preloaded routes
-date: 2021-01-24 13:45:00 -0800
+date: 2021-01-24T13:45:00-08:00
 category: engineering
 tags:
   - web-development

@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Building Portable Python Applications"
-date: 2018-05-18 20:00:45 -0700
+title: Building Portable Python Applications
+date: 2018-05-18T20:00:45-08:00
 category: Engineering
 tags: tutorial python docker application software
 ---

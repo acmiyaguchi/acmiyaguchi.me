@@ -25,6 +25,10 @@
   import "prismjs/components/prism-python.min.js";
   import "prismjs/components/prism-sql.min.js";
   import "prismjs/components/prism-scheme.min.js";
+  import dayjs from "dayjs";
+  import localizedFormat from "dayjs/plugin/localizedFormat";
+
+  dayjs.extend(localizedFormat);
 
   export let content;
   export let metadata;
@@ -42,7 +46,7 @@
 
 <div class="content">
   <h1>{metadata.title}</h1>
-  <i>{metadata.date}</i>
+  <i>{dayjs(metadata.date).format('lll')}</i>
 
   {@html content.html}
 

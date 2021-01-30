@@ -11,6 +11,8 @@
   "dependencies": {
     "biwascheme": "git+https://github.com/acmiyaguchi/biwascheme.git#browser-package",
     "compression": "^1.7.1",
+    "dayjs": "^1.10.4",
+    "lodash": "^4.17.20",
     "polka": "next",
     "sirv": "^1.0.0"
   },

@@ -1,13 +1,13 @@
 ---
 layout: post
 title: Investigations on building a 1000-node z80 cluster
-date:   2020-03-08 17:00:00 -0800
+date: 2020-03-08T17:00:00-08:00
 category: engineering
 tags:
-    - z80
-    - asm
-    - rust
-    - scheme
+  - z80
+  - asm
+  - rust
+  - scheme
 ---
 
 I was taking notes on the [_The Connection
@@ -54,11 +54,11 @@ pub fn power_on(&mut self) {
 }
 ```
 
-bytes      | assembly    | time in cycles
------------|-------------|---------
-0x3E, 0x11 | `LD A,0x11` | 7 cycles
-0x06, 0x22 | `LD B,0x22` | 7 cycles
-0x80, 0x33 | `ADD A,B`   | 4 cycles
+| bytes      | assembly    | time in cycles |
+| ---------- | ----------- | -------------- |
+| 0x3E, 0x11 | `LD A,0x11` | 7 cycles       |
+| 0x06, 0x22 | `LD B,0x22` | 7 cycles       |
+| 0x80, 0x33 | `ADD A,B`   | 4 cycles       |
 
 I stepped through the frames a few times. I found running these 18 cycles takes
 7 microseconds on my computer. To get a better estimate of timing, I would need
@@ -76,8 +76,7 @@ cross-platform. I didn't want to write my own, but after reading the source for
 a few assemblers, I grasp the basic idea behind them. Their design mirrors the
 process for building an emulator. `floooh` describes this in great detail on the
 [evolution another z80 emulator he
-wrote](https://floooh.github.io/2017/12/10/z80-emu-evolution.html
-).
+wrote](https://floooh.github.io/2017/12/10/z80-emu-evolution.html).
 
 First, I tried [`wesen/z80-asm`](https://github.com/wesen/z80-asm) which is
 written in Common Lisp. It didn't work with SBCL on Windows, so I moved on after
@@ -134,7 +133,7 @@ required annotating the list S-expression directly.
 -    (((? 8-bit-reg? a) (? 8-bit-reg? b))                       (assemble-ld-reg8-reg8 a b))
 -    (((? 8-bit-reg? a) ('+ (? index-reg? b) (? 8-bit-imm? c))) (assemble-ld-reg8-index-offset a b c))
 -    (((? 8-bit-reg? a) ('+ (? 8-bit-imm? c) (? index-reg? b))) (assemble-ld-reg8-index-offset a b c))
-+    ((list (? 8-bit-reg? a) (? 8-bit-reg? b))                       (assemble-ld-reg8-reg8 a b))     
++    ((list (? 8-bit-reg? a) (? 8-bit-reg? b))                       (assemble-ld-reg8-reg8 a b))
 +    ((list (? 8-bit-reg? a) (list '+ (? index-reg? b) (? 8-bit-imm? c))) (assemble-ld-reg8-index-offset a b c))
 +    ((list (? 8-bit-reg? a) (list '+ (? 8-bit-imm? c) (? index-reg? b))) (assemble-ld-reg8-index-offset a b c))
 ```
@@ -176,7 +175,7 @@ characteristics to modern [MapReduce](https://en.wikipedia.org/wiki/MapReduce)
 systems.
 
 I might test it by seeing how long it takes to sort a large, in memory list. I'm
-forward to spending my time trying these ideas out. Another thing to try out in the 
+forward to spending my time trying these ideas out. Another thing to try out in the
 future is a clustering algorithm like K-means to see if this computer can scale.
 
 Another project (if I ever have an FPGA handy) would be to build a replica

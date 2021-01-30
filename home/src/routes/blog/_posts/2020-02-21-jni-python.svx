@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Running a JSON Schema Validator in Python using the Java Native Interface
-date: 2020-02-21 15:50:00 -0800
+date: 2020-02-21T15:50:00-08:00
 category: Engineering
 tags:
   - python
