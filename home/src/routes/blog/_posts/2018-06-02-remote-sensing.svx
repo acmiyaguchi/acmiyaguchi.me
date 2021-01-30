@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Monitoring Earth through Remote Sensing
-date: 2018-06-02 22:47:00 -0700
+date: 2018-06-02T22:47:00-07:00
 category: Science
 tags:
   - software

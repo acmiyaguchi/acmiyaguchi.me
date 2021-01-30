@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Troubles with Protosaur and Svelte
-date: 2021-01-22 22:24:00 -0800
+date: 2021-01-22T22:24:00-08:00
 category: engineering
 tags:
   - web-development
