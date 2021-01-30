@@ -1,11 +1,25 @@
+WITH
+  extracted AS (
+  SELECT
+    TIMESTAMP_MICROS(time_micros) AS timestamp,
+    farm_fingerprint(c_ip) visitor_id,
+    RTRIM(SPLIT(cs_referer, "acmiyaguchi.me")[
+    OFFSET
+      (1)], "/") AS path
+  FROM
+    `acmiyaguchi.logs.acmiyaguchi_usage`
+  WHERE
+    cs_referer LIKE "https://acmiyaguchi.me%"
+  ORDER BY
+    time_micros DESC )
 SELECT
-  timestamp_micros(time_micros) as timestamp,
-  farm_fingerprint(c_ip) visitor_id,
-  split(cs_referer, "acmiyaguchi.me")[offset(1)] as path
+  timestamp,
+  visitor_id,
+IF
+  (LENGTH(path)=0,
+    "/",
+    path) AS path
 FROM
-  `acmiyaguchi.logs.acmiyaguchi_usage`
+  extracted
 WHERE
-  cs_referer LIKE "https://acmiyaguchi.me%"
-ORDER BY
-  time_micros desc
-  
+  NOT REGEXP_CONTAINS(path, r"%20")
