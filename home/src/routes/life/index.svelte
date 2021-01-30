@@ -18,10 +18,6 @@
   progress, so things may not work as intended.
 </p>
 
-<p>
-  <a href="/">Go to the homepage.</a>
-</p>
-
 <div id="canvas-container">
   <canvas width="400" height="400" id="life" />
 </div>

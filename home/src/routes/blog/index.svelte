@@ -17,7 +17,3 @@
 <h1>Blog Posts</h1>
 
 <PostListing {metadata} />
-
-<p>
-  <a href="/">Go to the homepage.</a>
-</p>
