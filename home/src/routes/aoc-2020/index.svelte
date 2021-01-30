@@ -5,5 +5,3 @@
 
 <FrontMatter />
 <Nav index={true} />
-
-<a href="/">Take me to the home page.</a>

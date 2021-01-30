@@ -8,15 +8,35 @@
 </script>
 
 <style>
-  main {
+  main,
+  footer {
     font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen,
       Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-    max-width: 800px;
+    max-width: 50em;
     background-color: white;
     margin: 0 auto;
+    margin-bottom: 2em;
+  }
+
+  hr {
+    max-width: 30em;
+    border-top: 1px solid lightgray;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 2em;
   }
 </style>
 
 <main>
   <slot />
 </main>
+
+<hr />
+
+<footer>
+  {#if $page.path != '/'}
+    <a href="/">Take me to the homepage.</a>
+  {/if}
+</footer>
