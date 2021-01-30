@@ -41,3 +41,10 @@ commits][commits].
 
 [source]: https://github.com/acmiyaguchi/acmiyaguchi.me/tree/main/home
 [commits]: https://github.com/acmiyaguchi/acmiyaguchi.me/commits/main/home
+
+## Miscellaneous
+
+Here is an assortment of other content on the site.
+
+- [Site analytics](analytics), statistics about the visitors to each page
+- [Advent of Code 2020 (in progress)](aoc-2020), in prolog, egads

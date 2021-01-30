@@ -33,10 +33,9 @@
   <slot />
 </main>
 
-<hr />
-
-<footer>
-  {#if $page.path != '/'}
+{#if $page.path != '/'}
+  <hr />
+  <footer>
     <a href="/">Take me to the homepage.</a>
-  {/if}
-</footer>
+  </footer>
+{/if}

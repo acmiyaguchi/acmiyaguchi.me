@@ -28,17 +28,6 @@
 
 <FrontMatter {logs} {metadata} />
 
-<h2>Miscellaneous</h2>
-
-<ul>
-  <li>
-    <a href="life">Game of life in scheme</a>
-  </li>
-  <li>
-    <a href="aoc-2020">Advent of Code 2020 (in progress)</a>
-  </li>
-</ul>
-
 <canvas id="mandelbrot" width="480" height="320" bind:this={mandelbrotCanvas} />
 
 <pre style="font: 10px/5px monospace;">{geospiza}</pre>
