@@ -1,7 +1,8 @@
 <script context="module">
   export async function preload() {
-    let resp = await this.fetch("api/v1/git-logs.txt");
-    return { logs: await resp.text() };
+    let git_logs = await this.fetch("api/v1/git-logs.txt");
+    let blog_posts = await this.fetch("api/v1/blog-posts.json?limit=7");
+    return { logs: await git_logs.text(), metadata: await blog_posts.json() };
   }
 </script>
 
@@ -12,6 +13,7 @@
   import { mandelbrot } from "./mandelbrot.js";
 
   export let logs;
+  export let metadata;
 
   let mandelbrotCanvas;
   $: mandelbrotCanvas && mandelbrot(mandelbrotCanvas);
@@ -21,7 +23,7 @@
   <title>Anthony Miyaguchi's corner of the internet</title>
 </svelte:head>
 
-<FrontMatter {logs} />
+<FrontMatter {logs} {metadata} />
 
 <h2>Miscellaneous</h2>
 

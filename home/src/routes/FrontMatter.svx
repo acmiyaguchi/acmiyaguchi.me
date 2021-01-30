@@ -1,5 +1,8 @@
 <script>
+    import PostListing from "./blog/PostListing.svelte";
+
     export let logs;
+    export let metadata;
 </script>
 
 # Here be dragons
@@ -17,6 +20,14 @@ profile](https://github.com/acmiyaguchi)
 
 [bjj]: https://en.wikipedia.org/wiki/Brazilian_jiu-jitsu
 [mmorpg]: https://en.wikipedia.org/wiki/Massively_multiplayer_online_role-playing_game
+
+## Recent Blog Posts
+
+I sometimes write things. Here are the last 7 things that I've posted.
+
+See all of my posts on my [blog page](blog).
+
+<PostListing {metadata} />
 
 ## Changelog
 
