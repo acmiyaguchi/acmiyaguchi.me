@@ -5,19 +5,18 @@
     export let metadata;
 </script>
 
-# Here be dragons
+# Here be dragons 🐉
 
-Things to do, things to write.
+_Things to do, things to write. This is Anthony Miyaguchi's personal site._
 
-Now halfway through the Covid-19 pandemic, I've been using the time stolen away
+Now halfway through the [COVID-19 pandemic][pandemic], I've been using the time stolen away
 from productive hobbies like [Brazilian jiu-jitsu][bjj] into incredibly [grindy
 MMORPGs][mmorpg] and small programming projects.
 
-I also write open-source software for Mozilla as a Data Engineer.
+I also write open-source software for Mozilla as a Data Engineer. You may be
+interested in my [github profile](https://github.com/acmiyaguchi).
 
-You may be interested in my [blog](https://blog.acmiyaguchi.me) or [github
-profile](https://github.com/acmiyaguchi)
-
+[pandemic]: https://en.wikipedia.org/wiki/COVID-19_pandemic
 [bjj]: https://en.wikipedia.org/wiki/Brazilian_jiu-jitsu
 [mmorpg]: https://en.wikipedia.org/wiki/Massively_multiplayer_online_role-playing_game
 
@@ -25,13 +24,14 @@ profile](https://github.com/acmiyaguchi)
 
 I sometimes write things. Here are the last 7 things that I've posted.
 
-See all of my posts on my [blog page](blog).
+See all of my posts on my [blog index](blog).
 
 <PostListing {metadata} />
 
 ## Changelog
 
-I keep track of the site [on Github][source]. Here are the [last 10 commits][commits].
+I keep track of the site [on Github][source]. Here are the [last 10
+commits][commits].
 
 <pre>
 <code>
