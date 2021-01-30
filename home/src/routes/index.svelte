@@ -34,9 +34,6 @@
   <li>
     <a href="aoc-2020">Advent of Code 2020 (in progress)</a>
   </li>
-  <li>
-    <a href="blog">Port of my main blog (in progress)</a>
-  </li>
 </ul>
 
 <canvas id="mandelbrot" width="480" height="320" bind:this={mandelbrotCanvas} />
