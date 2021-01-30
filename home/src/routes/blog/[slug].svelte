@@ -30,6 +30,20 @@
   export let metadata;
 </script>
 
-<h1>{metadata.title}</h1>
+<style>
+  .content :global(img) {
+    width: 100%;
+  }
+</style>
 
-{@html content.html}
+<svelte:head>
+  <title>{metadata.title}</title>
+</svelte:head>
+
+<div class="content">
+  <h1>{metadata.title}</h1>
+  <i>{metadata.date}</i>
+
+  {@html content.html}
+
+</div>
