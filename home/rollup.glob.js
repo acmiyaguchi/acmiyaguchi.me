@@ -10,7 +10,7 @@ function generateCode(files) {
       .map((file, i) => `import * as _${i} from ${JSON.stringify(file)};`)
       .join("\n") +
     `export default [${[...Array(files.length).keys()]
-      .map((i) => `_${i}`)
+      .map((i) => `{"path": "${files[i]}", "exports": _${i}}`)
       .join(", ")}];`
   );
 }
