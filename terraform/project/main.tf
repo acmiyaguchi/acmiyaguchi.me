@@ -65,8 +65,15 @@ resource "google_bigquery_dataset" "logs" {
   project    = local.project_id
 }
 
-module "view_logs_vistor_pings" {
+module "view_logs_visitor_pings" {
   source     = "../modules/views"
   dataset_id = google_bigquery_dataset.logs.dataset_id
   table_id   = "visitor_pings"
+}
+
+module "view_logs_page_visits" {
+  source     = "../modules/views"
+  dataset_id = google_bigquery_dataset.logs.dataset_id
+  table_id   = "page_visits"
+  depends_on = [module.view_logs_visitor_pings]
 }
