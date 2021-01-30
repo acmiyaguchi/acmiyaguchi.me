@@ -30,6 +30,7 @@ export default function globImport() {
       generatedCodes.set(tempPath, code);
       return tempPath;
     },
+    // TODO: regenerate the server bundle if one of the globs changes
     load(id) {
       return generatedCodes.get(id);
     },

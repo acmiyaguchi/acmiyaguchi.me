@@ -20,8 +20,11 @@
   // is suboptimal...
   import "prismjs/themes/prism.css";
   import "prismjs/components/prism-bash.min.js";
+  import "prismjs/components/prism-docker.min.js";
   import "prismjs/components/prism-javascript.min.js";
+  import "prismjs/components/prism-python.min.js";
   import "prismjs/components/prism-sql.min.js";
+  import "prismjs/components/prism-scheme.min.js";
 
   export let content;
   export let metadata;

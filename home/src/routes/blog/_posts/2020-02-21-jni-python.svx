@@ -1,0 +1,149 @@
+---
+layout: post
+title: Running a JSON Schema Validator in Python using the Java Native Interface
+date: 2020-02-21 15:50:00 -0800
+category: Engineering
+tags:
+  - python
+  - java
+---
+
+In a quest to find an easy way to run a Java library from Python, I stumbled
+upon the [`pyjnius`][pyjnius] library. It hooks into the [Java Native Interface
+(JNI)][jni] so Python can call into Java classes. It's pleasant to use,
+especially for string processing tasks that are easier to script in Python.
+
+I used `jnius` and a few tricks to [upgrade a validation workflow][mps-pr] in a
+JSON Schema repository. We once used [RapidJSON] in our data platform for
+validation at ingestion-time, which only supports v4 of the [JSON Schema
+specification][jsonschema]. However, we migrated over to Google Cloud Platform
+and now use the [`everit-org.json-schema`][everit] Java library for JSON Schema.
+This means we are not longer tied down to v4 of the specification.
+
+I chose to use Python as the language for putting together the validation suite
+for the schema repository; `pytest` makes it easy to dynamically generate cases
+from files and I wanted to compare `everit-org.json-schema` to the native
+[`jsonschema`][pip-jsonschema] Python library. In this post, I'll illustrate the
+workflow that's necessary to call `everit-org.json-schema` from Python.
+
+We will get the following code snippet to run:
+
+```python
+#!/usr/bin/env python3
+import json
+
+# omitted: adding jars into the class path
+from jnius import autoclass
+
+# validation logic
+JSONObject = autoclass("org.json.JSONObject")
+SchemaLoader = autoclass("org.everit.json.schema.loader.SchemaLoader")
+
+schema_data = JSONObject(json.dumps(...))
+payload_data = JSONObject(json.dumps(...))
+
+schema = SchemaLoader.load(schema_data)
+assert schema.validate(JSONObject(payload_data)
+```
+
+First we need to make any dependencies are available to the JVM.
+The easiest way to manage these are through Maven, a Java package manager.
+
+In a [`pom.xml`][pom], we create a minimal example.
+
+```xml
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.example</groupId>
+    <artifactId>example</artifactId>
+    <version>1</version>
+    <dependencies>
+        <dependency>
+            <groupId>com.github.everit-org.json-schema</groupId>
+            <artifactId>org.everit.json.schema</artifactId>
+            <version>1.12.1</version>
+        </dependency>
+    </dependencies>
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+</project>
+```
+
+Now run maven to copy dependencies into the local directory.
+
+```bash
+mvn dependency:copy-dependencies
+```
+
+This downloads the transitive dependencies needed for `everit-org.json-schema`
+e.g. `org.JSON` into a `target/dependencies` folder. We include the downloaded
+JARs into our python script by setting the `CLASSPATH` variable. Each jar is
+separated by a colon, `:`.
+
+```python
+#!/usr/bin/env python3
+# omitted: other imports
+import os
+from pathlib import Path
+
+os.environ["CLASSPATH"] = ":".join(
+  [p.resolve().as_posix() for p in Path("target").glob("**/*.jar")]
+
+from jnius import autoclass
+
+# omitted: validation logic
+```
+
+We also need to make sure that `JAVA_HOME` is set up correctly. To avoid issues
+in our local environment, we will set up a docker container instead.
+
+```docker
+FROM centos:centos8
+
+RUN dnf -y update && \
+    dnf -y install epel-release && \
+    dnf -y install \
+        which \
+        python36 \
+        java-1.8.0-openjdk-devel \
+        maven \
+    && dnf clean all
+
+COPY main.py /app/main.py
+COPY pom.xml /app/pom.xml
+RUN mvn dependency:copy-dependencies
+RUN pip3 install pyjnius
+
+CMD python3 main.py
+```
+
+Running this will let us successfully validate a schema.
+
+```bash
+#!/bin/bash
+
+tag=validator-blog:latest
+docker build -t $tag .
+docker run -it $tag
+```
+
+If you would like to see a real world example, see this [PR to
+`mozilla-pipeline-schemas`][mps-pr].
+
+I'm satisfied with the end result, since it was easier than I expected to set
+up. We now have continuous integration that runs our schemas against examples
+using two independent implementations of the JSON Schema specification, through
+the help of Python and the JNI.
+
+[pyjnius]: https://github.com/kivy/pyjnius
+[jni]: https://en.wikipedia.org/wiki/Java_Native_Interface
+[mps-pr]: https://github.com/mozilla-services/mozilla-pipeline-schemas/pull/499
+[rapidjson]: https://rapidjson.org/
+[jsonschema]: https://json-schema.org/
+[everit]: https://github.com/everit-org/json-schema
+[pip-jsonschema]: https://github.com/Julian/jsonschema
+[pom]: http://maven.apache.org/guides/introduction/introduction-to-the-pom.html#Minimal_POM
