@@ -48,6 +48,6 @@ let resp = fetch("__root__/data/edgelist.json");
 `__root__` can be the empty when developing locally. When building n production,
 `__root__` can be `etl-graph`. This solution is hacky at best. The alternative
 is to provision a sub-domain where the application has control over the routes.
-This is the solution that sites like [glitch.me](glitch.me) and
-[netlify.dev](netlify.dev) adopt, and this too is how protosaur.dev
+This is the solution that sites like [glitch.me](https://glitch.me) and
+[netlify.dev](https://netlify.dev) adopt, and this too is how protosaur.dev
 solves it.

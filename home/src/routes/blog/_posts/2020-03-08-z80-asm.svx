@@ -82,10 +82,11 @@ First, I tried [`wesen/z80-asm`](https://github.com/wesen/z80-asm) which is
 written in Common Lisp. It didn't work with SBCL on Windows, so I moved on after
 failing to parse through the error messages.
 
-Next, I tried the assembler from [`siraben/zkeme80`](siraben/zkeme80) which is
-designed to go along with an operating system designed for the TI-84. It runs on
-[GNU Guile](https://www.gnu.org/software/guile/), which unfortunately doesn't
-have pre-compiled binaries for Windows. I do have Racket, which is another
+Next, I tried the assembler from
+[`siraben/zkeme80`](https://github.com/siraben/zkeme80) which is designed to go
+along with an operating system designed for the TI-84. It runs on [GNU
+Guile](https://www.gnu.org/software/guile/), which unfortunately doesn't have
+pre-compiled binaries for Windows. I do have Racket, which is another
 Scheme dialect that I have installed.
 
 I've ported most of this over to Racket. While maybe not the most
@@ -158,7 +159,7 @@ This is where I stand today, but there's a lot of exciting challenges for me to
 figure out. I am going to install
 [asmotor/asmotor](https://github.com/asmotor/asmotor), which is an assembler
 that succeeds [rednex/rgbasm](https://github.com/rednex/rgbds). It'll be useful
-when I write a program for the Gameboy and start studing the z80 in deeper
+when I write a program for the Gameboy and start studying the z80 in deeper
 depth.
 
 The idea for the first non-trivial program will be to sort a large list of
