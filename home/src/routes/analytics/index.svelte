@@ -4,12 +4,14 @@
 
   let header = ["path", "total_visits", "unique_visits"];
   let data = [];
+  let modified;
   $: grouped = groupBy(data, "date");
 
   onMount(async () => {
     let resp = await fetch(
       `https://storage.googleapis.com/acmiyaguchi/v1/query/logs_page_visits.json`
     );
+    modified = resp.headers.get("Last-Modified");
     // TODO: document bigquery schemas of each view/table
     data = await resp.json();
   });
@@ -28,6 +30,7 @@
 </svelte:head>
 
 <h1>Analytics</h1>
+<i>Last updated on {modified}</i>
 
 <p>
   This page contains aggregates about site visitors. This is refreshed several
