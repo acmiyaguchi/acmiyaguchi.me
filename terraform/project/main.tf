@@ -58,3 +58,15 @@ resource "google_storage_bucket_iam_member" "log_bucket_writer" {
   role   = "roles/storage.legacyBucketWriter"
   member = "group:cloud-storage-analytics@google.com"
 }
+
+resource "google_bigquery_dataset" "logs" {
+  dataset_id = "logs"
+  location   = "US"
+  project    = local.project_id
+}
+
+module "view_logs_vistor_pings" {
+  source     = "../modules/views"
+  dataset_id = google_bigquery_dataset.logs.dataset_id
+  table_id   = "visitor_pings"
+}
