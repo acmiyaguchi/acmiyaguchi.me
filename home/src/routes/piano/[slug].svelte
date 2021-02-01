@@ -5,7 +5,7 @@
     const res = await this.fetch(`piano/${params.slug}.json`);
     const data = await res.json();
     if (res.status === 200) {
-      return { track: data };
+      return { track: data, slug: params.slug };
     } else {
       this.error(res.status, data.message);
     }
@@ -15,7 +15,14 @@
 <script>
   import Player from "./Player.svelte";
 
+  export let slug;
   export let track;
 </script>
+
+<svelte:head>
+  <title>{slug}</title>
+</svelte:head>
+
+<h1>{slug}</h1>
 
 <Player {track} />
