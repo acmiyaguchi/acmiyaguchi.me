@@ -1,21 +1,20 @@
 <script>
   import { onMount } from "svelte";
   import { stores } from "@sapper/app";
+  import MidiPlayer from "midi-player-js";
   import Soundfont from "soundfont-player";
   import Table from "../../components/Table.svelte";
-  import { takeWhile } from "lodash";
 
   // destroy the audio if we navigate away from the page
   const { page } = stores();
 
-  export let track;
-  let ac;
+  export let src;
+  let Player;
   let instrument;
+  let track;
   let notes;
 
   let playing = false;
-  let timer;
-  let noteOffset = 0;
   let duration = 0;
   let currentTime = 0;
 
@@ -33,56 +32,61 @@
     }
   });
 
-  function tickToSeconds(tick, bpm, ppq = 192) {
-    return (60 / (bpm * ppq)) * tick;
+  function getLongestTrack(midi) {
+    // https://stackoverflow.com/a/33579314
+    let idx = midi.reduce(
+      (pending, cur, idx, arr) =>
+        arr[pending].length > cur.length ? pending : idx,
+      0
+    );
+    return midi[idx];
   }
 
   onMount(async () => {
-    ac = new window.AudioContext();
+    const resp = await fetch(src);
+    const data = await resp.arrayBuffer();
 
+    Player = new MidiPlayer.Player();
+    Player.loadArrayBuffer(data);
+    Player.dryRun();
+    track = getLongestTrack(Player.events);
+    duration = Player.getSongTime();
+
+    let ac = new window.AudioContext();
     instrument = await Soundfont.instrument(ac, "acoustic_grand_piano");
-    notes = track
-      .filter(e => e.name == "Note on")
-      .map(e => ({ time: tickToSeconds(e.tick, 140), note: e.noteNumber }));
-    duration = notes[notes.length - 1].time;
-  });
 
-  function play() {
-    // every 16th of a second, schedule more notes
-    // not sure if this is going to sound funny...
-    let interval = 1 / 16;
-    if (!instrument) {
-      return;
-    }
-    timer = setInterval(() => {
-      let notesToPlay = takeWhile(notes.slice(noteOffset), o => {
-        return currentTime <= o.time && o.time < currentTime + interval;
-      });
-      if (notesToPlay.length < 0) {
-        stop();
-        return;
+    Player.on("playing", currentTick => {
+      currentTime = duration - Player.getSongTimeRemaining();
+    });
+    Player.on("midiEvent", event => {
+      if (event.name == "Note on") {
+        instrument.play(event.noteNumber);
       }
-      instrument.schedule(ac.currentTime, notesToPlay);
-      noteOffset += notesToPlay.length;
-      currentTime += interval;
-    }, interval * 1000);
-    playing = true;
-  }
-
-  function stop() {
-    clearInterval(timer);
-    instrument.stop();
-    playing = false;
-  }
+    });
+  });
 </script>
 
 <div>
   {#if playing}
-    <button on:click={stop}>Stop</button>
+    <button
+      on:click={() => {
+        playing = false;
+        Player.stop();
+      }}>
+      Stop
+    </button>
   {:else}
-    <button on:click={play}>Play</button>
+    <button
+      on:click={() => {
+        playing = true;
+        Player.play();
+      }}>
+      Play
+    </button>
   {/if}
-  <span>{currentTime.toFixed(1)} / {duration.toFixed(1)}</span>
+  <span>{currentTime.toFixed(0)} / {duration.toFixed(0)} seconds</span>
 </div>
 
-<Table data={track} options={{ pagination: 'local', paginationSize: 10 }} />
+{#if track}
+  <Table data={track} options={{ pagination: 'local', paginationSize: 10 }} />
+{/if}
