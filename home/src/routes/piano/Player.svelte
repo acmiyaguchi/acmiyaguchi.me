@@ -2,6 +2,7 @@
   import Soundfont from "soundfont-player";
   import { onMount } from "svelte";
   import { stores } from "@sapper/app";
+  import Table from "../../components/Table.svelte";
 
   // destroy the audio if we navigate away from the page
   const { page } = stores();
@@ -15,7 +16,6 @@
   // I'm not sure why I can't use the page directly -- it doesn't seem to
   // capture the page events properly.
   let path = $page.path;
-
   page.subscribe(p => {
     if (!instrument) {
       return;
@@ -38,4 +38,7 @@
   });
 </script>
 
-<pre>{JSON.stringify(notes, '', 2)}</pre>
+<Table
+  data={track}
+  options={{ pagination: 'local', paginationSize: 10 }}
+  deleteColumns={['track', 'string']} />
