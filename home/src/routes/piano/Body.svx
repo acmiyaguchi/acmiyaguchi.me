@@ -1,3 +1,11 @@
+<script>
+    let index = [
+        "2021-01-30-london-bridge-test",
+        "2021-01-30-lone-star-waltz",
+        "2021-01-31-mikrokosmos-1-3"
+    ]
+</script>
+
 # Piano recordings
 
 This is a place where I archive recordings of my piano practices. I hope to see
@@ -6,7 +14,10 @@ a tangible improvements in my skill one day. I am recording midi output from a
 LK-94TV]()
 into [LMMS](https://lmms.io/).
 
-- [2021-01-30-london-bridge-test](piano/2021-01-30-london-bridge-test)
-- [2021-01-30-lone-star-waltz](piano/2021-01-30-lone-star-waltz)
+<ul>
+{#each index as item}
+<li><a href={`piano/${item}`}>{item}</a></li>
+{/each}
+</ul>
 
 [casio]: https://www.casio.com/products/archive/electronic-musical-instruments/lighted-keys/lk-94tv
