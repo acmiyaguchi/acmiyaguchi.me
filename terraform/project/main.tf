@@ -6,13 +6,19 @@ terraform {
 }
 
 locals {
-  project_id = "acmiyaguchi"
-  region     = "us-central1"
+  project_id        = "acmiyaguchi"
+  region            = "us-central1"
+  app_engine_region = "us-west2"
 }
 
 provider "google" {
   project = local.project_id
   region  = local.region
+}
+
+resource "google_app_engine_application" "app" {
+  project     = local.project_id
+  location_id = local.app_engine_region
 }
 
 resource "google_storage_bucket" "default" {
@@ -31,14 +37,6 @@ resource "google_storage_bucket" "default" {
   }
 }
 
-resource "google_storage_bucket_iam_binding" "default-public" {
-  bucket = google_storage_bucket.default.name
-  role   = "roles/storage.objectViewer"
-  members = [
-    "allUsers"
-  ]
-}
-
 // An object that can be used counting page visits
 resource "google_storage_bucket_object" "ping" {
   name          = "ping"
@@ -51,12 +49,6 @@ resource "google_storage_bucket_object" "ping" {
 resource "google_storage_bucket" "logs" {
   name     = "${local.project_id}-logs"
   location = "US"
-}
-
-resource "google_storage_bucket_iam_member" "log_bucket_writer" {
-  bucket = google_storage_bucket.logs.name
-  role   = "roles/storage.legacyBucketWriter"
-  member = "group:cloud-storage-analytics@google.com"
 }
 
 resource "google_bigquery_dataset" "logs" {
@@ -76,4 +68,15 @@ module "view_logs_page_visits" {
   dataset_id = google_bigquery_dataset.logs.dataset_id
   table_id   = "page_visits"
   depends_on = [module.view_logs_visitor_pings]
+}
+
+module "function_usage_logs" {
+  source                = "../modules/functions"
+  name                  = "usage_logs"
+  entry_point           = "usage_logs"
+  service_account_email = local.app_engine_email
+  bucket                = google_storage_bucket.default.name
+  schedule              = "0 */6 * * *"
+  timeout               = 120
+  app_engine_region     = local.app_engine_region
 }
