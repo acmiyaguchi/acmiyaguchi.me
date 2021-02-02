@@ -64,7 +64,7 @@ An audio stream is currently in use.
 
 It turns out it was the keyboard I was [recently playing
 with](blog/2021-02-01-midi-ssr-sapper) was showing up as multiple active
-connections. That couldn't be rightl it was certainly powered off with a single
+connections. That couldn't be right; it was certainly powered off with a single
 cord plugged into the USB hub. I [played around with LMMS][lmms] and realized
 that I could reproduce this issue by doing the following:
 
