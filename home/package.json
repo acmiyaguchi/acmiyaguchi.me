@@ -15,6 +15,7 @@
     "lodash": "^4.17.20",
     "midi-player-js": "git+https://github.com/acmiyaguchi/MidiPlayerJS.git#browser",
     "node-fetch": "^2.6.1",
+    "plotly.js": "^1.58.4",
     "polka": "next",
     "sirv": "^1.0.0",
     "soundfont-player": "^0.12.0",
