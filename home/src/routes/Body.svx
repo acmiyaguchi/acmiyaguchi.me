@@ -1,5 +1,8 @@
 <script>
     import PostListing from "./blog/PostListing.svelte";
+    import Mandelbrot from "./Mandelbrot.svelte";
+    import geospiza from "../assets/geospiza.txt";
+    import pubkey from "../assets/gpg-pubkey.txt";
 
     export let logs;
     export let metadata;
@@ -22,31 +25,37 @@ interested in my [github profile](https://github.com/acmiyaguchi).
 
 ## Recent Blog Posts
 
-I sometimes write things. Here are the last 7 things that I've posted.
+Sometimes, I write things. Here are the last 7 things that I've posted.
 
 See all of my posts on the [blog index](blog).
 
 <PostListing {metadata} />
 
-## Changelog
+## Miscellaneous Content
 
-I keep track of the site [on Github][source]. Here are the [last 10
-commits][commits].
-
-<pre>
-<code>
-{logs}
-</code>
-</pre>
-
-[source]: https://github.com/acmiyaguchi/acmiyaguchi.me/tree/main/home
-[commits]: https://github.com/acmiyaguchi/acmiyaguchi.me/commits/main/home
-
-## Miscellaneous
-
-Here is an assortment of other content on the site.
+Here is an assortment of content on the site.
 
 - [Site analytics](analytics), statistics about the visitors to each page
 - [Advent of Code 2020 (in progress)](aoc-2020), in prolog, egads
 - [Recordings of my piano practices](piano), you'll see that I'm a beginner
 - [Toastmasters](toastmasters), and my experience becoming a better public speaker
+
+## Site Changelog
+
+I keep track of the site [on Github][source]. Here are the [last 10
+commits][commits].
+
+<pre>
+{logs}
+</pre>
+
+[source]: https://github.com/acmiyaguchi/acmiyaguchi.me/tree/main/home
+[commits]: https://github.com/acmiyaguchi/acmiyaguchi.me/commits/main/home
+
+## Digital Potpourri
+
+<Mandelbrot />
+
+<pre style="font: 10px/5px monospace;">{geospiza}</pre>
+
+<pre>{pubkey}</pre>

@@ -11,9 +11,6 @@
 
 <script>
   import Body from "./Body.svx";
-  import Mandelbrot from "./Mandelbrot.svelte";
-  import geospiza from "../assets/geospiza.txt";
-  import pubkey from "../assets/gpg-pubkey.txt";
 
   export let logs;
   export let metadata;
@@ -24,7 +21,3 @@
 </svelte:head>
 
 <Body {logs} {metadata} />
-
-<pre style="font: 10px/5px monospace;">{geospiza}</pre>
-
-<pre>{pubkey}</pre>

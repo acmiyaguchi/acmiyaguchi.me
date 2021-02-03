@@ -5,4 +5,4 @@
   $: mandelbrotCanvas && mandelbrot(mandelbrotCanvas);
 </script>
 
-<canvas id="mandelbrot" width="480" height="320" bind:this={mandelbrotCanvas} />
+<canvas width="480" height="320" bind:this={mandelbrotCanvas} />
