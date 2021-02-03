@@ -52,7 +52,14 @@ def usage_logs(request):
     print(f"running load job {load_job.job_id}")
     load_job.result()
 
-    dump_to_gcs("acmiyaguchi", "logs_page_visits", "select * from logs.page_visits")
+    def query(dataset, table):
+        dump_to_gcs(
+            "acmiyaguchi", f"{dataset}_{table}", f"select * from {dataset}.{table}"
+        )
+
+    query("logs", "page_visits_daily")
+    query("logs", "page_visits_routes_all")
+    query("logs", "page_visits_routes_daily")
 
     return "OK"
 

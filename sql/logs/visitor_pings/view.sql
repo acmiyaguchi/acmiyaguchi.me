@@ -1,6 +1,7 @@
 WITH
   extracted AS (
   SELECT
+    -- local time
     TIMESTAMP_MICROS(time_micros) AS timestamp,
     farm_fingerprint(c_ip) visitor_id,
     RTRIM(SPLIT(cs_referer, "acmiyaguchi.me")[

@@ -63,10 +63,24 @@ module "view_logs_visitor_pings" {
   table_id   = "visitor_pings"
 }
 
-module "view_logs_page_visits" {
+module "view_logs_page_visits_daily" {
   source     = "../modules/views"
   dataset_id = google_bigquery_dataset.logs.dataset_id
-  table_id   = "page_visits"
+  table_id   = "page_visits_daily"
+  depends_on = [module.view_logs_visitor_pings]
+}
+
+module "view_logs_page_visits_routes_all" {
+  source     = "../modules/views"
+  dataset_id = google_bigquery_dataset.logs.dataset_id
+  table_id   = "page_visits_routes_all"
+  depends_on = [module.view_logs_visitor_pings]
+}
+
+module "view_logs_page_visits_routes_daily" {
+  source     = "../modules/views"
+  dataset_id = google_bigquery_dataset.logs.dataset_id
+  table_id   = "page_visits_routes_daily"
   depends_on = [module.view_logs_visitor_pings]
 }
 
