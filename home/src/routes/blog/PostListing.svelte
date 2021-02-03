@@ -7,12 +7,16 @@
   export let metadata;
 </script>
 
-<ul>
-  {#each metadata as row}
-    <li>
-      <a href={`blog/${row.name}`}>
-        {dayjs(row.date).format('ll')} - {row.title}
-      </a>
-    </li>
-  {/each}
-</ul>
+{#if metadata && metadata.length}
+  <ul>
+    {#each metadata as row}
+      <li>
+        <a href={`blog/${row.name}`}>
+          {dayjs(row.date).format('ll')} - {row.title}
+        </a>
+      </li>
+    {/each}
+  </ul>
+{:else}
+  <i>There are currently no posts. Stay tuned!</i>
+{/if}

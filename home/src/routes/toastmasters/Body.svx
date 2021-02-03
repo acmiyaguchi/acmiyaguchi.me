@@ -1,0 +1,20 @@
+<script>
+    import PostListing from "../blog/PostListing.svelte"
+    export let metadata;
+</script>
+
+# Toastmasters
+
+I'm a member of [Mountain View Toastmasters][mvtm], which is a club that has
+helped me become a more confident public speaker. I have been working through a
+series of projects on [my Pathway][pathway] of Innovative Planning.
+
+## Blog Posts
+
+I am writing a series of blog posts about my Toastmasters experience from
+writing speeches to taking on roles.
+
+<PostListing {metadata} />
+
+[mvtm]: https://www.toastmasters.org/Find-a-Club/04528013-mountain-view-toastmasters
+[pathway]: https://www.toastmasters.org/pathways-overview
