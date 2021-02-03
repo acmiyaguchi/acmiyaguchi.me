@@ -1,29 +1,30 @@
 <script>
   import { onMount } from "svelte";
   import { groupBy, sortBy } from "lodash";
+  import Table from "../../components/Table.svelte";
 
-  let header = ["path", "total_visits", "unique_visits"];
-  let data = [];
+  let all_data = [];
+  let daily_data = [];
+  // note this is affected by the order of the files that are being fetched
   let modified;
-  $: grouped = groupBy(data, "date");
+  $: grouped = groupBy(daily_data, "date");
+
+  function getUrl(query) {
+    return `https://storage.googleapis.com/acmiyaguchi/v1/query/${query}.json`;
+  }
+
+  async function fetchData(query) {
+    let resp = await fetch(getUrl(query));
+    // side-effects :)
+    modified = resp.headers.get("Last-Modified");
+    return await resp.json();
+  }
 
   onMount(async () => {
-    let resp = await fetch(
-      `https://storage.googleapis.com/acmiyaguchi/v1/query/logs_page_visits.json`
-    );
-    modified = resp.headers.get("Last-Modified");
-    // TODO: document bigquery schemas of each view/table
-    data = await resp.json();
+    all_data = await fetchData("logs_page_visits_routes_all");
+    daily_data = await fetchData("logs_page_visits_routes_daily");
   });
 </script>
-
-<style>
-  table,
-  th,
-  td {
-    border: 1px solid black;
-  }
-</style>
 
 <svelte:head>
   <title>Analytics</title>
@@ -33,35 +34,26 @@
 <i>Last updated on {modified}</i>
 
 <p>
-  This page contains aggregates about site visitors. This is refreshed several
-  times a day.
+  This page contains aggregates about site visitors. This is refreshed every 6
+  hours starting at midnight UTC+00. Dates on this page are in the UTC-08
+  timezone.
 </p>
 
+<h2>Visits by Route - All Time</h2>
+{#if all_data.length}
+  <Table
+    data={all_data}
+    options={{ pagination: 'local', paginationSize: 10 }} />
+{/if}
+
+<h2>Visits by Route - Last 7 days</h2>
 {#each Object.keys(grouped)
   .sort()
   .reverse() as dates}
-  <h2>{dates}</h2>
+  <h3>{dates}</h3>
 
-  <table>
-    <thead>
-      <tr>
-        {#each header as col}
-          <th>{col}</th>
-        {/each}
-      </tr>
-    </thead>
-    <tbody>
-      {#each sortBy(grouped[dates], ['total_visits']).reverse() as row}
-        <tr>
-          {#each header as col}
-            <td>
-              {#if col == 'path'}
-                <a href={row[col]}>{row[col]}</a>
-              {:else}{row[col]}{/if}
-            </td>
-          {/each}
-        </tr>
-      {/each}
-    </tbody>
-  </table>
+  <Table
+    data={grouped[dates]}
+    options={{ pagination: 'local', paginationSize: 7 }}
+    deleteColumns={['date']} />
 {/each}
