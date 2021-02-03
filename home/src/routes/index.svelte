@@ -10,25 +10,20 @@
 </script>
 
 <script>
-  import FrontMatter from "./FrontMatter.svx";
+  import Body from "./Body.svx";
+  import Mandelbrot from "./Mandelbrot.svelte";
   import geospiza from "../assets/geospiza.txt";
   import pubkey from "../assets/gpg-pubkey.txt";
-  import { mandelbrot } from "./mandelbrot.js";
 
   export let logs;
   export let metadata;
-
-  let mandelbrotCanvas;
-  $: mandelbrotCanvas && mandelbrot(mandelbrotCanvas);
 </script>
 
 <svelte:head>
   <title>Anthony Miyaguchi's corner of the internet</title>
 </svelte:head>
 
-<FrontMatter {logs} {metadata} />
-
-<canvas id="mandelbrot" width="480" height="320" bind:this={mandelbrotCanvas} />
+<Body {logs} {metadata} />
 
 <pre style="font: 10px/5px monospace;">{geospiza}</pre>
 
