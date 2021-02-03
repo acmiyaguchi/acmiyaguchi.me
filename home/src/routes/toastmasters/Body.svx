@@ -5,9 +5,10 @@
 
 # Toastmasters
 
-I'm a member of [Mountain View Toastmasters][mvtm], which is a club that has
-helped me become a more confident public speaker. I have been working through a
-series of projects on [my Pathway][pathway] of Innovative Planning.
+I'm a member of [Mountain View Toastmasters][mvtm], a club that has helped me
+become a more confident public speaker. I have been working through a series of
+projects on [my Innovative Planning Pathway][pathway]. Come [join us on
+Zoom][meetup] during the COVID-19 pandemic.
 
 ## Blog Posts
 
@@ -17,4 +18,5 @@ writing speeches to taking on roles.
 <PostListing {metadata} />
 
 [mvtm]: https://www.toastmasters.org/Find-a-Club/04528013-mountain-view-toastmasters
+[meetup]: https://www.meetup.com/Mountain-View-Toastmasters/
 [pathway]: https://www.toastmasters.org/pathways-overview
