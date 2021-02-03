@@ -31,6 +31,11 @@ export default {
         "process.browser": true,
         "process.env.NODE_ENV": JSON.stringify(mode),
       }),
+      // https://github.com/plotly/plotly.js/issues/3518
+      replace({
+        "}()": "this.d3 = d3;\n}.apply(self);",
+        delimiters: ["this.d3 = d3;\n", ";"],
+      }),
       svelte({
         compilerOptions: {
           dev,

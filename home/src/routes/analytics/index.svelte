@@ -2,12 +2,14 @@
   import { onMount } from "svelte";
   import { groupBy, sortBy } from "lodash";
   import Table from "../../components/Table.svelte";
+  import Plot from "./Plot.svelte";
 
-  let all_data = [];
-  let daily_data = [];
+  let daily;
+  let routes_all;
+  let routes_daily = [];
   // note this is affected by the order of the files that are being fetched
   let modified;
-  $: grouped = groupBy(daily_data, "date");
+  $: grouped = groupBy(routes_daily, "date");
 
   function getUrl(query) {
     return `https://storage.googleapis.com/acmiyaguchi/v1/query/${query}.json`;
@@ -21,9 +23,28 @@
   }
 
   onMount(async () => {
-    all_data = await fetchData("logs_page_visits_routes_all");
-    daily_data = await fetchData("logs_page_visits_routes_daily");
+    daily = await fetchData("logs_page_visits_daily");
+    routes_all = await fetchData("logs_page_visits_routes_all");
+    routes_daily = await fetchData("logs_page_visits_routes_daily");
   });
+
+  function transformData(data) {
+    let x = data.map(row => row.date);
+    return [
+      {
+        x: x,
+        y: data.map(row => row.total_visits),
+        name: "total visits",
+        mode: "lines+markers"
+      },
+      {
+        x: x,
+        y: data.map(row => row.unique_visits),
+        name: "unique visits",
+        mode: "lines+markers"
+      }
+    ];
+  }
 </script>
 
 <svelte:head>
@@ -39,10 +60,17 @@
   timezone.
 </p>
 
+{#if daily}
+  <Plot
+    data={daily}
+    transform={transformData}
+    layout={{ title: 'Daily Visitors', legend: { orientation: 'h' } }} />
+{/if}
+
 <h2>Visits by Route - All Time</h2>
-{#if all_data.length}
+{#if routes_all}
   <Table
-    data={all_data}
+    data={routes_all}
     options={{ pagination: 'local', paginationSize: 10 }} />
 {/if}
 
