@@ -7,13 +7,10 @@
   export let options = {};
   export let deleteColumns = [];
 
-  // allow parent components to refer to this element
-  export let table;
-
   let tableElement;
 
   onMount(async () => {
-    table = new Tabulator(tableElement, {
+    let table = new Tabulator(tableElement, {
       data: data,
       autoColumns: true,
       layout: "fitColumns",
