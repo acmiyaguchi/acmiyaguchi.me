@@ -38,6 +38,11 @@
   .content :global(img) {
     width: 100%;
   }
+
+  .content :global(table, th, td) {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
 </style>
 
 <svelte:head>

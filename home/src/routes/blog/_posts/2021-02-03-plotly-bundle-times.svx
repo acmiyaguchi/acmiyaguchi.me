@@ -1,0 +1,184 @@
+---
+layout: post
+title: Improving plotly.js bundling time using rollup
+date: 2021-02-02T21:24:00-08:00
+category: Engineering
+tags:
+  - web development
+  - sapper
+  - ssr
+---
+
+<script>
+import plotly_tree from "./2021-02-03-plotly-custom-tree.txt";
+import command_logs from "./2021-02-03-command-logs.txt";
+</script>
+
+I love [Plotly.js](https://plotly.com/javascript/) because the batteries come
+included. I'm using this on my [site analytics page](analytics). It looks nice,
+is interactive, and has reasonably useful documentation. The one negative aspect
+of the library is its size -- the latest minified bundle (v1.58.4) clocks in at
+about 3.32MB. It needs to be included in the head of the document to work, which
+does not jive with how [Sapper](https://sapper.svelte.dev/) rehydrates bundles
+for each route. Plotly also has issues with bundlers like rollup when using the
+ES module because `this` is not set to `window` in the context of ES6 modules
+(see [plotly/plotly.js#3518](https://github.com/plotly/plotly.js/issues/3518))
+for more details.
+
+I applied a janky patch to resolve the issue in my bundler. In my `rollup.config.js` in my application, I have the following snippet in my client plugins list:
+
+```javascript
+// https://github.com/plotly/plotly.js/issues/3518
+replace({
+    "}()": "this.d3 = d3;\n}.apply(self);",
+    delimiters: ["this.d3 = d3;\n", ";"],
+}),
+```
+
+Now I can import the module within the `onMount` section of a page (which is
+necessary because the server portion of Sapper does not have the capability to
+run Plotly).
+
+```javascript
+onMount(async () => {
+    const { default: Plotly } = await import("plotly.js/lib/core");
+    Plotly.newPlot(...);
+})
+```
+
+After implementing this, I noticed that my builds became staggeringly slow. What
+gives? It turns out that by including `plotly.js` into my application, the tree
+that rollup has to shake becomes significantly larger. It's a little
+ridiculous.
+
+<details>
+<summary>Dependency tree of the custom plotly.js package</summary>
+
+<pre>{plotly_tree}</pre>
+
+</details>
+
+I had an idea to create a [custom package of
+plotly.js](https://github.com/plotly/plotly.js#modules) that exports the core
+library, which would be bundled and expose a browser package. It turns out that
+it helped a fair bit. The set up was simple. My `index.js` contains two lines
+that re-exports the module.
+
+```js
+import Plotly from "plotly.js/lib/core";
+export default Plotly;
+```
+
+In my main application, I install it into my `packages.json` as so:
+
+```
+"dependencies": {
+    ...
+    "plotly.js-custom": "file:../packages/plotly.js-custom",
+},
+```
+
+See the [full package here](https://github.com/acmiyaguchi/acmiyaguchi.me/tree/94780093f66d648d24899c13c925bd9239430580/packages/plotly.js-custom).
+
+It was faster, but I wanted to figure out whether this was real or if I was
+imagining things from having spent too long figuring out how to make a rollup
+package. Here's some of the data I collected. All reported figures are in
+seconds. The summarized data is the mean plus or minus the standard deviation
+(MEAN ± SD) seconds.
+
+The first table is the time it took for `npm run build` to complete. I did 3
+trials for 3 different commits: a time before plotly, the naive direct approach,
+the custom package approach.
+
+** Build time via `npm run build` **
+
+| no plotly     | direct esm    | custom esm    |
+| ------------- | ------------- | ------------- |
+| 32.5          | 70            | 81            |
+| 32.5          | 71            | 80            |
+| 32            | 74            | 84            |
+| **32.3±0.29** | **71.7±2.08** | **81.7±2.08** |
+
+I also took a look at the incremental builds via `npm run dev`. Once the build
+is fully created, I hit save on a page to trigger a rebuild. Each rebuild
+includes a bundle for the server, the client, and the service worker.
+
+** Incremental build time via `npm run dev` **
+
+|            | no plotly | direct esm | custom esm |
+| ---------- | --------- | ---------- | ---------- |
+| **server** | 1.4±0.12  | 8.±0.16    | 1.1±0.1    |
+| **client** | 3.5±0.23  | 8.1±0.21   | 5.4±0.16   |
+| **total**  | 4.9±0.35  | 16.1±0.36  | 6.5±0.23   |
+
+The time I care about is the incremental build time. This is where I spent the
+majority of my time. It's annoying when it takes a full 16 seconds before I can
+see a new change to a page on the site. This feedback is important when trying
+out new layouts or playing with the functionality of an unfamiliar library. The
+custom ES module cut that time to 6.5 seconds, mostly by preventing the server
+bundle from ever having to traverse the dependency tree for plotly. It also does
+marginally better than the direct ES module by 2.7 seconds.
+
+The refactor did not entirely line up with my expectations on the other hand. I
+thought I would be able to create a single bundle for plotly that included all
+of the dependencies in one fat script. This is not the case with rollup (or ES
+modules) because the full knowledge of the dependency tree is how the bundler
+can generate efficient code. The size of the bundle would probably bloat up if I
+included all the dependencies inline (like the 3MB minified source). The size is
+not too big of a deal because Sapper only includes on the pages that need it. It
+would have been nice to shave off few extra seconds on those incremental builds.
+
+I'm happy enough with this setup to not touch it for a while. I may look into
+smaller plotting libraries that don't contain as much baggage, but it would
+require learning yet another tool. Plotly is a great tool, all things
+considered. With reasonable bundle sizes and incremental builds, this is good
+enough for me.
+
+## Full data
+
+<details>
+<summary>Incremental build times</summary>
+
+### Incremental build times for custom plotly ES module
+
+| server      | client       | total        |
+| ----------- | ------------ | ------------ |
+| 1.2         | 5.6          | 6.8          |
+| 1.1         | 5.2          | 6.3          |
+| 0.919       | 5.3          | 6.2          |
+| 1.1         | 5.4          | 6.5          |
+| 1.1         | 5.5          | 6.6          |
+| **1.1±0.1** | **5.4±0.16** | **6.5±0.23** |
+
+### Incremental build times for direct plotly ES module
+
+| server      | client       |               |
+| ----------- | ------------ | ------------- |
+| 8.2         | 8.4          | 16.6          |
+| 7.8         | 7.9          | 15.7          |
+| 7.9         | 7.9          | 15.8          |
+| 8.1         | 8.1          | 16.2          |
+| 8           | 8            | 16            |
+| **8.±0.16** | **8.1±0.21** | **16.1±0.36** |
+
+### Incremental build times for no plotly
+
+| server       | client       | total        |
+| ------------ | ------------ | ------------ |
+| 1.2          | 3.1          | 4.3          |
+| 1.5          | 3.6          | 5.1          |
+| 1.5          | 3.7          | 5.2          |
+| 1.4          | 3.5          | 4.9          |
+| 1.4          | 3.5          | 4.9          |
+| **1.4±0.12** | **3.5±0.23** | **4.9±0.35** |
+
+</details>
+
+<br />
+
+<details>
+<summary>Command log output</summary>
+
+<pre>{command_logs}</pre>
+
+</details>

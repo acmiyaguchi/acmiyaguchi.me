@@ -10,6 +10,13 @@
   export let metadata;
 </script>
 
+<style>
+  :global(table) tr,
+  td {
+    border-collapse: collapse;
+  }
+</style>
+
 <svelte:head>
   <title>Blog Posts</title>
 </svelte:head>

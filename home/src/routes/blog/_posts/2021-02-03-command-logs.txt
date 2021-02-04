@@ -1,0 +1,164 @@
+commit c5ac12f90f97458b4d3c6ecf2ac51dc5bfee26ba (HEAD -> main)
+Author: Anthony Miyaguchi <acmiyaguchi@gmail.com>
+Date:   Wed Feb 3 22:17:21 2021 -0800
+
+    Add node_modules to ignores
+
+> sapper dev
+
+✔ server (7.1s)
+✔ client (19.7s)
+✔ service worker (45ms)
+
+> Listening on http://localhost:3000
+
+src\routes\analytics\Plot.svelte changed. rebuilding...
+
+src\routes\analytics\Plot.svelte changed. rebuilding...
+✔ server (1.2s)
+✔ client (5.6s)
+✔ service worker (44ms)
+
+src\routes\analytics\Plot.svelte changed. rebuilding...
+
+src\routes\analytics\Plot.svelte changed. rebuilding...
+✔ server (1.1s)
+✔ client (5.2s)
+✔ service worker (34ms)
+
+src\routes\analytics\Plot.svelte changed. rebuilding...
+
+src\routes\analytics\Plot.svelte changed. rebuilding...
+✔ server (919ms)
+✔ client (5.3s)
+✔ service worker (35ms)
+
+src\routes\analytics\Plot.svelte changed. rebuilding...
+
+src\routes\analytics\Plot.svelte changed. rebuilding...
+✔ server (1.1s)
+✔ client (5.4s)
+✔ service worker (33ms)
+
+src\routes\analytics\Plot.svelte changed. rebuilding...
+
+src\routes\analytics\Plot.svelte changed. rebuilding...
+✔ server (1.1s)
+✔ client (5.5s)
+✔ service worker (32ms)
+
+npm run build
+
+> Finished in 1m10s. Type node **sapper**/build to run the app.
+> Finished in 1m11s. Type node **sapper**/build to run the app.
+> Finished in 1m14s. Type node **sapper**/build to run the app.
+
+commit cc5e80ab3aa7934679c2a58a9cf83a0f8cc7ad4e (origin/main)
+Author: Anthony Miyaguchi <acmiyaguchi@gmail.com>
+Date: Wed Feb 3 00:14:11 2021 -0800
+
+    Add plotly plot for analytics
+
+> sapper dev
+
+✔ server (28.3s)
+✔ client (28.4s)
+✔ service worker (38ms)
+
+> Listening on http://localhost:3000
+
+src\routes\analytics\Plot.svelte changed. rebuilding...
+
+src\routes\analytics\Plot.svelte changed. rebuilding...
+✔ server (8.2s)
+✔ client (8.4s)
+✔ service worker (30ms)
+
+src\routes\analytics\Plot.svelte changed. rebuilding...
+
+src\routes\analytics\Plot.svelte changed. rebuilding...
+✔ server (7.8s)
+✔ client (7.9s)
+✔ service worker (35ms)
+
+src\routes\analytics\Plot.svelte changed. rebuilding...
+
+src\routes\analytics\Plot.svelte changed. rebuilding...
+✔ server (7.9s)
+✔ client (7.9s)
+✔ service worker (31ms)
+
+src\routes\analytics\Plot.svelte changed. rebuilding...
+
+src\routes\analytics\Plot.svelte changed. rebuilding...
+✔ server (8.1s)
+✔ client (8.1s)
+✔ service worker (32ms)
+
+src\routes\analytics\Plot.svelte changed. rebuilding...
+
+src\routes\analytics\Plot.svelte changed. rebuilding...
+✔ server (8.0s)
+✔ client (8.0s)
+✔ service worker (34ms)
+
+npm run build
+
+> Finished in 1m21s. Type node **sapper**/build to run the app.
+> Finished in 1m20s. Type node **sapper**/build to run the app.
+> Finished in 1m24s. Type node **sapper**/build to run the app.
+
+commit 05af63470f6f590b90dbc7e3a7ae987776651067
+Author: Anthony Miyaguchi <acmiyaguchi@gmail.com>
+Date: Tue Feb 2 23:10:50 2021 -0800
+
+    Update analytics page with more tables
+
+> sapper dev
+
+✔ server (26.0s)
+✔ client (26.1s)
+✔ service worker (35ms)
+
+> Listening on http://localhost:3000
+
+src\routes\analytics\index.svelte changed. rebuilding...
+
+src\routes\analytics\index.svelte changed. rebuilding...
+✔ server (1.2s)
+✔ client (3.1s)
+✔ service worker (31ms)
+
+src\routes\analytics\index.svelte changed. rebuilding...
+
+src\routes\analytics\index.svelte changed. rebuilding...
+✔ server (1.5s)
+✔ client (3.6s)
+✔ service worker (33ms)
+
+src\routes\analytics\index.svelte changed. rebuilding...
+
+src\routes\analytics\index.svelte changed. rebuilding...
+✔ server (1.5s)
+✔ client (3.7s)
+✔ service worker (33ms)
+
+src\routes\analytics\index.svelte changed. rebuilding...
+
+src\routes\analytics\index.svelte changed. rebuilding...
+✔ server (1.4s)
+✔ client (3.5s)
+✔ service worker (32ms)
+
+src\routes\analytics\index.svelte changed. rebuilding...
+
+src\routes\analytics\index.svelte changed. rebuilding...
+✔ server (1.4s)
+✔ client (3.5s)
+✔ service worker (30ms)
+
+npm run build
+
+> Finished in 32.5s. Type node **sapper**/build to run the app.
+> Finished in 32.5s. Type node **sapper**/build to run the app.
+> Finished in 32.0s. Type node **sapper**/build to run the app.
