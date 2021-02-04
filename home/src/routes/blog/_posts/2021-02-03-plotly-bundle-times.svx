@@ -1,12 +1,12 @@
 ---
 layout: post
 title: Improving plotly.js bundling time using rollup
-date: 2021-02-02T21:24:00-08:00
+date: 2021-02-03T23:42:00-08:00
 category: Engineering
 tags:
   - web development
   - sapper
-  - ssr
+  - plotly
 ---
 
 <script>
