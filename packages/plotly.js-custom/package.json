@@ -1,0 +1,21 @@
+{
+  "name": "plotly.js-custom",
+  "version": "1.0.0",
+  "description": "Precompiled plotly.js",
+  "browser": "dist/bundle.js",
+  "scripts": {
+    "build": "rollup -c",
+    "prepare": "npm run build"
+  },
+  "author": "Anthony Miyaguchi <acmiyaguchi@gmail.com>",
+  "repository": "acmiyaguchi/acmiyaguchi.me",
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^17.1.0",
+    "@rollup/plugin-node-resolve": "^11.1.1",
+    "rollup": "^2.38.4"
+  },
+  "dependencies": {
+    "plotly.js": "^1.58.4"
+  }
+}
