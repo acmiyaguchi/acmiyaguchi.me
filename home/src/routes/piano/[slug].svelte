@@ -10,7 +10,7 @@
   import Player from "./Player.svelte";
 
   export let slug;
-  $: src = `https://storage.googleapis.com/acmiyaguchi/midi/${slug}.mid`;
+  $: src = `https://storage.googleapis.com/acmiyaguchi/midi/${slug}`;
 </script>
 
 <svelte:head>

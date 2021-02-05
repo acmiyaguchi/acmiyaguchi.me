@@ -1,9 +1,5 @@
 <script>
-    let index = [
-        "2021-01-30-london-bridge-test",
-        "2021-01-30-lone-star-waltz",
-        "2021-01-31-mikrokosmos-1-3"
-    ]
+    export let manifest = []
 </script>
 
 # Piano recordings
@@ -15,8 +11,8 @@ LK-94TV]()
 into [LMMS](https://lmms.io/).
 
 <ul>
-{#each index as item}
-<li><a href={`piano/${item}`}>{item}</a></li>
+{#each manifest as item}
+<li><a href={`piano/${item.name}`}>{item.name.split(".mid")[0]}</a></li>
 {/each}
 </ul>
 
