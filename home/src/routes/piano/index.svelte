@@ -1,5 +1,15 @@
-<script>
-  import Body from "./Body.svx";
+<script context="module">
+  export async function preload() {
+    let url = `https://storage.googleapis.com/acmiyaguchi/midi/manifest.json`;
+    let resp = await this.fetch(url);
+    let data = await resp.json();
+    return { manifest: data.filter(row => row.name.endsWith(".mid")) };
+  }
 </script>
 
-<Body />
+<script>
+  import Body from "./Body.svx";
+  export let manifest;
+</script>
+
+<Body {manifest} />
