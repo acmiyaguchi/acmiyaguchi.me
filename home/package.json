@@ -1,7 +1,7 @@
 {
   "name": "acmiyaguchi.me",
   "description": "Anthony Miyaguchi's website",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "scripts": {
     "dev": "sapper dev",
     "build": "sapper build --legacy",
@@ -18,8 +18,7 @@
     "plotly.js-custom": "file:../packages/plotly.js-custom",
     "polka": "next",
     "sirv": "^1.0.0",
-    "soundfont-player": "^0.12.0",
-    "tabulator-tables": "^4.9.3"
+    "soundfont-player": "^0.12.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
