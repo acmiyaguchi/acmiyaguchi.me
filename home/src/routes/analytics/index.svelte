@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import { groupBy, sortBy } from "lodash";
   import Table from "../../components/Table.svelte";
-  import Plot from "./Plot.svelte";
+  import Plot from "../../components/Plot.svelte";
 
   let daily;
   let routes_all;
