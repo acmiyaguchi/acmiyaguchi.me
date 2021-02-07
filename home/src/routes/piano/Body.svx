@@ -12,7 +12,7 @@ into [LMMS](https://lmms.io/).
 
 <ul>
 {#each manifest as item}
-<li><a href={`piano/${item.name}`}>{item.name.split(".mid")[0]}</a></li>
+<li><a href={`piano/${item.slug}`}>{item.slug}</a></li>
 {/each}
 </ul>
 
