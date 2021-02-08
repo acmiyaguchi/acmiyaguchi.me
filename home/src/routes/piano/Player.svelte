@@ -88,5 +88,5 @@
 </div>
 
 {#if track}
-  <Table data={track} options={{ pagination: 'local', paginationSize: 10 }} />
+  <Table data={track} paginationSize={10} />
 {/if}

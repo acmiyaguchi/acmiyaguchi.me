@@ -1,9 +1,10 @@
 <script>
   import { chunk } from "lodash";
   export let data = [];
-  export let options = {};
-  $: paginationSize = options.paginationSize;
-  $: columns = options.columns || (data.length > 0 && autoColumns(data));
+  export let paginationSize = null;
+  export let columns = null;
+
+  $: columns = columns || (data.length > 0 && autoColumns(data));
   let idx = 0;
   $: chunked = paginationSize ? chunk(data, paginationSize) : [data];
   $: total = data.length;
