@@ -6,7 +6,7 @@
 </script>
 
 <script>
-  import PostListing from "./PostListing.svelte";
+  import PostListing from "../../components/PostListing.svelte";
   export let metadata;
 </script>
 
@@ -15,10 +15,6 @@
     border-collapse: collapse;
   }
 </style>
-
-<svelte:head>
-  <title>Blog Posts</title>
-</svelte:head>
 
 <h1>Blog Posts</h1>
 
