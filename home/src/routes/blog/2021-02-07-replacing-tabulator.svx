@@ -9,8 +9,6 @@ tags:
 ---
 
 <script>
-// This whole sections doesn't work because the document is rendered server-side,
-// which strips out all of the javascript/css needed for this to work.
 import Table from "../../components/Table.svelte"
 
 // https://stackoverflow.com/a/8084248
@@ -45,12 +43,12 @@ manipulating the pagination size below.
 
 <Table data={data} {paginationSize} />
 
-I suggest taking a look at the [analytics](analytics) page too.
-You'll see similar tables in action: ![analytics
-page](assets/2021-02-07/analytics.png)
+I suggest taking a look at the [analytics](analytics) page too. You'll see
+similar tables in action: ![analytics page](assets/2021-02-07/analytics.png)
 
-The [full source code can be found in the site
-repository](https://github.com/acmiyaguchi/acmiyaguchi.me/blob/834bd147596bd4ae197f22c1f5cde793f6b408db/home/src/components/Table.svelte).
+The [full source code can be found in the site repository][github].
+
+[github]: https://github.com/acmiyaguchi/acmiyaguchi.me/blob/3d80a5280f7293d0c2a055d4a3c4384dbda05f41/home/src/components/Table.svelte
 
 I've documented the table sizes here.
 
