@@ -16,7 +16,7 @@
   }
 
   async function fetchData(query) {
-    let resp = await fetch(getUrl(query));
+    let resp = await fetch(getUrl(query), { cache: "no-cache" });
     // side-effects :)
     modified = resp.headers.get("Last-Modified");
     return await resp.json();

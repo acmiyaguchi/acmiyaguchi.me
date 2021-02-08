@@ -25,7 +25,7 @@ def dump_to_gcs(bucket, name, query):
     )
     blob.content_encoding = "gzip"
     # always serve compressed content
-    blob.cache_control = "no-transform"
+    blob.cache_control = "no-cache,no-transform"
     job = bq.query(query)
     print(f"running query {job.job_id} for {name}: {query}")
     output = [dict(row) for row in job]
