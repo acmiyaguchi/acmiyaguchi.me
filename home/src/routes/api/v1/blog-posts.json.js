@@ -1,4 +1,4 @@
-import posts from "../../blog/_posts/*.svx";
+import posts from "../../blog/*.svx";
 import path from "path";
 import { sortBy } from "lodash";
 
