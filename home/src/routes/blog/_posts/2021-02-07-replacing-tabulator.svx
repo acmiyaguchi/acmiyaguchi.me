@@ -1,0 +1,74 @@
+---
+layout: post
+title: Replacing tabulator with a minimal table component
+date: 2021-02-07T17:08:00-08:00
+category: Engineering
+tags:
+  - web development
+  - svelte
+---
+
+<script>
+// This whole sections doesn't work because the document is rendered server-side,
+// which strips out all of the javascript/css needed for this to work.
+import {onMount} from 'svelte';
+let Table;
+
+onMount(async () => {
+    // https://github.com/sveltejs/sapper/issues/774#issuecomment-663048738
+    const module = await import("../../../../components/Table.svelte");
+    Table = module.default;
+    console.log(Table)
+});
+
+// https://stackoverflow.com/a/8084248
+let data = [...Array(128).keys()].map(key => ({
+    index: key,
+    value: Math.random().toString(36).substring(16)
+}))
+</script>
+
+[Tabulator](http://tabulator.info/) is a piece of software that I've used across
+several projects. I've used it on my website, but my design sensibilities tell
+me to be lean with my dependencies on the site. I don't need all of the fancy
+features that the library provides, like the virtual dom and styling. I replaced
+the table with a component that doesn't rely on any dependencies.
+
+I would show it here, but I'm working through embedding components inside of my
+blog posts. I suggest taking a look at the [analytics](analytics) page instead.
+You'll see tables like this that you can play with: ![analytics
+page](assets/2021-02-07/analytics.png)
+
+<svelte:component this={Table} data={data} />
+
+I've documented the table sizes here.
+
+**Tabulator-based**
+
+```bash
+> git log -n1 --pretty=oneline
+a521650e470e04fabb04bc0fd78a7cc29d334824 Move plot into components
+> npm build
+> ls .\__sapper__\build\client\Table*
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----          2/7/2021   1:40 PM          22632 Table-3a3654c8.css
+-a----          2/7/2021   1:40 PM         359791 Table.e1dfc581.js
+```
+
+**Svelte-based**
+
+```bash
+> git log -n1 --pretty=oneline
+834bd147596bd4ae197f22c1f5cde793f6b408db (HEAD -> main, origin/main) Remove tabulator
+> npm build
+> ls .\__sapper__\build\client\Table*
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----          2/7/2021   1:35 PM             81 Table-8db1bf94.css
+-a----          2/7/2021   1:35 PM          75367 Table.6a05f367.js
+```
+
+The original one based on Tabulator is 360kb of code and 23kb of CSS, while the
+new one is 75kb of code with 0.08kb of CSS. I like the leaner code, and having a
+Svelte component leaves a lot of flexibility for future functionality.
