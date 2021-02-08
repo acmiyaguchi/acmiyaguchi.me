@@ -69,9 +69,7 @@
 
 <h2>Visits by Route - All Time</h2>
 {#if routes_all}
-  <Table
-    data={routes_all}
-    options={{ pagination: 'local', paginationSize: 10 }} />
+  <Table data={routes_all} paginationSize={10} />
 {/if}
 
 <h2>Visits by Route - Last 7 days</h2>
@@ -80,8 +78,5 @@
   .reverse() as dates}
   <h3>{dates}</h3>
 
-  <Table
-    data={grouped[dates]}
-    options={{ pagination: 'local', paginationSize: 7 }}
-    deleteColumns={['date']} />
+  <Table data={grouped[dates]} paginationSize={7} />
 {/each}

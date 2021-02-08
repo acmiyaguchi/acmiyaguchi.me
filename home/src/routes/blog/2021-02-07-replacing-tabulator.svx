@@ -11,38 +11,46 @@ tags:
 <script>
 // This whole sections doesn't work because the document is rendered server-side,
 // which strips out all of the javascript/css needed for this to work.
-import {onMount} from 'svelte';
-let Table;
-
-onMount(async () => {
-    // https://github.com/sveltejs/sapper/issues/774#issuecomment-663048738
-    const module = await import("../../components/Table.svelte");
-    Table = module.default;
-    console.log(Table)
-});
+import Table from "../../components/Table.svelte"
 
 // https://stackoverflow.com/a/8084248
 let data = [...Array(128).keys()].map(key => ({
     index: key,
-    value: Math.random().toString(36).substring(16)
+    value: Math.random().toString(36).substring(7).repeat(8)
 }))
+
+let paginationSize = 8;
+
 </script>
+
+<style>
+  img {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>
 
 [Tabulator](http://tabulator.info/) is a piece of software that I've used across
 several projects. I've used it on my website, but my design sensibilities tell
 me to be lean with my dependencies on the site. I don't need all of the fancy
 features that the library provides, like the virtual dom and styling. I replaced
-the table with a component that has fewer dependencies.
+the table with a component that has fewer dependencies. Play around with it by
+manipulating the pagination size below.
 
-I would show it here, but I'm working through embedding components inside of my
-blog posts. I suggest taking a look at the [analytics](analytics) page instead.
-You'll see tables like this that you can play with: ![analytics
+<label>
+	<input type=number bind:value={paginationSize} min=4 max=16>
+	<input type=range bind:value={paginationSize} min=4 max=16>
+</label>
+
+<Table data={data} {paginationSize} />
+
+I suggest taking a look at the [analytics](analytics) page too.
+You'll see similar tables in action: ![analytics
 page](assets/2021-02-07/analytics.png)
 
 The [full source code can be found in the site
 repository](https://github.com/acmiyaguchi/acmiyaguchi.me/blob/834bd147596bd4ae197f22c1f5cde793f6b408db/home/src/components/Table.svelte).
-
-<svelte:component this={Table} data={data} options={{paginationSize: 10}}/>
 
 I've documented the table sizes here.
 
