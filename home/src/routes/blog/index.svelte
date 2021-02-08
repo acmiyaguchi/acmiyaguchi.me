@@ -11,8 +11,7 @@
 </script>
 
 <style>
-  :global(table) tr,
-  td {
+  :global(table, tr, td) {
     border-collapse: collapse;
   }
 </style>

@@ -16,7 +16,7 @@ let Table;
 
 onMount(async () => {
     // https://github.com/sveltejs/sapper/issues/774#issuecomment-663048738
-    const module = await import("../../../../components/Table.svelte");
+    const module = await import("../../components/Table.svelte");
     Table = module.default;
     console.log(Table)
 });
@@ -42,7 +42,7 @@ page](assets/2021-02-07/analytics.png)
 The [full source code can be found in the site
 repository](https://github.com/acmiyaguchi/acmiyaguchi.me/blob/834bd147596bd4ae197f22c1f5cde793f6b408db/home/src/components/Table.svelte).
 
-<svelte:component this={Table} data={data} />
+<svelte:component this={Table} data={data} options={{paginationSize: 10}}/>
 
 I've documented the table sizes here.
 
