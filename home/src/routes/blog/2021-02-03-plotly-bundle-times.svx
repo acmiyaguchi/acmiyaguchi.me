@@ -10,8 +10,8 @@ tags:
 ---
 
 <script>
-import plotly_tree from "./2021-02-03-plotly-custom-tree.txt";
-import command_logs from "./2021-02-03-command-logs.txt";
+import plotly_tree from "./_assets/2021-02-03-plotly-custom-tree.txt";
+import command_logs from "./_assets/2021-02-03-command-logs.txt";
 </script>
 
 I love [Plotly.js](https://plotly.com/javascript/) because the batteries come
@@ -152,7 +152,7 @@ enough for me.
 
 ### Incremental build times for direct plotly ES module
 
-| server      | client       |               |
+| server      | client       | total         |
 | ----------- | ------------ | ------------- |
 | 8.2         | 8.4          | 16.6          |
 | 7.8         | 7.9          | 15.7          |
