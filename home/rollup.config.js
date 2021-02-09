@@ -24,6 +24,11 @@ const onwarn = (warning, onwarn) =>
     /[/\\]@sapper[/\\]/.test(warning.message)) ||
   onwarn(warning);
 
+const preprocess = mdsvex({
+  remarkPlugins: [remarkMath],
+  rehypePlugins: [rehypeKatexSvelte],
+});
+
 export default {
   client: {
     input: config.client.input(),
@@ -44,10 +49,7 @@ export default {
           hydratable: true,
         },
         extensions: [".svelte", ".svx"],
-        preprocess: mdsvex({
-          remarkPlugins: [remarkMath],
-          rehypePlugins: [rehypeKatexSvelte],
-        }),
+        preprocess: preprocess,
       }),
       url({
         sourceDir: path.resolve(__dirname, "src/node_modules/images"),
@@ -119,10 +121,7 @@ export default {
         },
         emitCss: false,
         extensions: [".svelte", ".svx"],
-        preprocess: mdsvex({
-          remarkPlugins: [remarkMath],
-          rehypePlugins: [rehypeKatexSvelte],
-        }),
+        preprocess: preprocess,
       }),
       url({
         sourceDir: path.resolve(__dirname, "src/node_modules/images"),
