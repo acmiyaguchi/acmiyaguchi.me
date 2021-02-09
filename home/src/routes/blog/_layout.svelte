@@ -23,6 +23,7 @@
   import "prismjs/components/prism-python.min.js";
   import "prismjs/components/prism-sql.min.js";
   import "prismjs/components/prism-scheme.min.js";
+  import "katex/dist/katex.css";
 
   import dayjs from "dayjs";
   import localizedFormat from "dayjs/plugin/localizedFormat";

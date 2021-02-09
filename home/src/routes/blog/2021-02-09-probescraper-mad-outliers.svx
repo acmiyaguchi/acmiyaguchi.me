@@ -43,10 +43,17 @@ Here's a post with some math in it.
 
 <Table {data} {columns} paginationSize={8} />
 
-The mean is {mean(delta).toFixed(1)} with a standard deviation of
-{standardDeviation(delta).toFixed(1)}.
+The mean is {mean(delta).toFixed(1)} ($\mu$) with a standard deviation ($$\sigma$$) of {standardDeviation(delta).toFixed(1)}. We can determine how far a point is from the mean by computing a z-score.
 
-The median is {median(delta)} with a median absolute deviation of
-{medianAbsoluteDeviation(delta)}.
+$$
+z = \frac{x - \mu}{\sigma}
+$$
+
+The median ($\tilde{\mu}$) is {median(delta)} with a median absolute deviation ($MAD$) of
+{medianAbsoluteDeviation(delta)}. We can modify the z-score to give us a robust equivalent to the standard deviation.
+
+$$
+\tilde{z} = \frac{x - \tilde{\mu}}{k \cdot MAD}
+$$
 
 {/if}
