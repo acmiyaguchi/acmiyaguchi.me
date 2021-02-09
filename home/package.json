@@ -17,6 +17,7 @@
     "node-fetch": "^2.6.1",
     "plotly.js-custom": "file:../packages/plotly.js-custom",
     "polka": "next",
+    "simple-statistics": "^7.4.0",
     "sirv": "^1.0.0",
     "soundfont-player": "^0.12.0"
   },
