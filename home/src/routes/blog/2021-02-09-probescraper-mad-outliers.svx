@@ -50,7 +50,7 @@ The probe-scraper forms the basis of the schema infrastructure at Mozilla.
 
 {#if data.length > 0}
 
-## The monitoring data
+## Collecting monitoring data
 
 <Plot {data} {transform} layout={{title:"Time since last deploy (hours)"}}/>
 
@@ -82,3 +82,9 @@ $$
 $$
 
 {/if}
+
+## Detecting partial-outages on historical data
+
+Add both z-score methods on the general case, and then on the short 7 day case.
+What are the distribution of the scores? Why use the robust statistic instead of
+the normal one?
