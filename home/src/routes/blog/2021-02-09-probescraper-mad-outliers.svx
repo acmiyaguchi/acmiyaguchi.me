@@ -12,6 +12,7 @@ tags:
 <script>
     import {onMount} from "svelte";
     import Table from "../../components/Table.svelte";
+    import Plot from  "../../components/Plot.svelte";
     import {mean, median, standardDeviation, medianAbsoluteDeviation} from "simple-statistics";
 
     const columns = [
@@ -27,6 +28,16 @@ tags:
     let data = []
     $: delta = data.map(row => row.delta);
 
+    function transform(data) {
+        return [
+            {
+                x: data.map(row => row.last_update),
+                y: data.map(row => row.delta),
+                type: "line"
+            }
+        ]
+    }
+
     onMount(async () => {
         let resp = await fetch("assets/2021-02-09/probeinfo_status.json");
         data = await resp.json();
@@ -35,22 +46,36 @@ tags:
 
 _This post is interactive and may not render correctly without Javascript._
 
-Here's a post with some math in it.
+The probe-scraper forms the basis of the schema infrastructure at Mozilla.
 
 {#if data.length > 0}
 
-<pre>{JSON.stringify(data.slice(0, 3), '', 2)}</pre>
+## The monitoring data
+
+<Plot {data} {transform} layout={{title:"Time since last deploy (hours)"}}/>
 
 <Table {data} {columns} paginationSize={8} />
 
-The mean is {mean(delta).toFixed(1)} ($\mu$) with a standard deviation ($$\sigma$$) of {standardDeviation(delta).toFixed(1)}. We can determine how far a point is from the mean by computing a z-score.
+<br>
+
+<details>
+<summary>First 3 rows of the raw JSON</summary>
+<pre>{JSON.stringify(data.slice(0, 3), '', 2)}</pre>
+</details>
+
+## A refresher on statistics, are you MAD?
+
+The mean is {mean(delta).toFixed(1)} ($\mu$) with a standard deviation
+($$\sigma$$) of {standardDeviation(delta).toFixed(1)}. We can determine how far
+a point is from the mean by computing a z-score.
 
 $$
 z = \frac{x - \mu}{\sigma}
 $$
 
-The median ($\tilde{\mu}$) is {median(delta)} with a median absolute deviation ($MAD$) of
-{medianAbsoluteDeviation(delta)}. We can modify the z-score to give us a robust equivalent to the standard deviation.
+The median ($\tilde{\mu}$) is {median(delta)} with a median absolute deviation
+($MAD$) of {medianAbsoluteDeviation(delta)}. We can modify the z-score to give
+us a robust equivalent to the standard deviation.
 
 $$
 \tilde{z} = \frac{x - \tilde{\mu}}{k \cdot MAD}
