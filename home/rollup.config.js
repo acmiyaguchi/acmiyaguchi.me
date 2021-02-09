@@ -11,6 +11,8 @@ import pkg from "./package.json";
 import { string } from "rollup-plugin-string";
 import { mdsvex } from "mdsvex";
 import globImport from "./rollup.glob.js";
+import remarkMath from "remark-math";
+import rehypeKatexSvelte from "rehype-katex-svelte";
 
 const mode = process.env.NODE_ENV;
 const dev = mode === "development";
@@ -42,7 +44,10 @@ export default {
           hydratable: true,
         },
         extensions: [".svelte", ".svx"],
-        preprocess: mdsvex(),
+        preprocess: mdsvex({
+          remarkPlugins: [remarkMath],
+          rehypePlugins: [rehypeKatexSvelte],
+        }),
       }),
       url({
         sourceDir: path.resolve(__dirname, "src/node_modules/images"),
@@ -114,7 +119,10 @@ export default {
         },
         emitCss: false,
         extensions: [".svelte", ".svx"],
-        preprocess: mdsvex(),
+        preprocess: mdsvex({
+          remarkPlugins: [remarkMath],
+          rehypePlugins: [rehypeKatexSvelte],
+        }),
       }),
       url({
         sourceDir: path.resolve(__dirname, "src/node_modules/images"),
