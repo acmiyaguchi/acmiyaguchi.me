@@ -112,3 +112,11 @@ I’ve encouraged you to try making that pot of coffee. I appreciate the cup of
 consistent coffee, and I hope you can brew one too.
 
 </details>
+
+<div style="text-align:right;">
+
+_See the [original slides here][slides]._
+
+</div>
+
+[slides]: https://docs.google.com/presentation/d/11jV1aEzuIM0a7bpK1NPg28qAVZ3wZxvAPPo16ZuD1ms/edit?usp=sharing
