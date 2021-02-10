@@ -1,0 +1,15 @@
+---
+layout: post
+title: Applying feedback to a speech
+date: 2021-02-10T17:30:00-08:00
+category: Toastmasters
+tags:
+  - speech
+  - practice
+---
+
+In this post, I talk about how I applied feedback to my speech.
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/iHDlkUGKVKY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/aEdUZjOQ9h8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
