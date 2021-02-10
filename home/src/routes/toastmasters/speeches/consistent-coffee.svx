@@ -78,7 +78,8 @@ beans under pressure.
 Filter on, pour fine grain coffee in, fill with water, stir for 10 seconds,
 press for 20-40 seconds.
 
-<span color=red>Eye-contact with the whole room, move after each step</span>
+<span style="color:red">Eye-contact with the whole room, move
+after each step</span>
 
 ### How you screwed up the coffee
 
