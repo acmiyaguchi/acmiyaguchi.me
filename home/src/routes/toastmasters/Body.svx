@@ -12,11 +12,18 @@ Zoom][meetup] during the COVID-19 pandemic.
 
 ## Blog Posts
 
-I am writing a series of blog posts about my Toastmasters experience from
-writing speeches to taking on roles.
+I am writing a series of blog posts about my Toastmasters experience from speech
+writing to taking on roles. I'm writing a series of posts twice a week this
+month, typically releasing on Wednesdays and Sundays.
 
 <PostListing {metadata} />
 
 [mvtm]: https://www.toastmasters.org/Find-a-Club/04528013-mountain-view-toastmasters
 [meetup]: https://www.meetup.com/Mountain-View-Toastmasters/
 [pathway]: https://www.toastmasters.org/pathways-overview
+
+## Speeches
+
+I keep some of my speech material here too.
+
+- [A Consistent Cup of Coffee](toastmasters/speeches/consistent-coffee)
