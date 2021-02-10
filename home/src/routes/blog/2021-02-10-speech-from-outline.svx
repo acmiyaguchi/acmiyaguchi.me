@@ -1,0 +1,102 @@
+---
+layout: post
+title: Practicing a speech from an outline
+date: 2021-02-10T17:30:00-08:00
+category: Toastmasters
+tags:
+  - speech
+  - practice
+---
+
+<script>
+import ConsistentCoffee from "../toastmasters/speeches/consistent-coffee.svx"
+</script>
+
+There are many ways to create a new speech. A popular method is to write the
+entire speech word for work, and to memorize all of the details as written.
+Another method that I've come to favor is practicing a speech directly from an
+outline. The process involves the following steps:
+
+- Create one slide per minute of your speech
+- Add a title to each slide describing the section
+- Add bullet points and speaker notes as appropriate
+
+This breaks up the speech into smaller one minute chunks that can be worked on
+section at a time. Each of those sections can be broken down into one main idea
+that you spend some time on. Of course, this is just a rule of thumb. This was a
+tip that I learned while preparing for lightning talks at work.
+
+One difference is that for my Toastmasters speech, I treat the slides purely as a practice tool. When you are in front of an audience, it helps to know the material
+so that you can have a better awareness of the stage and audience. For a practice tool though, it's very effective.
+
+I used this technique on my Evaluation and Feedback speeches. This was a project
+where I gave a speech of my choice, the utilized feedback to improve on the
+speech. I talked about brewing a consistent cup of coffee, talking a little bit
+at depth about my morning ritual. Take a look through the outline.
+
+<div style="border: 1px solid black; padding: 1em;">
+
+<ConsistentCoffee />
+
+</div>
+
+Here is the final speech that I presented to the club on 2019-12-02.
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/aEdUZjOQ9h8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+Here are a few pointers to help you be successful with your practice. This
+advice works for pretty much any speech, but particularly well in the outline
+style of practice.
+
+### Prepare the introduction and conclusion
+
+The introduction and conclusions are memorable portions of your speech, so take
+the extra time to prepare them. It helps to have these memorized so you can
+build up some momentum before you jump off into speech that hasn't been written
+down before. But also note that you can start to practice other sections if you
+have the main ideas sketched out.
+
+### Be terse with supporting statements in the outline
+
+The supporting statements help build a logic flow within the topic for a
+section. For example, in topic titled "Controlling the coffee making process"
+the main idea is to try again, but change a single element of the process. In this section, I go more into depth about what that means. Because this topic is something that I'm enthusiastic about, it is easy for me to talk for a minute to fill in the time.
+
+### Highlight any specific techniques you want to pull off
+
+In the section titled "Making a cup of coffee", I actually go through the
+literal technique of making coffee in my [AeroPress][aeropress] (great device by
+the way). As part of the feedback that I got on my first rendition, I decided
+that I would explicitly look around at the audience (highlighted in red). See
+the 1 minute starting from 3:01 in the video and evaluate for yourself whether I
+was able to achieve eye-contact with the whole room.
+
+[aeropress]: https://aeropress.com/
+
+### Practice and record yourself at least 10 times
+
+I like to structure the ideas in the body of the speech, and then practice the
+lines a few times without every writing them down to paper. Once you get a good
+idea of what you're going to say, do it several times.
+
+10 is a nice round number to think about. A 6 minute speech practiced 10 times
+is an hour of total practice. You should spread this out over the span of a few
+days (say, the weekend before your actual speech).
+
+I suggest this [online voice recorder][recorder] which has a clear interface for
+recording. It's nice to play these back to see how you sound, and you can save
+them for later if you want to come back and see how you've improved.
+
+[recorder]: https://online-voice-recorder.com/
+
+## Thoughts and Next Time
+
+There's value in trying out different processes and seeing what works for you. I
+don't use this process for every technique, but I find that it works well in
+professional settings where I am a subject matter expert and the presentation
+length is about 5-10 minutes. I'm also pleasantly surprised by my notes and
+recording, it was a lot better than how I remembered it.
+
+In the next post, I'll write a little more about "A consistent cup of coffee".
+The feedback cycle can help tremendously with the quality and execution of a
+speech.
