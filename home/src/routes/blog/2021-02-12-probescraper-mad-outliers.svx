@@ -15,32 +15,115 @@ tags:
     import Plot from  "../../components/Plot.svelte";
     import {mean, median, standardDeviation, medianAbsoluteDeviation} from "simple-statistics";
 
-    const columns = [
+    const columns1 = [
         {
             name: "last update",
             format: (row) => row.last_update.slice(0, 16)
         },
         {
-            name: "delta",
+            name: "delta (hour)",
             format: (row) => row.delta
         }
     ];
+
+    const columns2 = [
+        ...columns1,
+        {
+            name: "z-score (std)",
+            format: (row) => row.scoreStd.toFixed(1)
+        },
+        {
+            name: "status (std)",
+            format: (row) => {
+                if (row.scoreStd > 3) {
+                    return `<b style="background-color:yellow">partial-outage</b>`
+                } else {
+                    return "nominal"
+                }
+            },
+            html: true
+        },
+        {
+            name: "z-score (mad)",
+            format: (row) => row.scoreMad.toFixed(1)
+        },
+        {
+            name: "status (mad)",
+            format: (row) => {
+                if (row.scoreMad > 3) {
+                    return `<b style="background-color:yellow">partial-outage</b>`
+                } else {
+                    return "nominal"
+                }
+            },
+            html: true
+        },
+    ];
+
+
     let data = []
     $: delta = data.map(row => row.delta);
+    let dataDec = []
+    $: deltaDec = dataDec.map(row => row.delta);
+    let dataOct = []
+    $: deltaOct = dataOct.map(row => row.delta);
 
-    function transform(data) {
+    function transform1(data) {
         return [
             {
                 x: data.map(row => row.last_update),
                 y: data.map(row => row.delta),
-                type: "line"
+                type: "line",
+                name: "delta"
             }
         ]
     }
 
+    function transform2(data) {
+        return [
+            {
+                x: data.map(row => row.last_update),
+                y: data.map(row => row.scoreStd > 3 ? 1: 0),
+                type: "line",
+                name: "z-score (std) > 3",
+                xaxis: "x",
+            },
+            {
+                x: data.map(row => row.last_update),
+                y: data.map(row => row.scoreMad > 3 ? 1: 0),
+                type: "line",
+                name: "z-score (mad) > 3",
+                xaxis: "x",
+                yaxis: "y2"
+            }
+        ]
+    }
+
+    function summaryTable(delta) {
+        return [
+            {method: "mean", center: mean(delta).toFixed(1), deviation: standardDeviation(delta).toFixed(1)},
+            {method: "median", center: median(delta).toFixed(1), deviation: medianAbsoluteDeviation(delta).toFixed(1)}
+        ]
+    }
+
+    function withScores(data) {
+        // first the standard deviation
+        let deltas = data.map(row => row.delta)
+        let std = standardDeviation(deltas);
+        let mad = medianAbsoluteDeviation(deltas)
+        return data.map(row => ({
+            ...row,
+            scoreStd: (row.delta - mean(deltas))/std,
+            scoreMad: (row.delta - median(deltas))/(1.4826*mad)
+        }));
+    }
+
     onMount(async () => {
         let resp = await fetch("assets/2021-02-12/probeinfo_status.json");
-        data = await resp.json();
+        let rawData = await resp.json();
+        data = withScores(rawData);
+        dataDec = withScores(rawData.filter(row => row.last_update.slice(5,7) == "11"))
+        dataOct = withScores(rawData.filter(row => row.last_update.slice(5,7) == "10"))
     })
 </script>
 
@@ -52,9 +135,9 @@ The probe-scraper forms the basis of the schema infrastructure at Mozilla.
 
 ## Collecting monitoring data
 
-<Plot {data} {transform} layout={{title:"Time since last deploy (hours)"}}/>
+<Plot {data} transform={transform1} layout={{title:"Time since last deploy (hours)"}}/>
 
-<Table {data} {columns} paginationSize={8} />
+<Table {data} columns={columns1} paginationSize={8} />
 
 <br>
 
@@ -81,10 +164,81 @@ $$
 \tilde{z} = \frac{x - \tilde{\mu}}{k \cdot MAD}
 $$
 
-{/if}
-
 ## Detecting partial-outages on historical data
 
-Add both z-score methods on the general case, and then on the short 7 day case.
-What are the distribution of the scores? Why use the robust statistic instead of
-the normal one?
+Now armed with the necessary statistical tools, we'll run this on some
+historical data. A partial-outage is a period of time where the probe-scraper
+service has not successfully run. The outage is partial because our schema
+repository continues to work outside of this subsystem. However, it may not have
+the most up to date information about the set of metrics.
+
+### All of history
+
+First lets take a look at the data over the entire dataset so far.
+
+<Table data={summaryTable(delta)} />
+
+<Plot {data} transform={transform2} layout={
+{
+title:"Time since last deploy outliers (z-score > 3)",
+yaxis: {title: "outlier (std)"},
+yaxis2: {title: "outlier (mad)"},
+grid: {
+rows: 2,
+columns: 1,
+subplots: ["xy", "xy2"],
+roworder: "top to bottom"
+}
+}
+}/>
+
+<Table {data} columns={columns2} paginationSize={8} />
+
+### Month of November 2020 (3 partial-outages)
+
+Now lets repeat it for the month of November. This is a period with three
+partial outages.
+
+<Table data={summaryTable(deltaDec)} />
+
+<Plot data={dataDec} transform={transform2} layout={
+{
+title:"Time since last deploy outliers (z-score > 3)",
+yaxis: {title: "outlier (std)"},
+yaxis2: {title: "outlier (mad)"},
+grid: {
+rows: 2,
+columns: 1,
+subplots: ["xy", "xy2"],
+roworder: "top to bottom"
+}
+}
+}/>
+
+<Table data={dataDec} columns={columns2} paginationSize={8} />
+
+### Month of October 2020 (no outages)
+
+And again for the month of October. This was a perfect month without any outages 😊.
+
+<Table data={summaryTable(deltaOct)} />
+
+<Plot data={dataOct} transform={transform2} layout={
+{
+title:"Time since last deploy outliers (z-score > 3)",
+yaxis: {title: "outlier (std)"},
+yaxis2: {title: "outlier (mad)"},
+grid: {
+rows: 2,
+columns: 1,
+subplots: ["xy", "xy2"],
+roworder: "top to bottom"
+}
+}
+}/>
+
+<Table data={dataOct} columns={columns2} paginationSize={8} />
+
+{/if}
+
+- https://docs.oracle.com/cd/E17236_01/epm.1112/cb_statistical/frameset.htm?ch07s02s10s01.html
