@@ -45,7 +45,7 @@ Here is an assortment of content on the site.
 I keep track of the site [on Github][source]. Here are the [last 10
 commits][commits].
 
-<pre>
+<pre style="overflow:auto">
 {logs}
 </pre>
 
