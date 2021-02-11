@@ -1,1 +1,462 @@
-[{"last_update": "2021-02-09T01:24:36.234298+00:00", "delta": 4, "dayofweek": 3}, {"last_update": "2021-02-08T21:40:12.173718+00:00", "delta": 3, "dayofweek": 2}, {"last_update": "2021-02-08T01:14:00.613279+00:00", "delta": 20, "dayofweek": 2}, {"last_update": "2021-02-05T02:15:02.634326+00:00", "delta": 22, "dayofweek": 6}, {"last_update": "2021-02-04T19:28:20.139938+00:00", "delta": 6, "dayofweek": 5}, {"last_update": "2021-01-28T03:04:24.002535+00:00", "delta": 184, "dayofweek": 5}, {"last_update": "2021-01-26T01:05:13.479970+00:00", "delta": 49, "dayofweek": 3}, {"last_update": "2021-01-25T01:08:11.989345+00:00", "delta": 23, "dayofweek": 2}, {"last_update": "2021-01-22T01:06:33.055425+00:00", "delta": 24, "dayofweek": 6}, {"last_update": "2021-01-21T01:10:11.371584+00:00", "delta": 23, "dayofweek": 5}, {"last_update": "2021-01-20T01:38:33.235385+00:00", "delta": 23, "dayofweek": 4}, {"last_update": "2021-01-20T01:04:58.989252+00:00", "delta": 0, "dayofweek": 4}, {"last_update": "2021-01-19T01:05:07.312523+00:00", "delta": 23, "dayofweek": 3}, {"last_update": "2021-01-18T01:06:55.494255+00:00", "delta": 23, "dayofweek": 2}, {"last_update": "2021-01-15T02:03:04.108180+00:00", "delta": 23, "dayofweek": 6}, {"last_update": "2021-01-14T01:02:32.497085+00:00", "delta": 25, "dayofweek": 5}, {"last_update": "2021-01-13T01:01:55.906013+00:00", "delta": 24, "dayofweek": 4}, {"last_update": "2021-01-12T01:05:08.053950+00:00", "delta": 23, "dayofweek": 3}, {"last_update": "2021-01-11T01:03:34.175928+00:00", "delta": 24, "dayofweek": 2}, {"last_update": "2021-01-08T01:01:59.875925+00:00", "delta": 24, "dayofweek": 6}, {"last_update": "2021-01-07T01:00:44.429511+00:00", "delta": 24, "dayofweek": 5}, {"last_update": "2021-01-06T00:59:58.379078+00:00", "delta": 24, "dayofweek": 4}, {"last_update": "2021-01-05T00:58:45.822027+00:00", "delta": 24, "dayofweek": 3}, {"last_update": "2021-01-04T00:58:08.393731+00:00", "delta": 24, "dayofweek": 2}, {"last_update": "2021-01-01T01:01:56.513526+00:00", "delta": 23, "dayofweek": 6}, {"last_update": "2020-12-31T00:59:54.217277+00:00", "delta": 24, "dayofweek": 5}, {"last_update": "2020-12-30T01:01:06.634433+00:00", "delta": 23, "dayofweek": 4}, {"last_update": "2020-12-29T01:04:02.920335+00:00", "delta": 23, "dayofweek": 3}, {"last_update": "2020-12-28T01:03:49.897457+00:00", "delta": 24, "dayofweek": 2}, {"last_update": "2020-12-25T01:02:47.236267+00:00", "delta": 24, "dayofweek": 6}, {"last_update": "2020-12-24T01:00:40.543741+00:00", "delta": 24, "dayofweek": 5}, {"last_update": "2020-12-23T01:09:41.026833+00:00", "delta": 23, "dayofweek": 4}, {"last_update": "2020-12-22T01:04:34.216227+00:00", "delta": 24, "dayofweek": 3}, {"last_update": "2020-12-21T00:59:14.061297+00:00", "delta": 24, "dayofweek": 2}, {"last_update": "2020-12-18T00:58:56.789591+00:00", "delta": 24, "dayofweek": 6}, {"last_update": "2020-12-17T02:49:24.887397+00:00", "delta": 22, "dayofweek": 5}, {"last_update": "2020-12-16T16:48:43.048288+00:00", "delta": 10, "dayofweek": 4}, {"last_update": "2020-12-11T02:38:20.217130+00:00", "delta": 86, "dayofweek": 6}, {"last_update": "2020-12-11T00:58:20.975941+00:00", "delta": -47, "dayofweek": 6}, {"last_update": "2020-12-10T01:37:15.324215+00:00", "delta": 23, "dayofweek": 5}, {"last_update": "2020-12-10T00:59:43.257735+00:00", "delta": 0, "dayofweek": 5}, {"last_update": "2020-12-09T01:33:42.207257+00:00", "delta": 23, "dayofweek": 4}, {"last_update": "2020-12-09T01:00:08.571035+00:00", "delta": 0, "dayofweek": 4}, {"last_update": "2020-12-08T01:27:41.009737+00:00", "delta": 23, "dayofweek": 3}, {"last_update": "2020-12-08T00:59:17.635120+00:00", "delta": 0, "dayofweek": 3}, {"last_update": "2020-12-04T01:01:20.797262+00:00", "delta": 47, "dayofweek": 6}, {"last_update": "2020-12-03T00:59:06.374338+00:00", "delta": 24, "dayofweek": 5}, {"last_update": "2020-12-02T00:59:59.393915+00:00", "delta": 23, "dayofweek": 4}, {"last_update": "2020-12-01T00:57:58.742651+00:00", "delta": 24, "dayofweek": 3}, {"last_update": "2020-11-27T00:56:22.516585+00:00", "delta": 48, "dayofweek": 6}, {"last_update": "2020-11-26T00:59:58.709827+00:00", "delta": 23, "dayofweek": 5}, {"last_update": "2020-11-25T00:57:23.097966+00:00", "delta": 24, "dayofweek": 4}, {"last_update": "2020-11-24T00:59:53.377715+00:00", "delta": 23, "dayofweek": 3}, {"last_update": "2020-11-20T01:00:02.674251+00:00", "delta": 47, "dayofweek": 6}, {"last_update": "2020-11-19T00:59:11.692642+00:00", "delta": 24, "dayofweek": 5}, {"last_update": "2020-11-18T00:58:10.319709+00:00", "delta": 24, "dayofweek": 4}, {"last_update": "2020-11-17T00:55:58.037320+00:00", "delta": 24, "dayofweek": 3}, {"last_update": "2020-11-17T00:22:11.354533+00:00", "delta": 0, "dayofweek": 3}, {"last_update": "2020-11-13T00:57:22.264991+00:00", "delta": 47, "dayofweek": 6}, {"last_update": "2020-11-12T00:57:17.852893+00:00", "delta": 24, "dayofweek": 5}, {"last_update": "2020-11-11T00:58:47.952220+00:00", "delta": 23, "dayofweek": 4}, {"last_update": "2020-11-10T01:04:12.096519+00:00", "delta": 23, "dayofweek": 3}, {"last_update": "2020-11-09T00:58:26.492120+00:00", "delta": 24, "dayofweek": 2}, {"last_update": "2020-11-06T00:56:14.937249+00:00", "delta": 24, "dayofweek": 6}, {"last_update": "2020-11-05T01:05:42.237464+00:00", "delta": 23, "dayofweek": 5}, {"last_update": "2020-11-04T00:56:34.151913+00:00", "delta": 24, "dayofweek": 4}, {"last_update": "2020-11-03T00:56:04.561140+00:00", "delta": 24, "dayofweek": 3}, {"last_update": "2020-11-02T00:56:11.011551+00:00", "delta": 23, "dayofweek": 2}, {"last_update": "2020-10-30T00:55:47.552200+00:00", "delta": 24, "dayofweek": 6}, {"last_update": "2020-10-29T01:02:16.274316+00:00", "delta": 23, "dayofweek": 5}, {"last_update": "2020-10-28T00:56:35.321658+00:00", "delta": 24, "dayofweek": 4}, {"last_update": "2020-10-27T00:56:39.833643+00:00", "delta": 23, "dayofweek": 3}, {"last_update": "2020-10-26T00:56:50.997159+00:00", "delta": 23, "dayofweek": 2}, {"last_update": "2020-10-23T00:55:23.560968+00:00", "delta": 24, "dayofweek": 6}, {"last_update": "2020-10-22T01:00:22.182695+00:00", "delta": 23, "dayofweek": 5}, {"last_update": "2020-10-21T00:56:20.641715+00:00", "delta": 24, "dayofweek": 4}, {"last_update": "2020-10-20T00:55:54.914386+00:00", "delta": 24, "dayofweek": 3}, {"last_update": "2020-10-19T00:55:32.748788+00:00", "delta": 24, "dayofweek": 2}, {"last_update": "2020-10-16T00:57:14.912235+00:00", "delta": 23, "dayofweek": 6}, {"last_update": "2020-10-15T00:56:45.625922+00:00", "delta": 24, "dayofweek": 5}, {"last_update": "2020-10-14T00:52:41.578212+00:00", "delta": 24, "dayofweek": 4}, {"last_update": "2020-10-13T00:52:15.396853+00:00", "delta": 24, "dayofweek": 3}, {"last_update": "2020-10-12T00:52:45.033163+00:00", "delta": 23, "dayofweek": 2}, {"last_update": "2020-10-09T00:53:15.857776+00:00", "delta": 23, "dayofweek": 6}, {"last_update": "2020-10-08T00:56:52.005127+00:00", "delta": 23, "dayofweek": 5}, {"last_update": "2020-10-07T00:53:13.041267+00:00", "delta": 24, "dayofweek": 4}, {"last_update": "2020-10-06T00:53:42.969149+00:00", "delta": 23, "dayofweek": 3}, {"last_update": "2020-10-05T00:54:40.992899+00:00", "delta": 23, "dayofweek": 2}, {"last_update": "2020-10-02T00:56:38.430026+00:00", "delta": 23, "dayofweek": 6}, {"last_update": "2020-10-01T00:53:55.785188+00:00", "delta": 24, "dayofweek": 5}, {"last_update": "2020-09-30T00:54:27.993079+00:00", "delta": 23, "dayofweek": 4}, {"last_update": "2020-09-29T00:54:07.415534+00:00", "delta": 24, "dayofweek": 3}, {"last_update": "2020-09-28T00:53:32.014356+00:00", "delta": 24, "dayofweek": 2}, {"last_update": "2020-09-25T00:55:32.816001+00:00", "delta": 23, "dayofweek": 6}]
+[
+  {
+    "last_update": "2021-02-08T01:14:00.613279+00:00",
+    "delta": 20,
+    "dayofweek": 2
+  },
+  {
+    "last_update": "2021-02-05T02:15:02.634326+00:00",
+    "delta": 22,
+    "dayofweek": 6
+  },
+  {
+    "last_update": "2021-02-04T19:28:20.139938+00:00",
+    "delta": 6,
+    "dayofweek": 5
+  },
+  {
+    "last_update": "2021-01-28T03:04:24.002535+00:00",
+    "delta": 184,
+    "dayofweek": 5
+  },
+  {
+    "last_update": "2021-01-26T01:05:13.479970+00:00",
+    "delta": 49,
+    "dayofweek": 3
+  },
+  {
+    "last_update": "2021-01-25T01:08:11.989345+00:00",
+    "delta": 23,
+    "dayofweek": 2
+  },
+  {
+    "last_update": "2021-01-22T01:06:33.055425+00:00",
+    "delta": 24,
+    "dayofweek": 6
+  },
+  {
+    "last_update": "2021-01-21T01:10:11.371584+00:00",
+    "delta": 23,
+    "dayofweek": 5
+  },
+  {
+    "last_update": "2021-01-20T01:38:33.235385+00:00",
+    "delta": 23,
+    "dayofweek": 4
+  },
+  {
+    "last_update": "2021-01-20T01:04:58.989252+00:00",
+    "delta": 0,
+    "dayofweek": 4
+  },
+  {
+    "last_update": "2021-01-19T01:05:07.312523+00:00",
+    "delta": 23,
+    "dayofweek": 3
+  },
+  {
+    "last_update": "2021-01-18T01:06:55.494255+00:00",
+    "delta": 23,
+    "dayofweek": 2
+  },
+  {
+    "last_update": "2021-01-15T02:03:04.108180+00:00",
+    "delta": 23,
+    "dayofweek": 6
+  },
+  {
+    "last_update": "2021-01-14T01:02:32.497085+00:00",
+    "delta": 25,
+    "dayofweek": 5
+  },
+  {
+    "last_update": "2021-01-13T01:01:55.906013+00:00",
+    "delta": 24,
+    "dayofweek": 4
+  },
+  {
+    "last_update": "2021-01-12T01:05:08.053950+00:00",
+    "delta": 23,
+    "dayofweek": 3
+  },
+  {
+    "last_update": "2021-01-11T01:03:34.175928+00:00",
+    "delta": 24,
+    "dayofweek": 2
+  },
+  {
+    "last_update": "2021-01-08T01:01:59.875925+00:00",
+    "delta": 24,
+    "dayofweek": 6
+  },
+  {
+    "last_update": "2021-01-07T01:00:44.429511+00:00",
+    "delta": 24,
+    "dayofweek": 5
+  },
+  {
+    "last_update": "2021-01-06T00:59:58.379078+00:00",
+    "delta": 24,
+    "dayofweek": 4
+  },
+  {
+    "last_update": "2021-01-05T00:58:45.822027+00:00",
+    "delta": 24,
+    "dayofweek": 3
+  },
+  {
+    "last_update": "2021-01-04T00:58:08.393731+00:00",
+    "delta": 24,
+    "dayofweek": 2
+  },
+  {
+    "last_update": "2021-01-01T01:01:56.513526+00:00",
+    "delta": 23,
+    "dayofweek": 6
+  },
+  {
+    "last_update": "2020-12-31T00:59:54.217277+00:00",
+    "delta": 24,
+    "dayofweek": 5
+  },
+  {
+    "last_update": "2020-12-30T01:01:06.634433+00:00",
+    "delta": 23,
+    "dayofweek": 4
+  },
+  {
+    "last_update": "2020-12-29T01:04:02.920335+00:00",
+    "delta": 23,
+    "dayofweek": 3
+  },
+  {
+    "last_update": "2020-12-28T01:03:49.897457+00:00",
+    "delta": 24,
+    "dayofweek": 2
+  },
+  {
+    "last_update": "2020-12-25T01:02:47.236267+00:00",
+    "delta": 24,
+    "dayofweek": 6
+  },
+  {
+    "last_update": "2020-12-24T01:00:40.543741+00:00",
+    "delta": 24,
+    "dayofweek": 5
+  },
+  {
+    "last_update": "2020-12-23T01:09:41.026833+00:00",
+    "delta": 23,
+    "dayofweek": 4
+  },
+  {
+    "last_update": "2020-12-22T01:04:34.216227+00:00",
+    "delta": 24,
+    "dayofweek": 3
+  },
+  {
+    "last_update": "2020-12-21T00:59:14.061297+00:00",
+    "delta": 24,
+    "dayofweek": 2
+  },
+  {
+    "last_update": "2020-12-18T00:58:56.789591+00:00",
+    "delta": 24,
+    "dayofweek": 6
+  },
+  {
+    "last_update": "2020-12-17T02:49:24.887397+00:00",
+    "delta": 22,
+    "dayofweek": 5
+  },
+  {
+    "last_update": "2020-12-16T16:48:43.048288+00:00",
+    "delta": 10,
+    "dayofweek": 4
+  },
+  {
+    "last_update": "2020-12-11T02:38:20.217130+00:00",
+    "delta": 86,
+    "dayofweek": 6
+  },
+  {
+    "last_update": "2020-12-11T00:58:20.975941+00:00",
+    "delta": -47,
+    "dayofweek": 6
+  },
+  {
+    "last_update": "2020-12-10T01:37:15.324215+00:00",
+    "delta": 23,
+    "dayofweek": 5
+  },
+  {
+    "last_update": "2020-12-10T00:59:43.257735+00:00",
+    "delta": 0,
+    "dayofweek": 5
+  },
+  {
+    "last_update": "2020-12-09T01:33:42.207257+00:00",
+    "delta": 23,
+    "dayofweek": 4
+  },
+  {
+    "last_update": "2020-12-09T01:00:08.571035+00:00",
+    "delta": 0,
+    "dayofweek": 4
+  },
+  {
+    "last_update": "2020-12-08T01:27:41.009737+00:00",
+    "delta": 23,
+    "dayofweek": 3
+  },
+  {
+    "last_update": "2020-12-08T00:59:17.635120+00:00",
+    "delta": 0,
+    "dayofweek": 3
+  },
+  {
+    "last_update": "2020-12-04T01:01:20.797262+00:00",
+    "delta": 47,
+    "dayofweek": 6
+  },
+  {
+    "last_update": "2020-12-03T00:59:06.374338+00:00",
+    "delta": 24,
+    "dayofweek": 5
+  },
+  {
+    "last_update": "2020-12-02T00:59:59.393915+00:00",
+    "delta": 23,
+    "dayofweek": 4
+  },
+  {
+    "last_update": "2020-12-01T00:57:58.742651+00:00",
+    "delta": 24,
+    "dayofweek": 3
+  },
+  {
+    "last_update": "2020-11-27T00:56:22.516585+00:00",
+    "delta": 48,
+    "dayofweek": 6
+  },
+  {
+    "last_update": "2020-11-26T00:59:58.709827+00:00",
+    "delta": 23,
+    "dayofweek": 5
+  },
+  {
+    "last_update": "2020-11-25T00:57:23.097966+00:00",
+    "delta": 24,
+    "dayofweek": 4
+  },
+  {
+    "last_update": "2020-11-24T00:59:53.377715+00:00",
+    "delta": 23,
+    "dayofweek": 3
+  },
+  {
+    "last_update": "2020-11-20T01:00:02.674251+00:00",
+    "delta": 47,
+    "dayofweek": 6
+  },
+  {
+    "last_update": "2020-11-19T00:59:11.692642+00:00",
+    "delta": 24,
+    "dayofweek": 5
+  },
+  {
+    "last_update": "2020-11-18T00:58:10.319709+00:00",
+    "delta": 24,
+    "dayofweek": 4
+  },
+  {
+    "last_update": "2020-11-17T00:55:58.037320+00:00",
+    "delta": 24,
+    "dayofweek": 3
+  },
+  {
+    "last_update": "2020-11-17T00:22:11.354533+00:00",
+    "delta": 0,
+    "dayofweek": 3
+  },
+  {
+    "last_update": "2020-11-13T00:57:22.264991+00:00",
+    "delta": 47,
+    "dayofweek": 6
+  },
+  {
+    "last_update": "2020-11-12T00:57:17.852893+00:00",
+    "delta": 24,
+    "dayofweek": 5
+  },
+  {
+    "last_update": "2020-11-11T00:58:47.952220+00:00",
+    "delta": 23,
+    "dayofweek": 4
+  },
+  {
+    "last_update": "2020-11-10T01:04:12.096519+00:00",
+    "delta": 23,
+    "dayofweek": 3
+  },
+  {
+    "last_update": "2020-11-09T00:58:26.492120+00:00",
+    "delta": 24,
+    "dayofweek": 2
+  },
+  {
+    "last_update": "2020-11-06T00:56:14.937249+00:00",
+    "delta": 24,
+    "dayofweek": 6
+  },
+  {
+    "last_update": "2020-11-05T01:05:42.237464+00:00",
+    "delta": 23,
+    "dayofweek": 5
+  },
+  {
+    "last_update": "2020-11-04T00:56:34.151913+00:00",
+    "delta": 24,
+    "dayofweek": 4
+  },
+  {
+    "last_update": "2020-11-03T00:56:04.561140+00:00",
+    "delta": 24,
+    "dayofweek": 3
+  },
+  {
+    "last_update": "2020-11-02T00:56:11.011551+00:00",
+    "delta": 23,
+    "dayofweek": 2
+  },
+  {
+    "last_update": "2020-10-30T00:55:47.552200+00:00",
+    "delta": 24,
+    "dayofweek": 6
+  },
+  {
+    "last_update": "2020-10-29T01:02:16.274316+00:00",
+    "delta": 23,
+    "dayofweek": 5
+  },
+  {
+    "last_update": "2020-10-28T00:56:35.321658+00:00",
+    "delta": 24,
+    "dayofweek": 4
+  },
+  {
+    "last_update": "2020-10-27T00:56:39.833643+00:00",
+    "delta": 23,
+    "dayofweek": 3
+  },
+  {
+    "last_update": "2020-10-26T00:56:50.997159+00:00",
+    "delta": 23,
+    "dayofweek": 2
+  },
+  {
+    "last_update": "2020-10-23T00:55:23.560968+00:00",
+    "delta": 24,
+    "dayofweek": 6
+  },
+  {
+    "last_update": "2020-10-22T01:00:22.182695+00:00",
+    "delta": 23,
+    "dayofweek": 5
+  },
+  {
+    "last_update": "2020-10-21T00:56:20.641715+00:00",
+    "delta": 24,
+    "dayofweek": 4
+  },
+  {
+    "last_update": "2020-10-20T00:55:54.914386+00:00",
+    "delta": 24,
+    "dayofweek": 3
+  },
+  {
+    "last_update": "2020-10-19T00:55:32.748788+00:00",
+    "delta": 24,
+    "dayofweek": 2
+  },
+  {
+    "last_update": "2020-10-16T00:57:14.912235+00:00",
+    "delta": 23,
+    "dayofweek": 6
+  },
+  {
+    "last_update": "2020-10-15T00:56:45.625922+00:00",
+    "delta": 24,
+    "dayofweek": 5
+  },
+  {
+    "last_update": "2020-10-14T00:52:41.578212+00:00",
+    "delta": 24,
+    "dayofweek": 4
+  },
+  {
+    "last_update": "2020-10-13T00:52:15.396853+00:00",
+    "delta": 24,
+    "dayofweek": 3
+  },
+  {
+    "last_update": "2020-10-12T00:52:45.033163+00:00",
+    "delta": 23,
+    "dayofweek": 2
+  },
+  {
+    "last_update": "2020-10-09T00:53:15.857776+00:00",
+    "delta": 23,
+    "dayofweek": 6
+  },
+  {
+    "last_update": "2020-10-08T00:56:52.005127+00:00",
+    "delta": 23,
+    "dayofweek": 5
+  },
+  {
+    "last_update": "2020-10-07T00:53:13.041267+00:00",
+    "delta": 24,
+    "dayofweek": 4
+  },
+  {
+    "last_update": "2020-10-06T00:53:42.969149+00:00",
+    "delta": 23,
+    "dayofweek": 3
+  },
+  {
+    "last_update": "2020-10-05T00:54:40.992899+00:00",
+    "delta": 23,
+    "dayofweek": 2
+  },
+  {
+    "last_update": "2020-10-02T00:56:38.430026+00:00",
+    "delta": 23,
+    "dayofweek": 6
+  },
+  {
+    "last_update": "2020-10-01T00:53:55.785188+00:00",
+    "delta": 24,
+    "dayofweek": 5
+  },
+  {
+    "last_update": "2020-09-30T00:54:27.993079+00:00",
+    "delta": 23,
+    "dayofweek": 4
+  },
+  {
+    "last_update": "2020-09-29T00:54:07.415534+00:00",
+    "delta": 24,
+    "dayofweek": 3
+  },
+  {
+    "last_update": "2020-09-28T00:53:32.014356+00:00",
+    "delta": 24,
+    "dayofweek": 2
+  },
+  {
+    "last_update": "2020-09-25T00:55:32.816001+00:00",
+    "delta": 23,
+    "dayofweek": 6
+  }
+]
