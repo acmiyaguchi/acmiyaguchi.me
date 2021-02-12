@@ -10,6 +10,11 @@ tags:
 
 <script>
 import ConsistentCoffee from "../toastmasters/speeches/consistent-coffee.svx"
+import dayjs from "dayjs"
+import localizedFormat from "dayjs/plugin/localizedFormat";
+dayjs.extend(localizedFormat);
+
+let presented_date = dayjs("2019-12-02").format("ll")
 </script>
 
 An outline can be an efficient tool for rehearsing a presentation. It frees you
@@ -26,8 +31,8 @@ one-minute sections that can be practiced independently. I omit the slides when
 presenting to my Toastmasters club to focus on my delivery and the audience.
 
 I used an outline when creating "A consistent cup of coffee" that I presented to
-Mountain View Toastmasters on 2019-12-02. Take a look through the transcribed
-slides and a recording of the speech.
+Mountain View Toastmasters on {presented_date}. Take a look through the
+transcribed slides and a recording of the speech.
 
 [lightning]: https://en.wikipedia.org/wiki/Lightning_talk
 
