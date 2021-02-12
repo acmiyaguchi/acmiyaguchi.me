@@ -14,6 +14,7 @@ tags:
     import Table from "../../components/Table.svelte";
     import Plot from  "../../components/Plot.svelte";
     import Visualization from "./_assets/2021-02-12-viz.svelte"
+
     import {
         mean,
         median,
@@ -73,11 +74,48 @@ tags:
 
 _This post is interactive and may not render correctly without Javascript._
 
-The probe-scraper forms the basis of the schema infrastructure at Mozilla.
+The [Probe Scraper][probe-scraper] underpins the data schema infrastructure at
+Mozilla. Every night, it trawls through the Firefox Mercurial and Git
+repositories searching for registry files. The output powers an [Probe-Info
+Service API][probe-info] (probe-info) that is used to [generate
+schemas][schema-generator] and power [data dictionaries][glean-dictionary].
+
+It is scheduled to run on business days (Monday to Friday UTC+00) on
+[Airflow][airflow]. While there are notifications to the data engineering team
+when the job inevitably fails for one reason or another, the status of the
+[schema deployment pipeline][docs] has not always been clear from the outside.
+
+In this post, I'll write a little bit about how the probe-info service is
+monitored and and displayed for operational transparency. I'll focus the
+discussion on the merits of statistical tools like the median absolute deviation
+(MAD) for figuring out whether the probe-info service is up to date without
+actually having access to the internals of the service.
+
+[probe-scraper]: https://github.com/mozilla/probe-scraper
+[probe-info]: https://mozilla.github.io/probe-scraper/
+[schema-generator]: https://github.com/mozilla/mozilla-schema-generator
+[glean-dictionary]: https://github.com/mozilla/glean-dictionary
+[airflow]: https://github.com/mozilla/telemetry-airflow/
+[docs]: https://docs.telemetry.mozilla.org/concepts/pipeline/schemas.html
 
 {#if data.length > 0}
 
 ## Collecting monitoring data
+
+Every 15 minutes, and endpoint from the probe-info service is queried to obtain
+the last update timestamp. This gets loaded into a BigQuery table, then
+transformed and dumped into a JSON file. During this process, the series of
+timestamps is transformed into deltas representing the time since the last
+update. In the SQL, we encode some of the business logic to take into account
+the lull of the weekends.
+
+We expect to see five updates a week at a regular interval of 24 hours. We can
+plot this data to see obvious irregularities with the date. We consider anything
+that takes longer than 24 business hours a partial-outage. It is partial because
+the infrastructure continues to serve requests despite out of date information
+about schemas.
+
+<div style="border: 1px solid black; padding: 1em;">
 
 <Plot
 {data}
@@ -102,7 +140,24 @@ layout={{
 <pre>{JSON.stringify(rawData.slice(0, 3), '', 2)}</pre>
 </details>
 
-## A refresher on statistics, are you MAD?
+</div>
+
+You can obtain a copy of the frozen output [here][status] or updated data
+directly from the [monitoring dashboard][monitoring].
+
+The large spike on 2021-01-28 was due to a memory pressure issue that took
+several days to resolve. This is the largest partial-outage in recorded history,
+but not the only one. Between November and December, there are five outages in
+total.
+
+Is there a way to automatically detect whether a particular day is experiencing
+a partial-outage, without knowing the intricacies of scheduling? It turns out we
+can do this inference easily with the help of statistics.
+
+[status]: assets/2021-02-12/probeinfo_status.json
+[monitoring]: https://protosaur.dev/mps-deploys/
+
+## A refresher on statistics, are you MAD‽
 
 The mean is {mean(delta).toFixed(1)} ($\mu$) with a standard deviation
 ($$\sigma$$) of {standardDeviation(delta).toFixed(1)}. We can determine how far
@@ -134,8 +189,9 @@ First lets take a look at the data over the entire dataset so far.
 
 <details>
 <summary>Click to reveal analysis</summary>
-<br>
+<div style="border: 1px solid black; padding: 1em;">
 <Visualization data={data} />
+</div>
 </details>
 
 ### Month of November 2020 (3 partial-outages)
@@ -145,8 +201,9 @@ partial outages.
 
 <details>
 <summary>Click to reveal analysis</summary>
-<br>
+<div style="border: 1px solid black; padding: 1em;">
 <Visualization data={dataDec} />
+</div>
 </details>
 
 ### Month of October 2020 (no outages)
@@ -155,8 +212,9 @@ And again for the month of October. This was a perfect month without any outages
 
 <details>
 <summary>Click to reveal analysis</summary>
-<br>
+<div style="border: 1px solid black; padding: 1em;">
 <Visualization data={dataOct} />
+</div>
 </details>
 
 {/if}
