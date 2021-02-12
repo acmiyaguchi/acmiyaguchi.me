@@ -98,8 +98,6 @@ actually having access to the internals of the service.
 [airflow]: https://github.com/mozilla/telemetry-airflow/
 [docs]: https://docs.telemetry.mozilla.org/concepts/pipeline/schemas.html
 
-{#if data.length > 0}
-
 ## Collecting monitoring data
 
 Every 15 minutes, and endpoint from the probe-info service is queried to obtain
@@ -114,6 +112,8 @@ plot this data to see obvious irregularities with the date. We consider anything
 that takes longer than 24 business hours a partial-outage. It is partial because
 the infrastructure continues to serve requests despite out of date information
 about schemas.
+
+{#if data.length > 0}
 
 <div style="border: 1px solid black; padding: 1em;">
 
@@ -159,29 +159,79 @@ can do this inference easily with the help of statistics.
 
 ## A refresher on statistics, are you MAD‽
 
-The mean is {mean(delta).toFixed(1)} ($\mu$) with a standard deviation
-($$\sigma$$) of {standardDeviation(delta).toFixed(1)}. We can determine how far
-a point is from the mean by computing a z-score.
+To talk about outliers, we'll need to know how to describe the data and their patterns.
+
+### Standard statistics
+
+You might already be familiar with these. If you are, feel free to skip ahead.
+Otherwise:
+
+<details>
+<summary>Click here for an overview of mean, standard deviation, and z-score.</summary>
+
+The mean ($\mu$) is an average of the dataset. We let $\text{avg}$ be the
+arithmetic mean, which is the sum of all the values divided by the number of
+values.
+
+$$
+\mu = \text{avg}(X) = \frac{
+    \sum_{i=1}^n x_i
+}{n}
+$$
+
+Tne standard deviation ($\sigma$) is a measure of spread which says something
+about the average distance from the mean. More precisely:
+
+$$
+\sigma = \sqrt{ \text{avg}((x_i - \mu)^2) }
+$$
+
+We can determine how many standard deviations a point is from the mean by
+computing a z-score ($z$).
 
 $$
 z = \frac{x - \mu}{\sigma}
 $$
 
-The median ($\tilde{\mu}$) is {median(delta)} with a median absolute deviation
-($MAD$) of {medianAbsoluteDeviation(delta)}. We can modify the z-score to give
-us a robust equivalent to the standard deviation.
+For a set where $\mu=10$ and $\sigma=5$, the point $x=20$ has a score $z=2$, while
+the point $x=5$ has a score $z=-1$.
+
+</details>
+
+### Robust statistics
+
+We'll define robust equivalents of the mean, standard deviation, and z-score. A
+robust statistic is less susceptible to the effects of outliers. The median
+($\tilde{\mu}$) is the point in the sorted set of values, which we define as
+$\text{med}$.
+
+$$
+\tilde{\mu} = \text{med}(X)
+$$
+
+The median absolute deviation ($MAD$) is the median of differences from the
+median, and a robust measure of spread.
+
+$$
+MAD = \text{med}(x - \tilde{\mu})
+$$
+
+Finally, we can compute a modified z-score ($\tilde{z}$) using $MAD$. We apply a
+scale-factor $k$ that's appropriate for the distribution. Because I don't know
+any better, I choose to assume that everything is guassian in shape. According
+to Rosseeuw, this means $k=1.4826$. NIST suggests a similar value of
+$k= 1 / 0.6745$. I'll be using the former for all calculations.
 
 $$
 \tilde{z} = \frac{x - \tilde{\mu}}{k \cdot MAD}
 $$
 
+[robust]: https://en.wikipedia.org/wiki/Robust_statistics
+
 ## Detecting partial-outages on historical data
 
 Now armed with the necessary statistical tools, we'll run this on some
-historical data. A partial-outage is a period of time where the probe-scraper
-service has not successfully run. The outage is partial because our schema
-repository continues to work outside of this subsystem. However, it may not have
-the most up to date information about the set of metrics.
+historical data.
 
 ### All of history (7 partial-outages)
 
@@ -221,12 +271,26 @@ And again for the month of October. This was a perfect month without any outages
 
 ## Thoughts and closing remarks
 
-MAD works pretty well in all sorts of situations because it is robust.
+Robust measures of spread like MAD are good at finding outliers in data with
+minimal tuning of the threshold. Note that the spread does not go over $1.0$
+hour with MAD, whereas the standard deviation goes anywhere between $0.5$ and
+$21.0$ hours depending on the time period we look at. The variance is influenced
+by the outliers in the standard case, while in the robust case they have no
+effect up to a certain point. While we can use standard deviation to find
+service outages, we have to tune our threshold to meet our needs.
+
+With a simple monitoring pipeline, we can detect outages in the abscense of
+information. The setup here is not unlike a watchdog timer in embedded
+electronics. By looking at the time deltas between events, we can build up a
+model that lets us categorize events into the usual and unusual. I've found that
+MAD and the modified z-score are versatile tools, and suggest trying them out if
+you have the statistical need.
 
 ## References
 
-- https://www.statisticshowto.com/probability-and-statistics/z-score/
+- https://en.wikipedia.org/wiki/Standard_deviation
 - https://en.wikipedia.org/wiki/Median_absolute_deviation
+- https://www.statisticshowto.com/probability-and-statistics/z-score/
 - http://web.ipac.caltech.edu/staff/fmasci/home/astro_refs/BetterThanMAD.pdf
 - https://www.itl.nist.gov/div898/handbook/eda/section3/eda35h.htm
 - https://docs.oracle.com/cd/E17236_01/epm.1112/cb_statistical/frameset.htm?ch07s02s10s01.html
