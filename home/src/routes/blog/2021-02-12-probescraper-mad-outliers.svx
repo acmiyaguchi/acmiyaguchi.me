@@ -244,6 +244,9 @@ First lets take a look at the data over the entire dataset so far.
 </div>
 </details>
 
+The MAD-based threshold of 3 handily finds all the legitimate outages. If we set
+the threshold for the standard score to 1, we should obtain the same results.
+
 ### Month of November 2020 (3 partial-outages)
 
 Now lets repeat it for the month of November. This is a period with three
@@ -256,6 +259,10 @@ partial outages.
 </div>
 </details>
 
+Again, the MAD-based threshold is working well. The optimal threshold for the
+standard deviation is ~2, but the threshold from the previous section would work
+too.
+
 ### Month of October 2020 (no outages)
 
 And again for the month of October. This was a perfect month without any outages 😊.
@@ -266,6 +273,10 @@ And again for the month of October. This was a perfect month without any outages
 <Visualization data={dataOct} />
 </div>
 </details>
+
+Everything is nominal. Note that if our threshold were set to 1 here, we would
+flag half of our dataset as unusual. The optimal threshold is closer to 2 in
+this case.
 
 {/if}
 
