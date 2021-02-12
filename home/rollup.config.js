@@ -2,6 +2,7 @@ import path from "path";
 import resolve from "@rollup/plugin-node-resolve";
 import replace from "@rollup/plugin-replace";
 import commonjs from "@rollup/plugin-commonjs";
+import copy from "rollup-plugin-copy";
 import url from "@rollup/plugin-url";
 import svelte from "rollup-plugin-svelte";
 import babel from "@rollup/plugin-babel";
@@ -68,6 +69,22 @@ export default {
       }),
       string({
         include: "**/*.pl",
+      }),
+      copy({
+        targets: [
+          {
+            src: ["node_modules/katex/dist/fonts/*"],
+            dest: "__sapper__/build/client/fonts",
+          },
+          {
+            src: ["node_modules/katex/dist/fonts/*"],
+            dest: "__sapper__/dev/client/fonts",
+          },
+          {
+            src: ["node_modules/katex/dist/fonts/*"],
+            dest: "__sapper__/export/fonts",
+          },
+        ],
       }),
       commonjs(),
 
