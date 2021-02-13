@@ -17,4 +17,7 @@ for source in (Path.home() / "lmms/projects").glob("*.mid"):
 manifest = [dict(name=p.name) for p in sorted(output.glob("*"))]
 (output / "manifest.json").write_text(json.dumps(manifest, indent=2))
 
-run("gsutil -m rsync -r data/acmiyaguchi/ gs://acmiyaguchi".split(), shell=True)
+run(
+    "gsutil -m rsync -r data/acmiyaguchi/midi/ gs://acmiyaguchi/midi/".split(),
+    shell=True,
+)
