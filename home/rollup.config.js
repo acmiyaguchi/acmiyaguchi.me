@@ -2,6 +2,7 @@ import path from "path";
 import resolve from "@rollup/plugin-node-resolve";
 import replace from "@rollup/plugin-replace";
 import commonjs from "@rollup/plugin-commonjs";
+import copy from "rollup-plugin-copy";
 import url from "@rollup/plugin-url";
 import svelte from "rollup-plugin-svelte";
 import babel from "@rollup/plugin-babel";
@@ -11,6 +12,8 @@ import pkg from "./package.json";
 import { string } from "rollup-plugin-string";
 import { mdsvex } from "mdsvex";
 import globImport from "./rollup.glob.js";
+import remarkMath from "remark-math";
+import rehypeKatexSvelte from "rehype-katex-svelte";
 
 const mode = process.env.NODE_ENV;
 const dev = mode === "development";
@@ -21,6 +24,11 @@ const onwarn = (warning, onwarn) =>
   (warning.code === "CIRCULAR_DEPENDENCY" &&
     /[/\\]@sapper[/\\]/.test(warning.message)) ||
   onwarn(warning);
+
+const preprocess = mdsvex({
+  remarkPlugins: [remarkMath],
+  rehypePlugins: [rehypeKatexSvelte],
+});
 
 export default {
   client: {
@@ -42,7 +50,7 @@ export default {
           hydratable: true,
         },
         extensions: [".svelte", ".svx"],
-        preprocess: mdsvex(),
+        preprocess: preprocess,
       }),
       url({
         sourceDir: path.resolve(__dirname, "src/node_modules/images"),
@@ -61,6 +69,22 @@ export default {
       }),
       string({
         include: "**/*.pl",
+      }),
+      copy({
+        targets: [
+          {
+            src: ["node_modules/katex/dist/fonts/*"],
+            dest: "__sapper__/build/client/fonts",
+          },
+          {
+            src: ["node_modules/katex/dist/fonts/*"],
+            dest: "__sapper__/dev/client/fonts",
+          },
+          {
+            src: ["node_modules/katex/dist/fonts/*"],
+            dest: "__sapper__/export/fonts",
+          },
+        ],
       }),
       commonjs(),
 
@@ -114,7 +138,7 @@ export default {
         },
         emitCss: false,
         extensions: [".svelte", ".svx"],
-        preprocess: mdsvex(),
+        preprocess: preprocess,
       }),
       url({
         sourceDir: path.resolve(__dirname, "src/node_modules/images"),
