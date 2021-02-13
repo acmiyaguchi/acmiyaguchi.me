@@ -101,6 +101,17 @@ module "function_usage_logs" {
   app_engine_region     = local.app_engine_region
 }
 
+module "function_spotify" {
+  source                = "../modules/functions"
+  name                  = "spotify"
+  entry_point           = "spotify_playlist"
+  service_account_email = local.app_engine_email
+  bucket                = google_storage_bucket.default.name
+  schedule              = "0 0 * * 2,6"
+  timeout               = 120
+  app_engine_region     = local.app_engine_region
+}
+
 resource "google_secret_manager_secret" "spotify_client_id" {
   secret_id = "spotify-client-id"
   replication {

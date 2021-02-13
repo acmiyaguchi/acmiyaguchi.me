@@ -53,6 +53,7 @@ def transform(data):
 
 def dump_to_gcs(bucket, prefix, object, dumps=json.dumps):
     """Upload data to a gcs bucket in a compressed format."""
+    print(f"dumping item to {bucket}/{prefix}")
     gcs = storage.Client()
     bucket = gcs.bucket(bucket)
     blob = bucket.blob(prefix)
@@ -69,18 +70,23 @@ def scrape_and_load(playlist):
 
     ds = datetime.now().isoformat()[:10]
     bucket = "acmiyaguchi"
-    prefix = f"v1/data/spotify/{name}/{ds}.ndjson"
-    print(f"dumping item to {bucket}/{prefix}")
+    prefix = f"v1/data/spotify/{name}"
     dump_to_gcs(
         bucket,
-        prefix,
+        f"{prefix}/{ds}.ndjson",
         data_flat,
         dumps=ndjson.dumps,
+    )
+    # also dump the most recent version, which will have to be deduplicated
+    dump_to_gcs(
+        bucket,
+        f"{prefix}/latest.json",
+        data_flat,
     )
 
     bq = bigquery.Client()
     load_job = bq.load_table_from_uri(
-        f"gs://{bucket}/{prefix.rstrip('.ndjson')}*",
+        f"gs://{bucket}/{prefix}/*.ndjson",
         f"{PROJECT_ID}.spotify.{name}",
         job_config=bigquery.LoadJobConfig(
             autodetect=True,
