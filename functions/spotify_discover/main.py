@@ -61,17 +61,16 @@ def dump_to_gcs(bucket, prefix, object, dumps=json.dumps):
     blob.upload_from_string(dumps(object).encode())
 
 
-def spotify_discover(request):
-    # TODO: conditional that runs a day of the week
-    data = get_tracks(RELEASE_RADAR)
-    data_flat = transform(data)
-
-    # insert into bigquery
+def scrape_and_load(playlist):
     name = META[RELEASE_RADAR]
+    print(f"getting tracks for {playlist}")
+    data = get_tracks(playlist)
+    data_flat = transform(data)
 
     ds = datetime.now().isoformat()[:10]
     bucket = "acmiyaguchi"
     prefix = f"v1/data/spotify/{name}/{ds}.ndjson"
+    print(f"dumping item to {bucket}/{prefix}")
     dump_to_gcs(
         bucket,
         prefix,
@@ -93,5 +92,21 @@ def spotify_discover(request):
     load_job.result()
 
 
+def spotify_playlist(request):
+    # monday is 0, saturday is 5
+    dow = date.today().weekday()
+    if dow == 1:
+        playlist = DISCOVER_WEEKLY
+    elif dow == 5:
+        playlist = RELEASE_RADAR
+    else:
+        print(f"no playlists to scrape today {datetime.now.isoformat()}")
+
+    scrape_and_load(playlist)
+
+
 if __name__ == "__main__":
-    spotify_discover(None)
+    # we're going to get extra items in the bucket when we manually run outside
+    # of the intended schedule
+    scrape_and_load(DISCOVER_WEEKLY)
+    scrape_and_load(RELEASE_RADAR)
