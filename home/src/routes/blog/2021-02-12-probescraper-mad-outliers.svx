@@ -36,6 +36,23 @@ tags:
         {
             name: "delta (hour)",
             format: (row) => row.delta
+        },
+        {
+            name: "day of week (int)",
+            format: (row) => row.dayofweek
+        },
+        {
+            name: "day of week",
+            format: row =>
+                [
+                    "saturday",
+                    "sunday",
+                    "monday",
+                    "tuesday",
+                    "wednesday",
+                    "thursday",
+                    "friday"
+                ][row.dayofweek]
         }
     ];
 
@@ -72,21 +89,26 @@ tags:
     })
 </script>
 
-_This post is interactive and may not render correctly without Javascript._
+_Check out the [monitoring dashboard in action][monitoring]. Note that this post
+is interactive and may not render correctly without Javascript._
 
 The [Probe Scraper][probe-scraper] underpins the data schema infrastructure at
-Mozilla. Every night, it trawls through the Firefox Mercurial and Git
-repositories searching for registry files. The output powers an [Probe-Info
+Mozilla. Every night, it trawls through Firefox Mercurial and Git
+repositories, searching for registry files. The output powers the [Probe-Info
 Service API][probe-info] (probe-info) that is used to [generate
-schemas][schema-generator] and power [data dictionaries][glean-dictionary].
+schemas][schema-generator] and build [data dictionaries][glean-dictionary].
 
 It is scheduled to run on business days (Monday to Friday UTC+00) on
 [Airflow][airflow]. While there are notifications to the data engineering team
 when the job inevitably fails for one reason or another, the status of the
-[schema deployment pipeline][docs] has not always been clear from the outside.
+[schema deployment pipeline][docs] has not always been clear from the outside. I
+put together a [monitoring dashboard][monitoring] to address the lack of
+visibility. The monitoring mechanism is not unlike a [watchdog timer][watchdog]
+in embedded electronics, where it runs on a separate clock checking on the
+health of the main system.
 
 In this post, I'll write a little bit about how the probe-info service is
-monitored and and displayed for operational transparency. I'll focus the
+monitored and displayed for operational transparency. I'll focus the
 discussion on the merits of statistical tools like the median absolute deviation
 (MAD) for figuring out whether the probe-info service is up to date without
 actually having access to the internals of the service.
@@ -97,21 +119,25 @@ actually having access to the internals of the service.
 [glean-dictionary]: https://github.com/mozilla/glean-dictionary
 [airflow]: https://github.com/mozilla/telemetry-airflow/
 [docs]: https://docs.telemetry.mozilla.org/concepts/pipeline/schemas.html
+[monitoring]: https://protosaur.dev/mps-deploys/
+[watchdog]: https://en.wikipedia.org/wiki/Watchdog_timer
 
 ## Collecting monitoring data
 
-Every 15 minutes, and endpoint from the probe-info service is queried to obtain
-the last update timestamp. This gets loaded into a BigQuery table, then
-transformed and dumped into a JSON file. During this process, the series of
-timestamps is transformed into deltas representing the time since the last
-update. In the SQL, we encode some of the business logic to take into account
-the lull of the weekends.
+Every 15 minutes, an [endpoint from the probe-info service][get-general] is
+queried to obtain the last updated timestamp. This gets loaded into a BigQuery
+table, then transformed and dumped into a JSON file. During this process, the
+timestamps series is transformed into deltas representing the time since the
+last update. In the SQL, we encode some of the business logic to consider the
+lull of the weekends.
 
-We expect to see five updates a week at a regular interval of 24 hours. We can
-plot this data to see obvious irregularities with the date. We consider anything
-that takes longer than 24 business hours a partial-outage. It is partial because
-the infrastructure continues to serve requests despite out of date information
-about schemas.
+We expect to see five updates a week at a regular interval of 24 hours. Plotting
+the data reveals apparent irregularities with the date. We consider anything
+that takes longer than 24 business hours a partial-outage. It is a
+partial-outage because the infrastructure continues to serve requests despite
+out of date information about schemas.
+
+[get-general]: https://mozilla.github.io/probe-scraper/#operation/getGeneral
 
 {#if data.length > 0}
 
@@ -125,6 +151,42 @@ layout={{
     height: 320,
     }}
 />
+
+<br>
+
+<details>
+<summary>Click to reveal the SQL query</summary>
+
+The query to transform the timestamps is straightforward. It's worth noting
+that the delta is negative on the weekends which can lead to negative
+aberrations when the Airflow is manually triggered outside of business days.
+
+```sql
+-- monitoring-queries:mozilla_pipeline_schemas.probeinfo_status
+WITH extracted AS (
+  SELECT
+    last_update,
+    TIMESTAMP_DIFF(
+      coalesce(lead(last_update) OVER (ORDER BY last_update), current_timestamp()),
+      last_update,
+      hour
+    ) AS delta,
+    EXTRACT(dayofweek FROM last_update) AS dayofweek
+  FROM
+    mozilla_pipeline_schemas.probeinfo_meta
+  ORDER BY
+    last_update DESC
+)
+SELECT
+  last_update,
+  -- we subtract the weekend since the probe scraper is not running
+  IF(dayofweek = 6, delta - 48, delta) AS delta,
+  dayofweek
+FROM
+  extracted
+```
+
+</details>
 
 <br>
 
@@ -145,23 +207,25 @@ layout={{
 {/if}
 
 You can obtain a copy of the frozen output [here][status] or updated data
-directly from the [monitoring dashboard][monitoring].
+directly from the [monitoring dashboard][monitoring-json].
 
-The large spike on 2021-01-28 was due to a memory pressure issue that took
+The large spike on 2021-01-28 was [due to a memory pressure issue][pr] that took
 several days to resolve. This is the largest partial-outage in recorded history,
 but not the only one. Between November and December, there are five outages in
 total.
 
-Is there a way to automatically detect whether a particular day is experiencing
-a partial-outage, without knowing the intricacies of scheduling? It turns out we
-can do this inference easily with the help of statistics.
+Is there a way to automatically detect whether there is currently a
+partial-outage without knowing the intricacies of scheduling? It turns out we
+can make this inference easily with the help of statistics.
 
+[pr]: https://github.com/mozilla/probe-scraper/pull/267
 [status]: assets/2021-02-12/probeinfo_status.json
-[monitoring]: https://protosaur.dev/mps-deploys/
+[monitoring-json]: https://protosaur.dev/mps-deploys/data/mozilla_pipeline_schemas/probeinfo_status.json
 
 ## A refresher on statistics, are you MAD‽
 
-To talk about outliers, we'll need to know how to describe the data and their patterns.
+To talk about outliers, we'll need to know how to describe the data and their
+patterns.
 
 ### Standard statistics
 
@@ -171,8 +235,8 @@ Otherwise:
 <details>
 <summary>Click here for an overview of mean, standard deviation, and z-score.</summary>
 
-The mean ($\mu$) is an average of the dataset. We let $\text{avg}$ be the
-arithmetic mean, which is the sum of all the values divided by the number of
+The mean ($\mu$) is the average of the dataset. We'll let $\text{avg}$ be the
+the arithmetic mean, or the sum of all the values divided by the number of
 values.
 
 $$
@@ -181,22 +245,22 @@ $$
 }{n}
 $$
 
-Tne standard deviation ($\sigma$) is a measure of spread which says something
-about the average distance from the mean. More precisely:
+The [standard deviation][stddev] ($\sigma$) is a measure of spread which
+quantifies the average distance from the mean. More precisely:
 
 $$
 \sigma = \sqrt{ \text{avg}((x_i - \mu)^2) }
 $$
 
 We can determine how many standard deviations a point is from the mean by
-computing a z-score ($z$).
+computing a [z-score][z-score] ($z$).
 
 $$
 z = \frac{x - \mu}{\sigma}
 $$
 
-For a set where $\mu=10$ and $\sigma=5$, the point $x=20$ has a score $z=2$, while
-the point $x=5$ has a score $z=-1$.
+For a set where $\mu=10$ and $\sigma=5$, the point $x=20$ has a score $z=2$,
+while the point $x=5$ has a score $z=-1$.
 
 </details>
 
@@ -211,33 +275,43 @@ $$
 \tilde{\mu} = \text{med}(X)
 $$
 
-The median absolute deviation ($MAD$) is the median of differences from the
-median, and a robust measure of spread.
+The [median absolute deviation ($MAD$)][mad] is the median of differences from
+the median, and a robust measure of spread.
 
 $$
 MAD = \text{med}(x - \tilde{\mu})
 $$
 
 Finally, we can compute a modified z-score ($\tilde{z}$) using $MAD$. We apply a
-scale-factor $k$ that's appropriate for the distribution. Because I don't know
-any better, I choose to assume that everything is guassian in shape. According
-to Rosseeuw, this means $k=1.4826$. NIST suggests a similar value of
-$k= 1 / 0.6745$. I'll be using the former for all calculations.
+scale-factor $k$ that's appropriate for the distribution. I'll assume the data
+is Gaussian (or normal) for lack of better prior understanding. According to
+[Rosseeuw][rosseeuw], this means $k=1.4826$. [NIST suggests a similar
+value][nist] of $k= 1 / 0.6745$. I'll be using the former for all calculations.
 
 $$
 \tilde{z} = \frac{x - \tilde{\mu}}{k \cdot MAD}
 $$
 
 [robust]: https://en.wikipedia.org/wiki/Robust_statistics
+[stddev]: https://en.wikipedia.org/wiki/Standard_deviation
+[z-score]: https://www.statisticshowto.com/probability-and-statistics/z-score/
+[mad]: https://en.wikipedia.org/wiki/Median_absolute_deviation
+[rosseeuw]: http://web.ipac.caltech.edu/staff/fmasci/home/astro_refs/BetterThanMAD.pdf
+[nist]: https://www.itl.nist.gov/div898/handbook/eda/section3/eda35h.htm
 
 ## Detecting partial-outages on historical data
 
-Now armed with the necessary statistical tools, we'll run this on some
-historical data.
+Now armed with the necessary statistical tools, let's run some analysis on
+historical data to find partial-outages in the service. We'll mark point points
+that are 3 deviations away from the center (mean or median) following the
+[three-sigma rule of thumb][empirical].
+
+[empirical]: https://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule
 
 ### All of history (7 partial-outages)
 
-First lets take a look at the data over the entire dataset so far.
+First, let's take a look at the data over the entire dataset so far,
+representing approximately three months of data.
 
 <details>
 <summary>Click to reveal analysis</summary>
@@ -246,12 +320,12 @@ First lets take a look at the data over the entire dataset so far.
 </div>
 </details>
 
-The MAD-based threshold of 3 handily finds all the legitimate outages. If we set
-the threshold for the standard score to 1, we should obtain the same results.
+The MAD-based threshold of 3 handily finds all the legitimate outages. If we had
+set the threshold for the standard score to 1, we should obtain similar results.
 
 ### Month of November 2020 (3 partial-outages)
 
-Now lets repeat it for the month of November. This is a period with three
+Now let's repeat it for November. This is a period with three
 partial outages.
 
 <details>
@@ -267,7 +341,7 @@ too.
 
 ### Month of October 2020 (no outages)
 
-And again for the month of October. This was a perfect month without any outages 😊.
+And again for October. This was a perfect month without any outages 😊.
 
 <details>
 <summary>Click to reveal analysis</summary>
@@ -276,32 +350,23 @@ And again for the month of October. This was a perfect month without any outages
 </div>
 </details>
 
-Everything is nominal. Note that if our threshold were set to 1 here, we would
+Everything is nominal. If our threshold were set to 1 here, we would
 flag half of our dataset as unusual. The optimal threshold is closer to 2 in
 this case.
 
 ## Thoughts and closing remarks
 
 Robust measures of spread like MAD are good at finding outliers in data with
-minimal tuning of the threshold. Note that the spread does not go over $1.0$
-hour with MAD, whereas the standard deviation goes anywhere between $0.5$ and
-$21.0$ hours depending on the time period we look at. The variance is influenced
-by the outliers in the standard case, while in the robust case they have no
-effect up to a certain point. While we can use standard deviation to find
-service outages, we have to tune our threshold to meet our needs.
+minimal tuning of the threshold. Note the standard deviation varies between
+$0.5$ and $21.0$ hours depending on the period, whereas MAD does not go over
+$1.0$ hour. Outliers can affect the variance of the standard deviation by a
+large margin. This is less of a problem when we use a robust statistic like MAD,
+which makes it useful when we don't know much about the data. While we can use
+standard deviation to find service outages, we have to tune the z-score
+threshold to meet our needs.
 
-With a simple monitoring pipeline, we can detect outages in the abscense of
-information. The setup here is not unlike a watchdog timer in embedded
-electronics. By looking at the time deltas between events, we can build up a
-model that lets us categorize events into the usual and unusual. I've found that
-MAD and the modified z-score are versatile tools, and suggest trying them out if
-you have the statistical need.
-
-## References
-
-- https://en.wikipedia.org/wiki/Standard_deviation
-- https://en.wikipedia.org/wiki/Median_absolute_deviation
-- https://www.statisticshowto.com/probability-and-statistics/z-score/
-- http://web.ipac.caltech.edu/staff/fmasci/home/astro_refs/BetterThanMAD.pdf
-- https://www.itl.nist.gov/div898/handbook/eda/section3/eda35h.htm
-- https://docs.oracle.com/cd/E17236_01/epm.1112/cb_statistical/frameset.htm?ch07s02s10s01.html
+With a simple monitoring pipeline, we can detect outages in the absence of
+further information. By looking at the time deltas between events, we can build
+up a model that categorizes events into the usual and unusual. I've found that
+MAD and the modified z-score are versatile tools, and I suggest trying them out
+if you have the statistical need.
