@@ -142,6 +142,8 @@ layout={{
 
 </div>
 
+{/if}
+
 You can obtain a copy of the frozen output [here][status] or updated data
 directly from the [monitoring dashboard][monitoring].
 
@@ -277,8 +279,6 @@ And again for the month of October. This was a perfect month without any outages
 Everything is nominal. Note that if our threshold were set to 1 here, we would
 flag half of our dataset as unusual. The optimal threshold is closer to 2 in
 this case.
-
-{/if}
 
 ## Thoughts and closing remarks
 
