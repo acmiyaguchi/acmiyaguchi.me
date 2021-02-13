@@ -6,7 +6,10 @@
 </script>
 
 <script>
-  import PostListing from "../../components/PostListing.svelte";
+  // this component lives in the root, otherwise there are issues
+  // mounting and remounting the blog pages.
+  // https://github.com/sveltejs/sapper/issues/1278
+  import PostListing from "../components/PostListing.svelte";
   export let metadata;
 </script>
 
