@@ -16,26 +16,51 @@ google-api-core[grpc]==1.25.1
     # via
     #   google-cloud-bigquery
     #   google-cloud-core
+    #   google-cloud-secret-manager
 google-auth==1.25.0
     # via
     #   google-api-core
     #   google-cloud-core
+    #   google-cloud-storage
 google-cloud-bigquery==2.7.0
     # via -r requirements.in
 google-cloud-core==1.6.0
-    # via google-cloud-bigquery
+    # via
+    #   google-cloud-bigquery
+    #   google-cloud-storage
+google-cloud-secret-manager==2.2.0
+    # via -r requirements.in
+google-cloud-storage==1.36.0
+    # via -r requirements.in
 google-crc32c==1.1.2
     # via google-resumable-media
 google-resumable-media==1.2.0
-    # via google-cloud-bigquery
-googleapis-common-protos==1.52.0
-    # via google-api-core
+    # via
+    #   google-cloud-bigquery
+    #   google-cloud-storage
+googleapis-common-protos[grpc]==1.52.0
+    # via
+    #   google-api-core
+    #   grpc-google-iam-v1
+grpc-google-iam-v1==0.12.3
+    # via google-cloud-secret-manager
 grpcio==1.35.0
-    # via google-api-core
+    # via
+    #   google-api-core
+    #   googleapis-common-protos
+    #   grpc-google-iam-v1
 idna==2.10
     # via requests
+libcst==0.3.17
+    # via google-cloud-secret-manager
+mypy-extensions==0.4.3
+    # via typing-inspect
+ndjson==0.3.1
+    # via -r requirements.in
 proto-plus==1.13.0
-    # via google-cloud-bigquery
+    # via
+    #   google-cloud-bigquery
+    #   google-cloud-secret-manager
 protobuf==3.14.0
     # via
     #   google-api-core
@@ -50,13 +75,14 @@ pyasn1==0.4.8
     #   rsa
 pycparser==2.20
     # via cffi
-python-dotenv==0.15.0
-    # via -r requirements.in
 pytz==2021.1
     # via google-api-core
+pyyaml==5.4.1
+    # via libcst
 requests==2.25.1
     # via
     #   google-api-core
+    #   google-cloud-storage
     #   spotipy
 rsa==4.7
     # via google-auth
@@ -71,6 +97,12 @@ six==1.15.0
     #   spotipy
 spotipy==2.16.1
     # via -r requirements.in
+typing-extensions==3.7.4.3
+    # via
+    #   libcst
+    #   typing-inspect
+typing-inspect==0.6.0
+    # via libcst
 urllib3==1.26.3
     # via requests
 
