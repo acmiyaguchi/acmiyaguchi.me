@@ -99,8 +99,10 @@
   };
 </script>
 
-<Table data={summaryTable(delta)} />
+{#if data && data.length > 0}
+  <Table data={summaryTable(delta)} />
 
-<Plot {data} {transform} {layout} />
+  <Plot {data} {transform} {layout} />
 
-<Table {data} {columns} paginationSize={7} />
+  <Table {data} {columns} paginationSize={7} />
+{:else}Loading...{/if}
