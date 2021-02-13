@@ -62,7 +62,7 @@ def dump_to_gcs(bucket, prefix, object, dumps=json.dumps):
 
 
 def scrape_and_load(playlist):
-    name = META[RELEASE_RADAR]
+    name = META[playlist]
     print(f"getting tracks for {playlist}")
     data = get_tracks(playlist)
     data_flat = transform(data)
