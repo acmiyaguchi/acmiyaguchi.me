@@ -1,0 +1,5 @@
+spotipy
+google-cloud-secret-manager
+google-cloud-storage
+google-cloud-bigquery
+ndjson
