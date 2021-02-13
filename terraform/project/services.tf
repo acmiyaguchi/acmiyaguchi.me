@@ -12,3 +12,8 @@ resource "google_project_service" "cloudscheduler" {
   project = local.project_id
   service = "cloudscheduler.googleapis.com"
 }
+
+resource "google_project_service" "secretmanager" {
+  project = local.project_id
+  service = "secretmanager.googleapis.com"
+}

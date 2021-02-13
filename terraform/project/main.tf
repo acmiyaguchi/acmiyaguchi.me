@@ -57,6 +57,12 @@ resource "google_bigquery_dataset" "logs" {
   project    = local.project_id
 }
 
+resource "google_bigquery_dataset" "spotify" {
+  dataset_id = "spotify"
+  location   = "US"
+  project    = local.project_id
+}
+
 module "view_logs_visitor_pings" {
   source     = "../modules/views"
   dataset_id = google_bigquery_dataset.logs.dataset_id
@@ -93,4 +99,37 @@ module "function_usage_logs" {
   schedule              = "0 */6 * * *"
   timeout               = 120
   app_engine_region     = local.app_engine_region
+}
+
+module "function_spotify" {
+  source                = "../modules/functions"
+  name                  = "spotify"
+  entry_point           = "spotify_playlist"
+  service_account_email = local.app_engine_email
+  bucket                = google_storage_bucket.default.name
+  schedule              = "0 0 * * 2,6"
+  timeout               = 120
+  app_engine_region     = local.app_engine_region
+}
+
+resource "google_secret_manager_secret" "spotify_client_id" {
+  secret_id = "spotify-client-id"
+  replication {
+    user_managed {
+      replicas {
+        location = local.region
+      }
+    }
+  }
+}
+
+resource "google_secret_manager_secret" "spotify_client_secret" {
+  secret_id = "spotify-client-secret"
+  replication {
+    user_managed {
+      replicas {
+        location = local.region
+      }
+    }
+  }
 }

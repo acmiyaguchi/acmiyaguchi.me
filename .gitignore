@@ -3,3 +3,4 @@
 venv/
 data/
 node_modules/
+.env
