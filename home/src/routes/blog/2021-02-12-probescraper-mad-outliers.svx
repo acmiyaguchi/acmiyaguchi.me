@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Finding service outages with robust statistics
-date: 2021-02-12T12:30:00-08:00
+date: 2021-02-12T21:00:00-08:00
 category: Engineering
 tags:
   - monitoring
