@@ -1,15 +1,97 @@
 ---
 layout: post
 title: Applying feedback to a speech
-date: 2021-02-10T17:30:00-08:00
+date: 2021-02-14T17:30:00-08:00
 category: Toastmasters
 tags:
   - speech
   - practice
+  - feedback
 ---
 
-In this post, I talk about how I applied feedback to my speech.
+<script>
+  import ConsistentCoffee from "../toastmasters/speeches/consistent-coffee-transcript.svx"
+  import dayjs from "dayjs"
+  import localizedFormat from "dayjs/plugin/localizedFormat";
+  dayjs.extend(localizedFormat);
+  let presented_date = dayjs("2019-07-22").format("ll")
+</script>
+
+<style>
+  object {
+    width: 100%;
+    height: 600px;
+  }
+</style>
+
+Applying constructive criticism is valuable in improving speech content and
+delivery. How else are you supposed to know how an audience will react to what
+you say without fielding it in front of a live audience? Toastmasters encourages
+postive feedback by making speech evaluations an integral part of practice. In
+this post, I'll discuss the process of recieving and applying feedback to a
+speech.
+
+On {presented_date}, I presented the first rendition of "Making a consistent cup
+of coffee" to the Mountain View Toastmasters club. I gave this speech twice as
+part of my evaluation and feedback speeches as a Level 1 pathway speech, where
+the objective is to present a speech on any topic, receive feedback, and apply
+the feedback to the second speech. Here is the speech.
 
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/iHDlkUGKVKY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+<details>
+<summary>Click here for a transcript of the speech.</summary>
+<div style="border: 1px solid black; padding: 1em;">
+<ConsistentCoffee />
+</div>
+</details>
+
+After the speech, I was given some feedback from a fellow Toastmaster, Steve, on
+things that I did well and things that I could improve on in the future. Even
+though this was now almost a year and a half ago, I clearly remember learning
+new things from his perspective on the speech. The first was that he noticed
+that there were oohs and laughing coming from the audience. I was so tensed up
+and nervous that I never even noticed the reaction that was coming from the
+audience. He also mentioned that I repeated the word sour frequently throughout
+the speech. I noticed this after watching through my recording. I use the word
+sour 14 times. One salient point that he made was that my eye contact was
+missing from a large portion of the speech.
+
+<object data="https://storage.googleapis.com/acmiyaguchi/toastmasters/feedback/2019-07-22-coffee-eval-3.pdf" type="application/pdf">
+    <embed src="https://storage.googleapis.com/acmiyaguchi/toastmasters/feedback/2019-07-22-coffee-eval-3.pdf" type="application/pdf" />
+</object>
+
+_A scanned copy of my evaluation form. Thank you, Steve, for the feedback and
+permission to share!_
+
+Later that evening at a club social event at Tied House, I got feedback some of
+the members there. One suggestion that I should have have brought the entire
+device in to show off how coffee was actually made in it. It was a bit weird
+just having the bottom piece of the device. Through the feedback in the notes, I
+was told that the ending could have been more impactful with more of a message.
+
+With all of this feedback in my hands, I sat on it for a few months. When I came
+back to it again, I rewrote the speech in some signficant changes.
+
+- I decided to write and memorize my opening and conclusions. There were the
+  weakest points of my speech (in my opinion).
+- I made sure to actually bring my AeroPress to the next speech. It was weird
+  that I didn't bring it in when I thought about it. I planned the demonstration
+  as the point where I would try to address feedback about eye contact
+  deliberately.
+- I practiced. A lot more than I did the first time around. When I watched my
+  second speech, I looked a lot more rehearsed. I remember recording myself
+  quite a bit this time through.
+
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/aEdUZjOQ9h8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+These two speeches, though only a few months apart, feel leagues apart in terms
+of the quality of the speech. I think the feedback significantly influenced how
+I approached the speech this time around. The practice also smoothed the
+delivery. And, though not in my control, the camera angle was a bit better. It's
+actually very difficult for me to sit through the first rendition of the speech,
+but much easier to watch the second one several times over.
+
+I attribute my improvement to great feedback from the entire club, and the
+process of going back and improving of the speech that I gave. With every speech
+comes some new aspect that you can improve on.
