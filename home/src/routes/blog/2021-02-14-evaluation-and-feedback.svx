@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Applying feedback to a speech
-date: 2021-02-14T17:30:00-08:00
+date: 2021-02-14T23:22:00-08:00
 category: Toastmasters
 tags:
   - speech
