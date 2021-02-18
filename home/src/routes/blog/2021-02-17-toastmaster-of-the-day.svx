@@ -8,41 +8,68 @@ tags:
   - toastmaster
 ---
 
-The emcee of a meeting plays the role of faciliating meetings for the night. It
-may seem initimidating at first, but it's not as difficult as you might think. A
-Toastmaster is responsible for several things.
+The Toastmaster of the day is the master of ceremonies (MC or emcee) and the
+Toastmasters club's titular role. It may seem intimidating at first, but it's
+not as bad as you would think. A Toastmaster is responsible for several things.
 
 - Ensuring that members confirm their roles for next week's meeting.
 - Creating and setting the agenda.
 - Being the host for the meeting and introducing speakers to the audience.
 
 At Mountain View Toastmasters, they also set the theme's meeting and the tip of
-the day, which are ways of spicing up the meeting. The instructions for my club
-are detailed and go over many of the aspects that might be worrisome for a new
-Toastmaster.
+the day, which are ways of spicing up the meeting. The [instructions for the
+club][instructions] are excellent, covering all aspects an aspiring (or
+volunteered) member needs to know about the process.
 
-The confirmation emails is probably the most labor intensive part of the
+The confirmation emails are probably the most labor-intensive part of the
 meeting. In an email thread, usually 4-5 days before the meeting starts,
-everyone is asked to confirm their roles. If they are are the word master or a
-speaker, there are a few other bits of information that's necessary for filling
-out the agenda. Speakers need to include the title of their speech, along with a
-small introduction for their evaluators.
+everyone is asked to confirm their roles. The most stressful part of this
+process is when a role still needs to be filled, or worse, someone drops out at
+the last minute. An email to the club's mailing list can get this in order,
+where more experienced members often volunteer to fill void. Once roles have
+been confirmed and the relevant information gathered, it's time to prepare the
+agenda before sending a reminder to the club with meeting details.
 
-The most stressful part of this process is when someone drops out at the last
-minute, or when a role still needs to be filled. Usually, an email to the club's
-mailing list can get this in order, where more experienced members generally
-volunteer to fill these last minute spots. The agenda can be a little tedious to
-fill out, but a good template goes a long way.
+It helps to practice a little for the day (but you can get away with winging
+most of it 🤫). Here's what I used to prepare for my most recent meeting as
+Toastmaster of the day.
 
-The meeting goes by much quicker than you would expect. There are probably 3-5
-minutes in the beginning that you talk, and the rest of the meeting is just
-introducing other speakers. The toastmaster fills in the odd gaps on the stage,
-and ensures that the podium is always attended by someone. In the days past, a
-handshake was an important part of the transitionary flow, as well as cue for
-the audience to start applause. There's that odd rule where it takes 2-3 people
-to start applause from the crowd -- it's true when you're up on stage and
-command the room.
+<div style="border: 1px solid black; padding: 0em 1em;">
 
-Being comfortable with running a meeting is applicable professional settings,
-where planning and staying within a schedule while hitting all the points is
-important.
+### Monday, 2021-02-15
+
+#### Theme of the Day: President's Day
+
+#### Introduction
+
+Welcome to today's meeting. The theme of today's meeting is president's day. I
+hope you enjoyed your day -- banks closed, mailboxes empty, and countless car
+promotions are happening across dealerships countrywide. Here's to honoring the
+legacy of George Washington and Abraham Lincoln.
+
+#### Tip of the Day
+
+We often attribute presidents to be omnipotent, all-powerful beings, but they're
+people just like you and me. Use these days of remembrance to read up on the history
+-- the first paragraph of Wikipedia is generally full of interesting facts.
+
+</div>
+
+The meeting goes by much quicker than you would expect. The first 3-5 minutes
+are dedicated to welcome the club and outline the meeting for guests. The rest
+of the meeting is transitioning between speakers. The Toastmaster fills in the
+odd gaps on the stage and ensures that someone always attends the podium (in the
+abstract now that everything is online). It's odd how often I look at my watch
+or the clock during meetings; there's pressure to be timely and ensure that
+meetings run to a high standard. Everyone does their part to make the
+meeting a success, so it ends up being a role that actually doesn't require much
+effort once the gears start turning.
+
+Being comfortable with running a meeting is applicable to professional settings.
+A fixed schedule, awareness of time, and some preparedness makes a meeting run
+smoothly. Some of the details are different in-person versus online, but the
+overall experience and stresses are similar. Taking on the Toastmaster role is
+an excellent experience to exercise some soft skills and help out with the club;
+volunteer if you have the opportunity.
+
+[instructions]: https://docs.google.com/document/d/1zyCeWFT3_MZT35UjddbopuK9KHkYV8rmn0xGZa78tFA/view
