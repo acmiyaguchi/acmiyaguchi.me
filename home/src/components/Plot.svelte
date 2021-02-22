@@ -7,7 +7,6 @@
   let plotElement;
 
   onMount(async () => {
-    const { default: Plotly } = await import("plotly.js-custom");
     Plotly.newPlot(
       plotElement,
       transform(data),
