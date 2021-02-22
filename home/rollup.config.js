@@ -14,6 +14,7 @@ import { mdsvex } from "mdsvex";
 import globImport from "./rollup.glob.js";
 import remarkMath from "remark-math";
 import rehypeKatexSvelte from "rehype-katex-svelte";
+import dsv from "@rollup/plugin-dsv";
 
 const mode = process.env.NODE_ENV;
 const dev = mode === "development";
@@ -70,6 +71,7 @@ export default {
       string({
         include: "**/*.pl",
       }),
+      dsv(),
       copy({
         targets: [
           {
@@ -159,6 +161,7 @@ export default {
       string({
         include: "**/*.pl",
       }),
+      dsv(),
     ],
     external: Object.keys(pkg.dependencies).concat(
       require("module").builtinModules
