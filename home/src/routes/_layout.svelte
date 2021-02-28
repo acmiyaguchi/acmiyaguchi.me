@@ -4,8 +4,21 @@
   const { page } = stores();
   $: process.browser &&
     $page &&
-    fetch(`https://storage.googleapis.com/acmiyaguchi/ping`).then();
+    fetch(`https://storage.googleapis.com/acmiyaguchi/ping`, {
+      cache: "no-store",
+    }).then();
 </script>
+
+<main>
+  <slot />
+</main>
+
+{#if $page.path != "/"}
+  <hr />
+  <footer>
+    <a href="/">Take me to the homepage.</a>
+  </footer>
+{/if}
 
 <style>
   main,
@@ -28,14 +41,3 @@
     margin-top: 2em;
   }
 </style>
-
-<main>
-  <slot />
-</main>
-
-{#if $page.path != '/'}
-  <hr />
-  <footer>
-    <a href="/">Take me to the homepage.</a>
-  </footer>
-{/if}
