@@ -1,13 +1,9 @@
 <script>
-  import { onMount } from "svelte";
-  import wasm from "../chip8-core/Cargo.toml";
-
-  export let Chip8Core;
-
-  onMount(async () => {
-    Chip8Core = await wasm();
-    Chip8Core.start();
-  });
+  export let lib;
+  $: Core = lib.Core;
+  $: core = Core.new();
+  $: console.log(core);
+  $: display = core.get_display();
 </script>
 
 <svelte:head>
@@ -16,7 +12,8 @@
 
 <main>
   <h1>chip8 wasm demo</h1>
-  <canvas id="canvas" />
+  <h2>Display Memory</h2>
+  <textarea readonly>{display}</textarea>
 </main>
 
 <style>
@@ -24,5 +21,10 @@
     padding: 1em;
     max-width: 800px;
     margin: 0 auto;
+  }
+
+  textarea {
+    width: 400px;
+    height: 300px;
   }
 </style>

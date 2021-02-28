@@ -25,10 +25,14 @@ pub struct Cpu {
 impl Default for Cpu {
     fn default() -> Self {
         Self {
+            i: 0,
+            pc: 0,
             memory: [0; 4096],
             v: [0; 16],
+            display: Display::default(),
             stack: [0; 16],
-            ..Default::default()
+            sp: 0,
+            dt: 0
         }
     }
 }
@@ -40,5 +44,15 @@ impl Cpu {
 
     pub fn get_memory(&self) -> &[u8; 4096] {
         &self.memory
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn default_cpu() {
+        let _ = Cpu::default();
     }
 }
