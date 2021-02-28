@@ -25,9 +25,6 @@ pub struct Cpu {
 impl Default for Cpu {
     fn default() -> Self {
         Self {
-            display: Display {
-                memory: [0; 2048]
-            },
             memory: [0; 4096],
             v: [0; 16],
             stack: [0; 16],

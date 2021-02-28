@@ -7,7 +7,6 @@ mod display;
 mod utils;
 
 use cpu::Cpu;
-use display::Display;
 
 #[wasm_bindgen]
 pub struct Core {
@@ -16,11 +15,8 @@ pub struct Core {
 
 impl Core {
     pub fn init() -> Self {
-        let display = Display { memory: [0; 2048] };
         Self {
-            cpu: Cpu {
-                ..Default::default()
-            },
+            cpu: Cpu::default(),
         }
     }
 }
