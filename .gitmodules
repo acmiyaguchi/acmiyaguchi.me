@@ -1,3 +1,6 @@
 [submodule "apps/libprio-rs-wasm-demo"]
 	path = apps/libprio-rs-wasm-demo
 	url = https://github.com/acmiyaguchi/libprio-rs-wasm-demo
+[submodule "apps/svelte-biwascheme-example"]
+	path = apps/svelte-biwascheme-example
+	url = https://github.com/acmiyaguchi/svelte-biwascheme-example
