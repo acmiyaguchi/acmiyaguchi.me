@@ -2,7 +2,28 @@ use std::f64;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 
+mod cpu;
+mod display;
 mod utils;
+
+use cpu::Cpu;
+use display::Display;
+
+#[wasm_bindgen]
+pub struct Core {
+    cpu: Cpu
+}
+
+impl Core {
+    pub fn init() -> Self {
+        let display = Display { memory: [0; 2048] };
+        Self {
+            cpu: Cpu {
+                ..Default::default()
+            },
+        }
+    }
+}
 
 // https://rustwasm.github.io/wasm-bindgen/examples/2d-canvas.html
 #[wasm_bindgen(start)]
