@@ -1,7 +1,7 @@
 {
   "name": "acmiyaguchi.me",
   "description": "Anthony Miyaguchi's website",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "scripts": {
     "dev": "sapper dev --ext \".svelte .svx\"",
     "build": "sapper build --legacy --ext \".svelte .svx\"",
@@ -34,7 +34,7 @@
     "@rollup/plugin-url": "^6.0.0",
     "mdsvex": "^0.8.9",
     "rehype-katex-svelte": "^1.0.2",
-    "remark-math": "^4.0.0",
+    "remark-math": "^3.0.0",
     "rollup": "^2.40.0",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-string": "^3.0.0",
