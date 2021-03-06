@@ -42,7 +42,7 @@ resource "google_storage_bucket_object" "ping" {
   name          = "ping"
   content       = "pong"
   bucket        = google_storage_bucket.default.name
-  cache_control = "no-cache"
+  cache_control = "no-cache, no-store, must-revalidate"
 }
 
 
