@@ -8,51 +8,66 @@ const AMG_MINUTES_TEMPLATE_ID = "11NdRpVHwGTBLiCoCQmr8sDlskHnfkjzMMrhnB5iPpU8";
 const AMG_AGENDA_OUTPUT_FOLDER_ID = "14fBhsQ7u34EtXVWS8lWLS7QBwK7cdLNA";
 const AMG_MINUTES_OUTPUT_FOLDER_ID = "1GWySjq8y4OQS48PHT2vRyTxXWxKv8PyL";
 
-const WEEKS_TO_GENERATE = 3;
+const WEEKS_TO_GENERATE = 2;
 
 function onOpen() {
   let menuEntries = [
+    {
+      name: "Generate Agenda",
+      functionName: "generateAgenda",
+    },
     {
       name: "Generate Minutes",
       functionName: "generateMinutes",
     },
   ];
   let ss = SpreadsheetApp.getActiveSpreadsheet();
-  ss.addMenu("Create", menuEntries);
+  ss.addMenu("Generate", menuEntries);
 }
 
 function generateAgenda() {
-  let ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet = ss.getSheetByName("Roles");
-
-  // generate from the N most recent documents
-  let cutoff = WEEKS_TO_GENERATE;
-  let data = fetchSpreadsheetData(sheet).slice(0, 3);
-  Logger.log(JSON.stringify(data[0], " ", 2));
-  fillTemplate(
-    data.slice(0, 3),
+  _generateMain(
+    "Agendas",
     AMG_AGENDA_OUTPUT_FOLDER_ID,
     AMG_AGENDA_TEMPLATE_ID,
-    (row) => `MVTM Meeting Agenda, ${row.DATE.toISOString().slice(0, 10)}`
+    (row) => `MVTM Meeting Agenda, ${row.DATE.toISOString().slice(0, 10)}`,
+    WEEKS_TO_GENERATE
   );
-  ss.toast("Agendas have been compiled!");
 }
 
 function generateMinutes() {
+  _generateMain(
+    "Minutes",
+    AMG_MINUTES_OUTPUT_FOLDER_ID,
+    AMG_MINUTES_TEMPLATE_ID,
+    (row) => `Meeting Minutes, ${row.DATE.toISOString().slice(0, 10)}`,
+    WEEKS_TO_GENERATE
+  );
+}
+
+/// template_type: The name of the template, used to show in the popup
+/// output_folder_id: id of the drive folder to write output to
+/// template_id: id of the document to use as a template
+/// title_formatter: a callback of (row) -> string, for the title of the document
+/// cutoff: how many rows should be processed before quitting
+function _generateMain(
+  template_type,
+  output_folder_id,
+  template_id,
+  title_formatter,
+  cutoff
+) {
   let ss = SpreadsheetApp.getActiveSpreadsheet();
   let sheet = ss.getSheetByName("Roles");
 
   // generate from the N most recent documents
-  let cutoff = WEEKS_TO_GENERATE;
-  let data = fetchSpreadsheetData(sheet).slice(0, 3);
+  let data = fetchSpreadsheetData(sheet).slice(0, cutoff);
   Logger.log(JSON.stringify(data[0], " ", 2));
-  fillTemplate(
-    data.slice(0, 3),
-    AMG_MINUTES_OUTPUT_FOLDER_ID,
-    AMG_MINUTES_TEMPLATE_ID,
-    (row) => `Meeting Minutes, ${row.DATE.toISOString().slice(0, 10)}`
+  fillTemplate(data, output_folder_id, template_id, title_formatter);
+  ss.toast(
+    `${template_type} have been compiled!\nWrote:\n\t` +
+      data.map(title_formatter).join("\n\t")
   );
-  ss.toast("Minutes have been compiled!");
 }
 
 function normalizeName(name) {
@@ -85,7 +100,7 @@ function fetchSpreadsheetData(sheet) {
     // return in reverse chronological order
     .reverse();
 
-  Logger.log(header, data);
+  Logger.log(header);
   Logger.log(`number of entries: ${entries.length}`);
   return entries;
 }
@@ -104,7 +119,9 @@ function fillTemplate(
   data,
   output_folder_id,
   template_id,
-  title_formatter = (row) => `${row.toISOString().slice(0, 10)}`
+  title_formatter = () => {
+    throw Error("must implement title formatter callback");
+  }
 ) {
   let folder = DriveApp.getFolderById(output_folder_id);
 
@@ -113,7 +130,7 @@ function fillTemplate(
     Logger.log(`creating document for ${name}`);
     // trash the old document with the same name
     for (let file of intoArray(folder.getFilesByName(name))) {
-      Logger.log(`trashing existing file ${name}`);
+      Logger.log(`trashing existing file`);
       file.setTrashed(true);
     }
 
