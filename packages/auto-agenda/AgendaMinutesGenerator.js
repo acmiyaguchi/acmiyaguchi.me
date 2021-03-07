@@ -1,7 +1,12 @@
 // variables share global scope, AMG = Agenda Minutes Generator
+
+// templates for documents
 const AMG_AGENDA_TEMPLATE_ID = "1to1G9m12Om-0u5rDfxyPhwdShiaDVaa55R8SP_7XvMY";
 const AMG_MINUTES_TEMPLATE_ID = "11NdRpVHwGTBLiCoCQmr8sDlskHnfkjzMMrhnB5iPpU8";
-const AMG_OUTPUT_FOLDER_ID = "1Tf1Cq9drhwjyRV3ocePDi82L9eHz6K5p";
+
+// directory for output files
+const AMG_AGENDA_OUTPUT_FOLDER_ID = "14fBhsQ7u34EtXVWS8lWLS7QBwK7cdLNA";
+const AMG_MINUTES_OUTPUT_FOLDER_ID = "1GWySjq8y4OQS48PHT2vRyTxXWxKv8PyL";
 
 function onOpen() {
   let menuEntries = [
@@ -23,11 +28,8 @@ function normalizeName(name) {
     .join("_");
 }
 
-// Convert spreadsheet data (csv) into an array of objects
-function fetchSpreadsheetData(sheetName = "Roles") {
-  let ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet = ss.getSheetByName(sheetName);
-
+// Convert spreadsheet data from a sheet object (csv) into an array of objects
+function fetchSpreadsheetData(sheet) {
   let values = sheet
     .getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn())
     .getValues();
@@ -38,7 +40,9 @@ function fetchSpreadsheetData(sheetName = "Roles") {
     .map((row) =>
       // map each column to it's corresponding header and create an object
       Object.fromEntries(
-        row.slice(0, header.length).map((col, i) => [header[i], col])
+        row
+          .slice(0, header.length)
+          .map((col, i) => [header[i], col ? col : null])
       )
     )
     // return in reverse chronological order
@@ -50,21 +54,31 @@ function fetchSpreadsheetData(sheetName = "Roles") {
 }
 
 function generateMinutes() {
-  let data = fetchSpreadsheetData("Roles");
+  let ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName("Roles");
+
+  // generates the most recent document
+  let data = fetchSpreadsheetData(sheet);
   Logger.log(JSON.stringify(data[0], " ", 2));
+  fillTemplate(
+    data.slice(0, 3),
+    AMG_MINUTES_OUTPUT_FOLDER_ID,
+    AMG_MINUTES_TEMPLATE_ID,
+    (row) => `Meeting Minutes, ${row.DATE.toISOString().slice(0, 10)}`
+  );
+  ss.toast("Templates have been compiled!");
 }
 
 function fillTemplate(
+  data,
   output_folder_id,
   template_id,
   title_formatter = (row) => `${row.toISOString().slice(0, 10)}`
 ) {
   let folder = DriveApp.getFolderById(output_folder_id);
 
-  for (row of entries) {
-    let date = row[0].toISOString().slice(0, 10);
-    let toastmaster = row[1];
-    let name = `agenda ${date} ${toastmaster}`;
+  for (row of data) {
+    let name = title_formatter(row);
     Logger.log(`creating document for ${name}`);
     let docId = DriveApp.getFileById(template_id)
       .makeCopy(name, folder)
@@ -72,13 +86,14 @@ function fillTemplate(
     let doc = DocumentApp.openById(docId);
     let body = doc.getActiveSection();
 
-    for (let i = 0; i < header.length; i++) {
-      let variable = header[i].toUpperCase().replace(" ", "_");
-      body.replaceText(variable, row[i]);
-    }
+    // replace template variables inside of the document, only for keys that are
+    // non-null
+    Object.entries(row)
+      .filter(([_, value]) => value)
+      .map(([key, value]) => {
+        body.replaceText(`{{${key}}}`, value);
+      });
 
     doc.saveAndClose();
   }
-
-  ss.toast("Templates have been compiled!");
 }
