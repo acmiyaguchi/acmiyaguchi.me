@@ -8,8 +8,7 @@ const AMG_MINUTES_TEMPLATE_ID = "11NdRpVHwGTBLiCoCQmr8sDlskHnfkjzMMrhnB5iPpU8";
 const AMG_AGENDA_OUTPUT_FOLDER_ID = "14fBhsQ7u34EtXVWS8lWLS7QBwK7cdLNA";
 const AMG_MINUTES_OUTPUT_FOLDER_ID = "1GWySjq8y4OQS48PHT2vRyTxXWxKv8PyL";
 
-const WEEKS_TO_GENERATE = 2;
-
+// TODO: put the menu function into its own file?
 function onOpen() {
   let menuEntries = [
     {
@@ -20,9 +19,42 @@ function onOpen() {
       name: "Generate Minutes",
       functionName: "generateMinutes",
     },
+    {
+      name: "Advance Sign Up Sheet",
+      functionName: "advanceSignUpSheet",
+    },
+    {
+      name: "Copy Sign Ups to Roles",
+      functionName: "copyCurrentSignUpSheetEntryToRolesSheet",
+    },
+    {
+      name: "Copy Toastmaster Details to Roles",
+      functionName: "copyToastmasterDetailsToRoles",
+    },
+    {
+      name: "Clear Toastmaster Details",
+      functionName: "clearToastmasterDetails",
+    },
   ];
   let ss = SpreadsheetApp.getActiveSpreadsheet();
   ss.addMenu("Generate", menuEntries);
+}
+
+function localDate(date) {
+  return Utilities.formatDate(
+    new Date(date),
+    "GMT-7",
+    "MMMM dd, yy"
+  ).toString();
+}
+
+function isoDate(date) {
+  return Utilities.formatDate(new Date(date), "GMT-7", "yyyy-MM-dd").toString();
+}
+
+function addWeek(date) {
+  var nextDate = new Date(date);
+  return nextDate.setDate(date.getDate() + 7);
 }
 
 function generateAgenda() {
@@ -30,8 +62,7 @@ function generateAgenda() {
     "Agendas",
     AMG_AGENDA_OUTPUT_FOLDER_ID,
     AMG_AGENDA_TEMPLATE_ID,
-    (row) => `MVTM Meeting Agenda, ${row.DATE.toISOString().slice(0, 10)}`,
-    WEEKS_TO_GENERATE
+    (row) => `MVTM Meeting Agenda, ${row.DATE.toISOString().slice(0, 10)}`
   );
 }
 
@@ -40,8 +71,7 @@ function generateMinutes() {
     "Minutes",
     AMG_MINUTES_OUTPUT_FOLDER_ID,
     AMG_MINUTES_TEMPLATE_ID,
-    (row) => `Meeting Minutes, ${row.DATE.toISOString().slice(0, 10)}`,
-    WEEKS_TO_GENERATE
+    (row) => `Meeting Minutes, ${row.DATE.toISOString().slice(0, 10)}`
   );
 }
 
@@ -49,19 +79,29 @@ function generateMinutes() {
 /// output_folder_id: id of the drive folder to write output to
 /// template_id: id of the document to use as a template
 /// title_formatter: a callback of (row) -> string, for the title of the document
-/// cutoff: how many rows should be processed before quitting
 function _generateMain(
   template_type,
   output_folder_id,
   template_id,
-  title_formatter,
-  cutoff
+  title_formatter
 ) {
   let ss = SpreadsheetApp.getActiveSpreadsheet();
   let sheet = ss.getSheetByName("Roles");
 
-  // generate from the N most recent documents
-  let data = fetchSpreadsheetData(sheet).slice(0, cutoff);
+  // generate from the date in the current Toastmaster details sheet
+  let date = new ToastmasterDetails().date;
+  let data = fetchSpreadsheetData(sheet)
+    .filter((row) => row.DATE.getTime() == date.getTime())
+    // pre-format dates and include some things
+    .map((row) => ({
+      ...row,
+      // derived fields, for convenience
+      DATE_LOCAL: localDate(row.DATE),
+      DATE_ISO: isoDate(row.DATE),
+      NEXT_DATE_LOCAL: localDate(addWeek(row.DATE)),
+      NEXT_DATE_ISO: isoDate(addWeek(row.DATE)),
+    }));
+
   Logger.log(JSON.stringify(data[0], " ", 2));
   fillTemplate(data, output_folder_id, template_id, title_formatter);
   ss.toast(
