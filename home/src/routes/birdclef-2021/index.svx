@@ -1,0 +1,81 @@
+# BirdCLEF 2021 - Birdcall Identification
+
+[BirdCLEF 2021](https://www.kaggle.com/c/birdclef-2021/overview) is a data
+science competition for identifying bird calls in soundscape recordings. The
+goal is to be able to identify the species of bird making a call in a 5-second
+window in a soundscape audio track. The competition started on April 1, 2021,
+and the final submission deadline will be May 31, 2021.
+
+The [LifeCLEF 2021 conference](https://www.imageclef.org/LifeCLEF2021) will be
+held later this year from September 21-24, 2021. Placing in this contest could
+result in some exciting things.
+
+## 2021-04-06
+
+I've done a little bit of research into the topic. The training dataset contains
+over 350 different bird species, where each species has over one hundred
+one-minute audio clips that feature the bird call. Since the goal is to identify
+a 5-second clip, it seems like this problem boils down to building a cleaned-up
+training set from the audio. My approach will go something like this:
+
+- In the first phase, I will be looking at a single audio track and extracting
+  5-second clips that identify the bird.
+- In the second phase, I will be extracting patterns from the rest of the tracks
+  in that particular species. I should end up with several thousand thumbnails
+  that I can use for training. In the third phase, I'll repeat the first two on
+  the bird species' rest.
+- In the fourth phase, I'll train a linear classifier to return the bird call in
+  the training set. It seems unlikely that there will be more than one bird per
+  segment.
+- In the final phase, I'll attempt to make an initial submission.
+
+It will take some time to build a simple model, but I aim to spend about a month
+on this task. I have several other things going on outside of work that I need
+to dedicate a little bit of time. I think this should take about 20-30 hours to
+get to my first submission.
+
+I've done some initial investigation into motif-mining for time-series data. I'm
+going to take the approach of using the [Matrix
+Profile](https://www.cs.ucr.edu/~eamonn/MatrixProfile.html), which has a lot of
+desirable properties. In particular:
+
+- Silva, D. F., Yeh, C. C. M., Batista, G. E., & Keogh, E. J. (2016, August). SiMPle: Assessing Music Similarity Using Subsequences Joins. In ISMIR (pp. 23-29). [[pdf](https://www.cs.ucr.edu/~eamonn/MP_Music_ISMIR.pdf)]
+- Silva, D. F., Yeh, C. C. M., Zhu, Y., Batista, G. E., & Keogh, E. (2018). Fast similarity matrix profile for music analysis and exploration. IEEE Transactions on Multimedia, 21(1), 29-38. [[pdf](https://www.cs.ucr.edu/~eamonn/final-fast-similarity-3.pdf)]
+- Yeh, C. C. M. (2018). Towards a near universal time series data mining tool: Introducing the matrix profile. arXiv preprint arXiv:1811.03064. [[pdf](https://arxiv.org/pdf/1811.03064.pdf)]
+
+The first two links describe SiMPle, which adapts the Matrix Profile to music analysis. It uses the chroma energy normalized statistics (CENS) to compute the profile using 2 to 10 CENS depending on the task.
+
+In the last link, section 3.3.3 on Music Processing Case Study is the most
+relevant. It uses mSTAMP (a multi-dimensional generalization of the Matrix
+Profile) to discover multi-dimensional motifs from the Mel-spectrogram taken
+with 46ms STFT, 23ms STFT hop, and 32 Mel-scale triangular filters. It is able
+to distinguish both the chorus and the drum-beat, depending on the
+dimensionality of the pattern.
+
+I did a little bit of testing using
+[librosa](https://librosa.org/doc/main/index.html) and
+[matrixprofile](https://matrixprofile.docs.matrixprofile.org/index.html). I
+tried this out in a notebook to see what would come out.
+
+```python
+import librosa
+import matrixprofile as mp
+
+%matplotlib inline
+
+path = "../input/birdclef-2021/train_short_audio/acafly/XC109605.ogg"
+data, sample_rate = librosa.load(path)
+
+cens = librosa.feature.chroma_cens(data, sample_rate, n_chroma=36)
+profile, figures = mp.analyze(y)
+```
+
+The matrixprofile library is complete, but it doesn't contain algorithms for
+either mSTAMP or SiMPle. The R-library
+[tsmp](https://github.com/matrix-profile-foundation/tsmp) has implementations
+for both of these, but the audio-processing libraries are limited (either
+[audio](https://cran.r-project.org/web/packages/audio/index.html) or
+[tuneR](https://cran.r-project.org/web/packages/tuneR/index.html)). I may end up
+doing the audio processing with `librosa` and the matrixprofile computation and
+motif mining in R as a pipeline. When this gets out of hand, or when I need to
+run the process in Kaggle, I can re-implement the SiMPle algorithm in Python.

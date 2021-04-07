@@ -39,6 +39,7 @@ Here is an assortment of content on the site.
 - [Advent of Code 2020 (in progress)](aoc-2020), in prolog, egads
 - [Recordings of my piano practices](piano), you'll see that I'm a beginner
 - [Toastmasters](toastmasters), and my experience becoming a better public speaker
+- [BirdCLEF 2021](birdclef-2021), a Kaggle competition I'm going to try out
 
 ## Site Changelog
 
