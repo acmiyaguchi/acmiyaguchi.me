@@ -1,3 +1,11 @@
+<script>
+  import { Prism } from "prismjs";
+  import "prismjs/themes/prism.css";
+  import "prismjs/components/prism-javascript.min.js";
+  import "prismjs/components/prism-python.min.js";
+  import "katex/dist/katex.css";
+</script>
+
 # BirdCLEF 2021 - Birdcall Identification
 
 [BirdCLEF 2021](https://www.kaggle.com/c/birdclef-2021/overview) is a data
@@ -79,3 +87,43 @@ for both of these, but the audio-processing libraries are limited (either
 doing the audio processing with `librosa` and the matrixprofile computation and
 motif mining in R as a pipeline. When this gets out of hand, or when I need to
 run the process in Kaggle, I can re-implement the SiMPle algorithm in Python.
+
+## 2021-04-07
+
+_est: 1-2 hours_
+
+I spent my time today getting the environment set up on my local machine. I
+downloaded the 32GB dataset last night and tried unpacking it on my 1TB HDD
+before eventually giving it up since it was unpacking at a rate of 13mb/s or so.
+I moved this to my SSD.
+
+![unzipping time](/assets/birdclef-2021/extracting-zip-ssd.png)
+
+I set up my environment, which is Jupyter Lab configured with Python and R. On
+the Python end, I have a small script that dumps the `.ogg` files into
+serialized NumPy matrices (`.npx`). I wanted to reproduce the setup used with
+audio spectrograms via CENS at a rate of 2-10 frames per second. It turns out
+that the `hop_length` has to be a multiple of $2^6$.
+
+This function takes care of quantizing to the nearest integer multiple.
+
+```python
+def cens_per_sec(sample_rate, target):
+    """Ensure the hop length is a multiple of 2**6"""
+    return (sample_rate // (target * (2 ** 6))) * (2 ** 6)
+```
+
+I also set up R with Jupyter Lab by following [this guide for installing the R
+kernel](https://richpauloo.github.io/2018-05-16-Installing-the-R-kernel-in-Jupyter-Lab/).
+I had to add the directory containing `R.exe` into my PATH, and ensured that the
+current shell had my virtual environment configured. Then:
+
+```bash
+install.packages("devtools")
+devtools::install_github("IRkernel/IRkernel")
+IRkernel::installspec()
+```
+
+Afterwards, I just load this into an R notebook so I can run some pre-existing
+Matrix Profile algorithms. I am able to load the numpy serialized data through
+[RcppCNPy](http://dirk.eddelbuettel.com/code/rcpp.cnpy.html).
