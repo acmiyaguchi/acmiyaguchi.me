@@ -97,7 +97,7 @@ downloaded the 32GB dataset last night and tried unpacking it on my 1TB HDD
 before eventually giving it up since it was unpacking at a rate of 13mb/s or so.
 I moved this to my SSD.
 
-![unzipping time](/assets/birdclef-2021/extracting-zip-ssd.png)
+![unzipping time](/assets/birdclef-2021/2021-04-07-extracting-zip-ssd.png)
 
 I set up my environment, which is Jupyter Lab configured with Python and R. On
 the Python end, I have a small script that dumps the `.ogg` files into
@@ -127,3 +127,60 @@ IRkernel::installspec()
 Afterwards, I just load this into an R notebook so I can run some pre-existing
 Matrix Profile algorithms. I am able to load the numpy serialized data through
 [RcppCNPy](http://dirk.eddelbuettel.com/code/rcpp.cnpy.html).
+
+## 2021-04-08
+
+I only made minor progress today. I plot the data after running it through the
+SiMPle algorithm:
+
+```R
+library(RcppCNPy)
+library(tsmp)
+
+fmat <- npyLoad("../data/cens/train_short_audio/acafly/XC109605.npy")
+smp <- simple_fast(t(fmat), window_size=41, verbose=0)
+plot(smp)
+```
+
+![plot](/assets/birdclef-2021/2021-04-08-simple-plot.png)
+
+It turns out that the object class name is not usable with the majority of the
+`tsmp` library because a typo in the class name, despite it having a perfectly
+good Matrix Profile and Profile Index object for determining motifs and
+discords.
+
+```
+SiMPle Matrix Profile
+---------------------
+Profile size = 606
+Dimensions = 12
+Window size = 41
+Exclusion zone = 21
+```
+
+Looking at the [source code for `find-motifs` in the tsmp
+library](https://github.com/matrix-profile-foundation/tsmp/blob/a1f2937bd3a3a83a0d23df601b4ed686dabbc96b/R/find-motifs.R#L31),
+we see that the class type is enforced by string names...
+
+```R
+  if (!("MatrixProfile" %in% class(.mp))) {
+    stop("First argument must be an object of class `MatrixProfile`.")
+  }
+```
+
+🤦 There's no space in the name. I forked the library to
+[acmiyaguchi/tsmp](https://github.com/acmiyaguchi/tsmp) and will make a PR to
+fix up this behavior for this algorithm. I rather not have to deal with some of
+the common functionality by hand, even if it's simple like finding the pairs of
+indices that correspond to a motif.
+
+I've also been thinking about how to to use the motifs to search for 5 second
+clips that I can use to build up my training dataset. Since I'll be getting only
+a single motif per audio track, I'm going to fetch many motifs from the species
+dataset to get a motif per track. I can analyze these motifs to see how well
+they stack up to each others.
+
+After I find these initial motifs, I can comb through the rest of the audio to
+determine what other clips can be found. I can use the median-absolute deviation
+effectively slide over all of the tracks and to find the positions where there
+are likely matches in the audio.
