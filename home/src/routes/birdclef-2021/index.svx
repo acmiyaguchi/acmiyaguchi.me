@@ -184,3 +184,79 @@ After I find these initial motifs, I can comb through the rest of the audio to
 determine what other clips can be found. I can use the median-absolute deviation
 effectively slide over all of the tracks and to find the positions where there
 are likely matches in the audio.
+
+## 2021-04-09
+
+While the mechanism wasn't exactly what I thought it would be, it was similar
+enough. I [learned a little bit about the inheritance mechanisms in R](-
+http://adv-r.had.co.nz/S3.html).
+
+```R
+devtools::test(filter="simple")
+```
+
+Afterwards, I [created a
+PR](https://github.com/matrix-profile-foundation/tsmp/pull/97) and installed my
+package from GitHub (after killing all existing kernels to avoid permission
+issues).
+
+```R
+devtools::install_github("acmiyaguchi/tsmp", ref="simple")
+```
+
+Unfortunately, this did not work on a realistic matrix because the `find_motif`
+method also does nearest-neighbor computation, which requires calling
+[MASS](https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html) to determine
+which indices are most related to each motif. The SiMPle MASS algorithm is
+domain specific, so it did not fit directly into the existing API for other
+Matrix Profiles :(.
+
+I decided to abandon the `find_motif` helper and just to use the motif
+corresponding to the minimum in the profile. I can get to this using
+`min_mp_index` which works fine on SiMPle. I would have used the thumbnail that
+I extracted from the motif pair (e.g. the 5 seconds of audio corresponding to
+the motif to find nearest-neighbors), but when I try to compute the join
+matrix-profile, it raises an index error:
+
+```
+Error in last_product[1:(data_size - window_size), j]: subscript out of bounds
+```
+
+This is a distraction at this point. Since I get two examples per track and
+there are roughly a hundred tracks per species, this should be enough to build
+an initial model. Once I get an initial model, I can try out a few different
+methods to get more training data. I really wish I had access to the join
+matrix-profile, but I can try other methods like training a classifier on the
+spectrograms using a sliding window of data.
+
+I built an R script that I'll be calling via Python to find the index of the
+motifs. These links were relevant as I put it together.
+
+- https://stackoverflow.com/questions/18931006/how-to-suppress-warning-messages-when-loading-a-library
+- https://stackoverflow.com/questions/19894365/running-r-script-from-python
+- https://stat.ethz.ch/R-manual/R-devel/library/base/html/strtoi.html
+- https://www.gastonsanchez.com/r4strings/formatting.html
+
+Then I was able to build a notebook to listen to the motifs. Jupyter [has a nice API to embed audio in a notebook](https://musicinformationretrieval.com/ipython_audio.html). Here is a pair off
+motifs from audio of the [Acadian
+Flycatcher](https://www.allaboutbirds.org/guide/Acadian_Flycatcher/sounds).
+
+<figure>
+    <figcaption>Listen the motif:</figcaption>
+    <audio
+        controls
+        src="/assets/birdclef-2021/2021-04-10-motif-1.ogg">
+            Your browser does not support the
+            <code>audio</code> element.
+    </audio>
+</figure>
+
+<figure>
+    <figcaption>Listen to the motif's pair:</figcaption>
+    <audio
+        controls
+        src="/assets/birdclef-2021/2021-04-10-motif-2.ogg">
+            Your browser does not support the
+            <code>audio</code> element.
+    </audio>
+</figure>
