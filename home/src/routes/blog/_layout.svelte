@@ -32,6 +32,22 @@
   export let metadata;
 </script>
 
+<svelte:head>
+  <title
+    >{metadata
+      ? `${metadata.title} | Anthony Miyaguchi's Blog`
+      : "Blog Posts"}</title
+  >
+</svelte:head>
+<main>
+  {#if metadata}
+    <h1>{metadata.title}</h1>
+    <i>{dayjs(metadata.date).format("lll")}</i>
+  {/if}
+
+  <slot />
+</main>
+
 <style>
   main :global(img) {
     width: 100%;
@@ -42,15 +58,3 @@
     border-collapse: collapse;
   }
 </style>
-
-<svelte:head>
-  <title>{metadata ? metadata.title : 'Blog Posts'}</title>
-</svelte:head>
-<main>
-  {#if metadata}
-    <h1>{metadata.title}</h1>
-    <i>{dayjs(metadata.date).format('lll')}</i>
-  {/if}
-
-  <slot />
-</main>

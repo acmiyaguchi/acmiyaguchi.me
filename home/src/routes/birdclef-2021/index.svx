@@ -6,6 +6,11 @@
   import "katex/dist/katex.css";
 </script>
 
+<svelte:head>
+
+<title>BirdCLEF 2021 - Birdcall Identification | Anthony Miyaguchi</title>
+</svelte:head>
+
 # BirdCLEF 2021 - Birdcall Identification
 
 [BirdCLEF 2021](https://www.kaggle.com/c/birdclef-2021/overview) is a data
