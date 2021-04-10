@@ -188,8 +188,8 @@ are likely matches in the audio.
 ## 2021-04-09
 
 While the mechanism wasn't exactly what I thought it would be, it was similar
-enough. I [learned a little bit about the inheritance mechanisms in R](-
-http://adv-r.had.co.nz/S3.html).
+enough. I [learned a little bit about the inheritance mechanisms in
+R](http://adv-r.had.co.nz/S3.html).
 
 ```R
 devtools::test(filter="simple")
