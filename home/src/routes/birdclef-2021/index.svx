@@ -265,3 +265,63 @@ Flycatcher](https://www.allaboutbirds.org/guide/Acadian_Flycatcher/sounds).
             <code>audio</code> element.
     </audio>
 </figure>
+
+# 2021-04-10
+
+I scripted together the above to extract motifs from the acafly directory. In
+each of these, I have the following files:
+
+```
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----         4/11/2021  12:31 AM            362 metadata.json
+-a----         4/11/2021  12:31 AM         435320 motif.0.npy
+-a----         4/11/2021  12:31 AM          32156 motif.0.ogg
+-a----         4/11/2021  12:31 AM         435320 motif.1.npy
+-a----         4/11/2021  12:31 AM          31789 motif.1.ogg
+```
+
+The ogg files contains the 5 second clip of the main motif. The numpy files are
+the CENs transformed data for the motif. The metadata file contains information about the different parameters used to extract the motif:
+
+```json
+{
+  "source_name": "train_short_audio/acafly/XC533302.ogg",
+  "cens_sample_rate": 10,
+  "matrix_profile_window": 50,
+  "cens_0": 50,
+  "cens_1": 1,
+  "motif_0_i": 108797,
+  "motif_0_j": 217595,
+  "motif_1_i": 2175,
+  "moitif_1_j": 110973,
+  "sample_rate": 22050,
+  "duration_seconds": 17.07,
+  "duration_cens": 173,
+  "duration_samples": 376441
+}
+```
+
+It looks like I'll have to go through each file by hand to determine whether
+it's a legitimate bird call or not. I've noticed that some clips have a motif
+that is noise or another natural sound. It looks like I'm going to become a
+bird-call novice. It should be straightforward to build a web application to do
+the labeling of the data. How much of the code I'll be able to re-use is up in
+the air, but I rather not have to deal with all the information in a
+spreadsheet.
+
+Once I can deal with these particular audio files, I can start to build an even
+more extensive dataset to determine whether a file has the bird chirp in it or
+not. I'll try to aim for something like an extra 100 examples that I can trawl
+randomly sampled from the set. Building a simple classifier will be good
+practice for building more complex ones later.
+
+I think once I build this initial dataset, it will be useful to come back and
+reimplement (or fix) the SiMPle algorithm so I can do two things:
+
+- find the top k motifs
+- run the matrix profile join against short clips
+
+The classifier I build on this first one will help filter out the noisy values,
+while the latter will help me find more examples throughout the dataset. This
+approach should surely scale for finding good examples.
