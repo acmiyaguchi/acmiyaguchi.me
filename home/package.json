@@ -3,7 +3,7 @@
   "description": "Anthony Miyaguchi's website",
   "version": "0.6.1",
   "scripts": {
-    "dev": "sapper dev --ext \".svelte .svx\"",
+    "dev": "sapper dev --ext \".svelte .svx\" --port 3001",
     "build": "sapper build --legacy --ext \".svelte .svx\"",
     "export": "sapper export --legacy --ext \".svelte .svx\"",
     "start": "node __sapper__/build"
