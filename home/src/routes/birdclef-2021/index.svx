@@ -282,7 +282,8 @@ Mode                 LastWriteTime         Length Name
 ```
 
 The ogg files contains the 5 second clip of the main motif. The numpy files are
-the CENs transformed data for the motif. The metadata file contains information about the different parameters used to extract the motif:
+the CENs transformed data for the motif. The metadata file contains information
+about the different parameters used to extract the motif:
 
 ```json
 {
@@ -325,3 +326,37 @@ reimplement (or fix) the SiMPle algorithm so I can do two things:
 The classifier I build on this first one will help filter out the noisy values,
 while the latter will help me find more examples throughout the dataset. This
 approach should surely scale for finding good examples.
+
+## 2021-04-11
+
+I took the motifs that I generated for acafly and osprey and created a web
+application that I'm going to use to explore and label the data. I used
+sveltekit to build this, since I've had experience with both svelte and sapper.
+I'm pleased with the template and how little frill is involved. It's going to
+take some time before I get used to the paradigm.
+
+<div style="border: 1px solid black">
+
+![plot](/assets/birdclef-2021/2021-04-11-train-acafly.png)
+
+</div>
+
+_figure: screenshot of the the current page_
+
+There are minor issues like not being able to import the `node-glob` module and
+having to explicitly set `preload="none"` on the audio context, but otherwise
+it's been smooth sailing.
+
+I think creating a training dataset based on these motifs and the system for
+labeling the data will be my main contribution to the competition. I'm not so
+confident that I'll be able to build better models than the previous year. I'm
+probably going to rely on an ensemble model that uses many simple linear models
+under the hood, because I'm not sure I can figure out the intricacies of CNN
+models.
+
+I also read a couple of the previous BirdCLEF papers, which I'll leave a link
+here for reference.
+
+- http://ceur-ws.org/Vol-2696/paper_262.pdf
+- http://ceur-ws.org/Vol-2380/paper_256.pdf
+- http://ceur-ws.org/Vol-2125/invited_paper_9.pdf
