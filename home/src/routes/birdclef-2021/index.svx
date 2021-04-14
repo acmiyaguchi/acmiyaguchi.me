@@ -6,6 +6,12 @@
   import "katex/dist/katex.css";
 </script>
 
+<style>
+img {
+    max-width: 100%
+}
+</style>
+
 <svelte:head>
 
 <title>BirdCLEF 2021 - Birdcall Identification | Anthony Miyaguchi</title>
@@ -360,3 +366,49 @@ here for reference.
 - http://ceur-ws.org/Vol-2696/paper_262.pdf
 - http://ceur-ws.org/Vol-2380/paper_256.pdf
 - http://ceur-ws.org/Vol-2125/invited_paper_9.pdf
+
+## 2021-04-11 Adding metadata to the website
+
+_est: 2.5 hours_
+
+Did a little more on the site today. First I took a look at the training
+metadata and created documents that I can use for building the site. In the
+`info.json`:
+
+```json
+{
+  "primary_label": "tropew1",
+  "scientific_name": "Contopus cinereus",
+  "common_name": "Tropical Pewee"
+}
+```
+
+And an entry from the `metadata.json`:
+
+```json
+{
+  "name": "XC11419",
+  "secondary_labels": [],
+  "type": ["call"],
+  "date": "2004-06-05",
+  "latitude": -22.5001,
+  "longitude": -42.7167,
+  "rating": 4.5,
+  "url": "https://www.xeno-canto.org/11419"
+}
+```
+
+Then, I went about joining these pieces of information in the application. I
+brought in a table component so the number of things being rendered on the page
+at once is limited to 10 or so entries.
+
+<div style="border: 1px solid black">
+
+![plot](/assets/birdclef-2021/2021-04-13-train-acafly.png)
+
+</div>
+
+The next thing that I need to do is add a way to label whether an entry is good
+or bad and have a way to export that. I want to start quickly building a
+classifier to determine whether a clip is a bird call or not, so I can start to
+go toward my first submission.
