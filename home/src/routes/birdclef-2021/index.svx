@@ -412,3 +412,25 @@ The next thing that I need to do is add a way to label whether an entry is good
 or bad and have a way to export that. I want to start quickly building a
 classifier to determine whether a clip is a bird call or not, so I can start to
 go toward my first submission.
+
+## 2021-04-15 Adding labeling support
+
+_est 2 hours_
+
+I had to do a bunch of refactoring to add support to the table to include two
+checkbox inputs that are hooked to an object in indexedDB via `localforage`. I
+also added a way to export this data via `file-saver`. I'm going to start
+labeling some data so I can move onto the next phase of development.
+
+```json
+[
+    {"name":"XC109605.motif.0","is_valid":true},
+    {"name":"XC109605.motif.1","is_valid":true},
+    {"name":"XC11209.motif.0","is_valid":true}
+    ...
+]
+```
+
+I'd like to have some way to bookmark my progress. I should probably annotate
+the rows somehow. It might be as easy whether I've listened to a particular
+audio clip.
