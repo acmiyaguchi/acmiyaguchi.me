@@ -434,3 +434,77 @@ labeling some data so I can move onto the next phase of development.
 I'd like to have some way to bookmark my progress. I should probably annotate
 the rows somehow. It might be as easy whether I've listened to a particular
 audio clip.
+
+## 2021-04-17 - 2021-04-19 struggles and triumphs
+
+I did a lot of exploration this weekend. I finished up the tool to look through
+the audio clips and annotate them with information. I went through an entire
+species of motifs of 256 5-second clips. It was a useful exercise, since I know
+what to listen for now.
+
+I also started trying to cluster and classify the motifs from a single species
+and three species. My first approach was to reduce the dimensionality using SVD,
+cluster using K-means as labels, and then plot. I used Nearest Neighbors to
+listen to the points closest to the k-means to see how well the embedding
+worked. It was pretty awful because there were logical characteristics from each
+of the groups.
+
+Adding in multiple species and using those at labels has poor results too. I
+trained a simple logistic regression classifier and got a result around 0.55. I
+think I'll end up getting a result around 0.7 by the time I'm finished.
+
+See:
+
+- https://github.com/acmiyaguchi/birdclef-2021/blob/main/notebooks/2021-04-17-clustering.ipynb
+- https://github.com/acmiyaguchi/birdclef-2021/blob/main/notebooks/2021-04-17-clustering-multiclass.ipynb
+- https://github.com/acmiyaguchi/birdclef-2021/blob/main/notebooks/2021-04-17-classification-one-vs-rest.ipynb
+
+I took a look through a couple papers to figure out how I might find similarity
+between these motifs.
+
+Englmeier, D., Hubig, N., Goebl, S., & Böhm, C. (2015). Musical similarity
+analysis based on chroma features and text retrieval methods. Datenbanksysteme
+für Business, Technologie und Web (BTW 2015)-Workshopband.
+https://www.medien.ifi.lmu.de/pubdb/publications/pub/englmeier2015btw/englmeier2015btw.pdf
+
+- create audio words using tf-idf and a chromagram
+
+Wankhammer, A., Sciri, P., & Sontacchi, A. (2009). Chroma and MFCC based pattern
+recognition in audio files utilizing hidden Markov models and dynamic
+programming. In Proceedings of the 12th International Conference on Digital
+Audio Effects (DAFx-09) (pp. 401-407).
+https://phaidra.kug.ac.at/open/o:11903
+
+- do pattern recognition via HMM, transitions between segments in the audio
+
+Late Saturday, I decided that I found go with the initial approach and try to
+classify based on the median similarity to to a set of representative motifs.
+For this, I needed to be able to compute profiles with sample queries. I fixed
+an issue with the SiMPle implementation in tsmp, and also figured out how to get
+the the reference Matlab implementations running in Octave. I spent most of
+Sunday re-implementing the algorithm in Python. It works and has results that
+matches both implementations using a single bird call.
+
+The challenging parts of implementing:
+
+- Getting the reference implementations to match up. I used the existing
+  chromagrams that I dumped for the various bird species and dumped them in a
+  folder and decided to go with CSV to match them up.
+- Matlab and R use 1 indexing, while Python and numpy use 0 indexing. This was a
+  pain because it took me a while to realize that the slicing behavior is
+  different for the starting index.
+- The FFT implementation in `numpy.fft` uses the last dimension when computing
+  1d ffts in a matrix. Also, the 2d fft is not the same thing (d'oh). I could
+  have saved a lot of time if I had written the tests for `mass_pre` which
+  computes the FFT and the cumulative sum first. Oh well.
+
+I would like to patch the tsmp library, but I'm not sure what the best way to
+add tests will be. Probably generated fake data of some sort.
+
+Now I will find a representative set of motifs for each species. I'm going to
+take the same clustering approach as before, but this time I will use a
+similarity matrix using a manifold (probably a spectral embedding). This means
+I'll need to do O(n^2) comparisons, but the number of motifs is only in the
+order of the number of training examples. I'll also be able to mine many
+examples for each species, which should make training a real model (like a CNN)
+computationally easy.
