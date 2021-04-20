@@ -508,3 +508,27 @@ I'll need to do O(n^2) comparisons, but the number of motifs is only in the
 order of the number of training examples. I'll also be able to mine many
 examples for each species, which should make training a real model (like a CNN)
 computationally easy.
+
+## 2021-04-19
+
+Spent my time playing with the simple implementation I made. I need to integrate
+it with my motif-finding script (which also needs to be parallelized). I took a
+look at trying to find representative audio clips by doing an AB join with every
+motif to every other motif. I embed the affinity matrix directly into the
+spectral embedding algorithm. The initial plots look reasonably spread out
+unlike the PCA plots from before.
+
+I tried a few different parameters for both the windows using the median. The
+next stage will be to cluster multiple classes and see how well this works.
+First I'll find a few representative samples from each species, and then against
+each of those samples the distances to every motif in the entire motif dataset.
+
+A few of the motifs near the cluster means sound entirely empty (which might be
+hubs, since they are equidistant if flat and may have median values that have
+the same shape as other ones). The minimum might be another value to try, since
+that seemed to be how motifs are found in the self-join. I need to spend another
+1-2 hours trying to grok this. I also need a no-call detector, which may be the
+first thing I have to build because I'm worried about the quality of the
+automated system. The first way might be to do some outlier detection (which
+maybe won't work on this data alone). The other is to do the classifier route
+and train one on a bunch of no-calls from the soundscapes.
