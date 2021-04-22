@@ -532,3 +532,34 @@ first thing I have to build because I'm worried about the quality of the
 automated system. The first way might be to do some outlier detection (which
 maybe won't work on this data alone). The other is to do the classifier route
 and train one on a bunch of no-calls from the soundscapes.
+
+## 2021-04-20 multi-class classfication
+
+I ported over my python implementation to the `find_motif` script and
+parallelized it. It takes only a minute or so to complete per species (which
+means that I'll be able to go through all of the species in a reasonable amount
+of time). I tried embedding 3 classes into a single space using the all-pairs
+methodology, but there was no clear delineation. I believe that the empty tracks
+are causing issues and acting like hubs.
+
+I'm going to go ahead with the terrible model first, which I'll train with
+XGBoost. The terrible model will have 2-3 entries for each species (which ends
+up being something like 400 entries). Actually, on second thought, it might take
+forever to train a model if there are a large number of examples (easily 10k+).
+I might have to go the CNN route to generate features to feed into the XGBoost
+model. Maybe I can just feed the features directly into the model, alongside the
+self-join of the clip.
+
+Here's the experiment I want to run on a soundscape.
+
+XGBoost model:
+
+- Binary classification of call/no-call
+- 5 second clips (10 CENS/sec)
+- Model trained directly on CENS
+- Model trained with matrix profile with window of 5, 10, and 25 (distances to
+  the nearest neighbor) using the median.
+- Model trained with both
+
+* https://arxiv.org/pdf/1804.01149.pdf
+* https://www.sciencedirect.com/science/article/pii/S1738573319308587
