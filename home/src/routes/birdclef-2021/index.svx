@@ -563,3 +563,20 @@ XGBoost model:
 
 * https://arxiv.org/pdf/1804.01149.pdf
 * https://www.sciencedirect.com/science/article/pii/S1738573319308587
+
+## 2021-04-21
+
+- https://arxiv.org/pdf/1412.6806.pdf
+- https://stackoverflow.com/questions/19125661/find-index-where-elements-change-value-numpy
+
+I spent most of my evening installing tensorflow. I needed to install the exact
+versions of CUDA and cuDNN for it to work. There were also issues with the
+installation of Python that I was using, which was installed via the Windows
+Store. Apparently, this version of Python is sandboxed. After I diagnosed these
+issues, I was able to run a CNN tutorial that ran on my GPU.
+
+I'm trying to figure out the best way to build a model now. I want to go with a
+basic CNN first to see what the performance is like. Afterwards, I want to build
+an auto-encoder to get features from the spectrograms, and then feed the results
+into a gradient boosted tree for fine-tuning alongside metadata. I read a few
+papers trying to figure this out...
