@@ -8,44 +8,62 @@ tags:
   - LookML
   - SQL
   - BigQuery
+  - Mozilla
 ---
-
-Here's a link to the Jira tickets (MoCo access only):
-https://mozilla-hub.atlassian.net/browse/DS-1541
 
 As part of the DUET (Data User Engagement Team) working group, some of my
 day-to-day work involves building dashboards for visualizing user engagement
 aspects of the Firefox product. At Mozilla, we recently decided to use Looker to
-create dashboards and interactive views on our datasets. It's a new system to
-learn but provides a flexible model for exploring data. In this post, I'll walk
-through the development of several mobile acquisition funnels built in Looker.
-The most familiar form of engagement modeling is probably through funnel
-analysis -- measuring engagement by capturing a cohort of users as they flow
-through various acquisition channels into the product. Typically, you'd
-visualize the flow as a Sankey or funnel plot, counting retained users at every
-step. The chart can help build intuition about bottlenecks or the performance of
-campaigns.
+create dashboards and interactive views on our datasets. It’s a new system to
+learn but provides a flexible model for exploring data. In this post, I’ll walk
+through the development of several mobile acquisition funnels built in
+[Looker](https://looker.com/). The most familiar form of engagement modeling is
+probably through funnel analysis — measuring engagement by capturing a cohort of
+users as they flow through various acquisition channels into the product.
+Typically, you’d visualize the flow as a Sankey or funnel plot, counting
+retained users at every step. The chart can help build intuition about
+bottlenecks or the performance of campaigns. 
 
 Mozilla owns a few mobile products; there is Firefox for Android, Firefox for
 iOS, and then Firefox Focus on both operating systems (also known as Klar in
 certain regions). We use Glean to instrument these products. The foremost
 benefit of Glean is that it encapsulates many best practices from years of
 instrumenting browsers; as such, all of the tables that capture anonymized
-behavior activity is consistent across the products. One valuable idea from this
-setup is that writing a query for a single product should allow it to extend to
-others without too much extra work. Looker allows us to take advantage of
-similar schemas with the ability to templatize queries.
+behavior activity are consistent across the products. One valuable idea from
+this setup is that writing a query for a single product should allow it to
+extend to others without too much extra work. In addition, we pull in data from
+both the Google Play Store and Apple App Store to analyze the acquisition
+numbers. Looker allows us to take advantage of similar schemas with the ability
+to templatize queries.
+
+## ETL Pipeline
+
+The pipeline brings all of the data into BigQuery so it can be referenced in a
+derived table within Looker.
+
+![etl](/assets/2021-08-02/etl.png)
+
+1. App Store data is exported into a table in BigQuery. 1. Glean data flows into
+the org_mozilla_firefox.baseline table. 1. A derived
+org_mozilla_firefox.baseline_clients_first_seen table is created from the
+baseline table. An org_mozilla_firefox.baseline_clients_daily table is created
+that references the first seen table. 1. A Looker explore references the
+baseline_clients_clients_daily table in a parameterized SQL query, alongside
+data from the Google Play Store. 1. A dashboard references the explore to
+communicate important statistics at first glance, alongside configurable
+parameters.
+
 
 ## Peculiarities of Data Sources
 
-Before jumping off into implementing a dashboard, it's essential to discuss the
+Before jumping off into implementing a dashboard, it’s essential to discuss the
 quality of the data sources. For one, Mozilla and the app stores count users
 differently, which leads to subtle inconsistencies.
 
 For example, there is no way for Mozilla to tie a Glean client back to the Play
 Store installation event in the Play Store. Each Glean client is assigned a new
 identifier for each device, whereas the Play Store only counts new installs by
-account (which may have several devices). We can't track a single user across
+account (which may have several devices). We can’t track a single user across
 this boundary, and instead have to rely on the relative proportions over time.
 There are even more complications when trying to compare numbers between Android
 and iOS. Whereas the Play Store may show the number of accounts that have
@@ -58,26 +76,12 @@ with the peculiarities of these different systems. Therefore, an essential part
 of putting together this view is documenting and educating the dashboard users
 to understand the data better.
 
-## ETL Pipeline
-
-The pipeline brings all of the data into BigQuery so it can be referenced in a derived table within Looker.
-
-![etl](/assets/2021-08-02/etl.png)
-
-1. App Store data is exported into a table in BigQuery.
-1. Glean data flows into the `org_mozilla_firefox.baseline` table.
-1. A derived `org_mozilla_firefox.baseline_clients_first_seen` table is created
-   from the baseline table. An `org_mozilla_firefox.baseline_clients_daily`
-   table is created that references the first seen table.
-1. A Looker explore references the `baseline_clients_clients_daily` table in a
-   parameterized SQL query, alongside data from the Google Play Store.
-1. A dashboard references the explore to communicate important statistics at
-   first glance, alongside configurable paramters.
-
 ## Building a Looker Dashboard
 
-There are three components to building a Looker dashboard: a view, an
-explore, and a dashboard. In this project, we consider three files:
+There are three components to building a Looker dashboard: a view, an explore,
+and a dashboard. These files are written in a markup called LookML. In this
+project, we consider three files:
+
 
 - `mobile_android_country.view.lkml`
   - Contains the templated SQL query for preprocessing the data, parameters for
@@ -122,10 +126,10 @@ derived_table: {
 }
 ```
 
-Above is the derived table section for the android query. Here, we're looking at
-the `play_store_retained` statement inside the common table expression (CTE).
-Inside of this SQL block, we have access to everything available to
-BigQuery in addition to view parameters.
+Above is the derived table section for the Android query. Here, we’re looking at
+the play_store_retained statement inside the common table expression (CTE).
+Inside of this SQL block, we have access to everything available to BigQuery in
+addition to view parameters.
 
 ```lkml
 # Allow swapping between various applications in the dataset
@@ -219,7 +223,7 @@ modification will be necessary to build a clean data model for use.
 ### Explore
 
 One of the more compelling features of Looker is the ability for folks to drill
-down into data models without being able to write SQL. They provide an interface
+down into data models without the need to write SQL. They provide an interface
 where the dimensions and measures can be manipulated and plotted in an
 easy-to-use graphical interface. To do this, we need to declare which view to
 use. Often, just declaring the explore is sufficient:
@@ -299,20 +303,24 @@ aggregate_table: rollup__submission_date__0 {
 
 ### Dashboard
 
-The dashboard is the final piece of the puzzle. Tables and charts from the
-explores can be saved to dashboards. In addition, dashboards have widgets for
-filters and for markdown text used to annotate charts. It's an intuitive process
-that can be somewhat tedious, depending on how complex the information you're
-trying to present.
+Looker provides the tooling to build interactive dashboards that are more than
+the sum of its parts. Often, the purpose is to present easily digestible
+information that has been vetted and reviewed by peers. To build a dashboard,
+you start by adding charts and tables from various explores. Looker provides
+widgets for filters and for markdown text used to annotate charts.  It’s an
+intuitive process that can be somewhat tedious, depending on how complex the
+information you’re trying to present.
 
-Once you've built the dashboard, Looker provides a button to get a YAML
+![etl](/assets/2021-08-02/dashboard.png)
+
+Once you’ve built the dashboard, Looker provides a button to get a YAML
 representation to check into version control. The configuration file contains
 all the relevant information for constructing the dashboard and could even be
 written by hand with enough patience.
 
 ## Strengths and Weaknesses of Looker
 
-Now that I've gone through building a dashboard end-to-end, here are a few
+Now that I’ve gone through building a dashboard end-to-end, here are a few
 points summarizing my experience and the take-aways from putting together this
 dashboard.
 
@@ -321,15 +329,15 @@ dashboard.
 I worked with Glean-instrumented data in another project by parameterizing SQL
 queries using Jinja2 and running queries multiple times. Looker effectively
 brings this process closer to runtime and allows the ETL and visualization to
-live on the same platform. I'm impressed by how well it works in practice. The
-combination of consistent data models in bigquery-etl (e.g.
-`clients_first_seen`) and the ability to parameterize based on app-id was
-surprisingly straightforward. The dashboard can switch between Firefox for
-Android and Focus for Android without a hitch, even though they are two separate
-products with two separate datasets in BigQuery.
+live on the same platform. I’m impressed by how well it works in practice. The
+combination of consistent data models in bigquery-etl (e.g. clients_first_seen)
+and the ability to parameterize based on app-id was surprisingly
+straightforward. The dashboard can switch between Firefox for Android and Focus
+for Android without a hitch, even though they are two separate products with two
+separate datasets in BigQuery.
 
 I can envision many places where we may not want to precompute all results ahead
-of time but instead a subset of columns or dates on-demand. The costs of
+of time but instead just a subset of columns or dates on-demand. The costs of
 precomputing and materializing data is non-negligible, especially for large
 expensive queries that are viewed once in a blue moon or dimensions that fall in
 the long tail. Templating and parameters provide a great way to build these into
@@ -341,52 +349,51 @@ While Looker appeals to the non-technical crowd, it also affords many
 conveniences for the data practitioners who are familiar with the software
 development practices.
 
-Changes to Looker files are version controlled (e.g., git). Being able to create
-branches and work on multiple features in parallel has been handy at times. It's
+Changes to LookML files are version controlled (e.g., git). Being able to create
+branches and work on multiple features in parallel has been handy at times. It’s
 relieving to have the ability to make changes in my instance of the Looker files
 when trying out something new without having to lose my place. In addition, the
-ability to configure views, explores, and dashboards in code allow for the
-process of creating new dashboards to incorporate many best practices like code
-review.
+ability to configure LookML views, explores, and dashboards in code allow for
+the process of creating new dashboards to incorporate many best practices like
+code review.
 
-In addition, it's nice to be able to use a real editor for mass revision. I was
-able to create a new dashboard for iOS data that paralleled the android
+In addition, it’s nice to be able to use a real editor for mass revision. I was
+able to create a new dashboard for iOS data that paralleled the Android
 dashboard by copying over files, modifying the SQL in the view, and making a few
 edits to the dashboard code directly.
 
 ### Workflow management is clunky for deploying new dashboards
 
-While there are many upsides to having explores and dashboards in code, there
-are several pain points while working with the Looker interface.
+While there are many upsides to having LookML explores and dashboards in code,
+there are several pain points while working with the Looker interface.
 
-In particular, the workflow for editing a dashboard goes something like this.
+In particular, the workflow for editing a Dashboard goes something like this.
 First, you copy the dashboard into a personal folder that you can edit. Next,
 you make whatever modifications to that dashboard using the UI. Afterward, you
 export the result and copy-paste it into the dashboard code. While not ideal,
-this prevents the dashboard from going out of sync from the one that you're
-editing directly (since there won't be conflicts between the UI and the code in
+this prevents the Dashboard from going out of sync from the one that you’re
+editing directly (since there won’t be conflicts between the UI and the code in
 version control). However, it would be nice if it were possible to edit the
 dashboard directly instead of making a copy with Looker performing any conflict
 resolution internally.
 
 ![workflow](/assets/2021-08-02/workflow.png)
 
-There have been moments where I've had to fight with the built-in git interface
-built into Looker's development mode. Reverting a commit to a particular branch
+There have been moments where I’ve had to fight with the built-in git interface
+built into Looker’s development mode. Reverting a commit to a particular branch
 or dealing with merge conflicts can be an absolute nightmare. Suppose you do
-happen to pull the project in a local environment. In that case, you aren't able
-to validate your changes locally (you'll need to push, pull into Looker, and
+happen to pull the project in a local environment. In that case, you aren’t able
+to validate your changes locally (you’ll need to push, pull into Looker, and
 then validate and fix anything). Finally, the formatting option is stuck behind
 a keyboard shortcut while the browser is already using the keyboard shortcut.
 
 ## Conclusion: Iterating on Feedback
 
-Simply building a dashboard is not enough to demonstrate that it has value. It's
-important gather feedback from peers and stakeholders to gather feedback and to
-determine the best path forward. Some things benefit from having a concrete
-implementation, though; there are differences between different platforms and
-inconsistencies in the data that may only appear after putting together an
-initial draft of a project.
+Simply building a dashboard is not enough to demonstrate that it has value. It’s
+important to gather feedback from peers and stakeholders to determine the best
+path forward. Some things benefit from having a concrete implementation, though;
+there are differences between different platforms and inconsistencies in the
+data that may only appear after putting together an initial draft of a project.
 
 While hitting goals of making data across app stores and our user populations
 visible, the funnel dashboard has room for improvement. Having this dashboard
