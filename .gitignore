@@ -5,3 +5,4 @@ data/
 node_modules/
 .env
 .ipynb_checkpoints/
+target/
