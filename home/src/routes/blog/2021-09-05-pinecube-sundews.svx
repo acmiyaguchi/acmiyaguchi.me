@@ -11,12 +11,12 @@ The [PineCube](https://www.pine64.org/cube/) is a cheap, open-source IP camera
 that caught my eye last year. It's been sitting on my desk, unused, for a few
 months now. I recently noticed a slew of small plants in the pot next to my
 computer and thought this would be the right time to capture their growth. Now,
-I a PineCube attached to a mic-stand overlooking a sundew that I transplanted
+I have a PineCube attached to a mic-stand overlooking a sundew that I transplanted
 earlier this year.
 
 <img src="assets/2021-09-05/sundew_sprouts.jpeg" alt="A picture of sundew sprouts.">
-<i>There are dozens of small sundew sprouts that successfully sprouted from seed
-taken from a few other plants outside.</i>
+<i>There are dozens of small sundews sprouted from seeds taken from outside
+plants.</i>
 
 ## Setting up the PineCube
 
