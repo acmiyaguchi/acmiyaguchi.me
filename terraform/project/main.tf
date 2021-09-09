@@ -69,24 +69,13 @@ module "view_logs_visitor_pings" {
   table_id   = "visitor_pings"
 }
 
-module "view_logs_page_visits_daily" {
+module "view_logs_page_visits" {
+  for_each = toset([
+    "page_visits_daily", "page_visits_routes_all", "page_visits_routes_daily"
+  ])
   source     = "../modules/views"
   dataset_id = google_bigquery_dataset.logs.dataset_id
-  table_id   = "page_visits_daily"
-  depends_on = [module.view_logs_visitor_pings]
-}
-
-module "view_logs_page_visits_routes_all" {
-  source     = "../modules/views"
-  dataset_id = google_bigquery_dataset.logs.dataset_id
-  table_id   = "page_visits_routes_all"
-  depends_on = [module.view_logs_visitor_pings]
-}
-
-module "view_logs_page_visits_routes_daily" {
-  source     = "../modules/views"
-  dataset_id = google_bigquery_dataset.logs.dataset_id
-  table_id   = "page_visits_routes_daily"
+  table_id   = each.value
   depends_on = [module.view_logs_visitor_pings]
 }
 
