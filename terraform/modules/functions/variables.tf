@@ -38,3 +38,7 @@ variable "app_engine_region" {
   default = "us-west2"
 }
 
+variable "public" {
+  type    = bool
+  default = false
+}
