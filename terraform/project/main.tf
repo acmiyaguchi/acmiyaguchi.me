@@ -90,6 +90,19 @@ module "function_usage_logs" {
   app_engine_region     = local.app_engine_region
 }
 
+module "function_sundew_crop_norm" {
+  source                = "../modules/functions"
+  name                  = "sundew-crop-norm"
+  entry_point           = "main"
+  service_account_email = local.app_engine_email
+  bucket                = google_storage_bucket.default.name
+  schedule              = null
+  available_memory_mb   = 1024
+  timeout               = 120
+  app_engine_region     = local.app_engine_region
+  public                = true
+}
+
 module "function_spotify" {
   source                = "../modules/functions"
   name                  = "spotify"

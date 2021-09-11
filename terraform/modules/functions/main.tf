@@ -15,7 +15,7 @@ resource "google_storage_bucket_object" "archive" {
 }
 
 resource "google_cloudfunctions_function" "default" {
-  name                  = var.entry_point
+  name                  = var.name
   runtime               = "python38"
   available_memory_mb   = var.available_memory_mb
   source_archive_bucket = var.bucket
@@ -32,7 +32,16 @@ resource "google_cloudfunctions_function" "default" {
   }
 }
 
+resource "google_cloudfunctions_function_iam_member" "invoker" {
+  count          = var.public ? 1 : 0
+  cloud_function = google_cloudfunctions_function.default.name
+  role           = "roles/cloudfunctions.invoker"
+  member         = "allUsers"
+}
+
+
 resource "google_cloud_scheduler_job" "default" {
+  count       = var.schedule == null ? 0 : 1
   name        = var.entry_point
   region      = var.app_engine_region
   description = "schedule a cloud function for ${var.name}"
