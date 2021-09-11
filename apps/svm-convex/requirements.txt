@@ -1,0 +1,4 @@
+cvxpy
+jupyterlab
+pandas
+matplotlib
