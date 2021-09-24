@@ -35,7 +35,6 @@ def crop_circle(img, radius=520, radius_range=1):
 
 
 def do_crop_norm(img):
-    # we're doing this work twice unfortunately
     cropped = crop_circle(img, radius=520, radius_range=10)
     adjusted = exposure.equalize_adapthist(cropped, clip_limit=0.03)
     return adjusted
@@ -57,9 +56,6 @@ def do_matched_crop(img, ref):
     pad = 1100
     c = pad // 2
     r = 520
-    # resize?
-    #     if img.shape[1] > 1040:
-    #         img = transform.rescale(img, 1040/img.shape[1])
     img_pad = add_padding(img, pad, pad)
     ref_pad = add_padding(ref, pad, pad)
     edge = lambda x: feature.canny(color.rgb2gray(add_padding(x)))
@@ -95,7 +91,10 @@ def process_file(path):
     ds_format = "%Y%m%d%H%M"
     labels = ["red", "green", "blue"]
     ds = datetime.strptime(path.name.split(".")[0], ds_format).isoformat()
-    img = skio.imread(path)
+    try:
+        img = skio.imread(path)
+    except:
+        return None
     res = img.mean(axis=(0, 1))
     return img, dict(ds=ds, **dict(zip(labels, res)))
 
@@ -110,7 +109,7 @@ def main(output, input_dir):
     paths = sorted(Path(input_dir).glob("*.jpeg"))
 
     with Pool() as p:
-        res = list(tqdm(p.imap(process_file, paths), total=len(paths)))
+        res = [x for x in tqdm(p.imap(process_file, paths), total=len(paths)) if x]
     
     images, rgb_data = zip(*res)
     df = pd.DataFrame(rgb_data)
