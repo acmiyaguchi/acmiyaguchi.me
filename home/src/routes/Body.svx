@@ -27,7 +27,8 @@ interested in my [github profile](https://github.com/acmiyaguchi).
 
 Sometimes, I write things. Here are the last 7 things that I've posted.
 
-See all of my posts on the [blog index](blog).
+See all of my posts on the [blog index](blog). Subscribe to the [rss feed
+here](blog/rss.xml), too.
 
 <PostListing {metadata} />
 
