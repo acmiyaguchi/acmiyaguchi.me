@@ -2,8 +2,8 @@ import posts from "../../blog/*.svx";
 import path from "path";
 import { sortBy } from "lodash";
 
-export function get(req, res, next) {
-  let results = sortBy(
+function blogPosts() {
+  return sortBy(
     posts.map((p) => {
       let metadata = p.exports.metadata;
       // inject the path name into the metadata
@@ -12,5 +12,10 @@ export function get(req, res, next) {
     }),
     ["date"]
   ).reverse();
-  res.end(JSON.stringify(results));
 }
+
+function get(req, res, next) {
+  res.end(JSON.stringify(blogPosts()));
+}
+
+export { get, blogPosts };
