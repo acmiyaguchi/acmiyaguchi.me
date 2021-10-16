@@ -580,3 +580,25 @@ basic CNN first to see what the performance is like. Afterwards, I want to build
 an auto-encoder to get features from the spectrograms, and then feed the results
 into a gradient boosted tree for fine-tuning alongside metadata. I read a few
 papers trying to figure this out...
+
+## 2021-10-15
+
+After half a year of haitus, I'm deciding to work on this in many tiny peices.
+I've long given up on competing, but this is a dataset with ideas that I haven't
+explored yet.
+
+I recently got a new 1TB drive, so I'm moving all my kaggle material off onto
+it. I was running out of space in a previous iteration because saving the raw
+mfcc data was costly.
+
+I've been taking a look at tile2vec and nnAudio to start with a GPU first
+approach.
+
+- https://github.com/ermongroup/tile2vec
+- https://github.com/KinWaiCheuk/nnAudio
+
+Tile2vec brings the idea of embedding based on triplets of earth tile images. I
+believe this idea could be extended by treating audio frames like images, and
+using distance measures from simple in order to bootstrap the embedding process.
+This way, I should be able to get an embedding that I can use for audio
+searches.
