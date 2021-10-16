@@ -38,6 +38,12 @@
       ? `${metadata.title} | Anthony Miyaguchi's Blog`
       : "Blog Posts"}</title
   >
+  <link
+    rel="alternate"
+    type="application/rss+xml"
+    href="https://acmiyaguchi.me/blog/rss.xml"
+    title="Anthony Miyaguchi's Blog"
+  />
 </svelte:head>
 <main>
   {#if metadata}
