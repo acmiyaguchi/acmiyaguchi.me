@@ -3,7 +3,7 @@
 ```bash
 venv/Script/activate
 gsutil -m rsync gs://acmiyaguchi/pinecube/captures_v2 data/captures_v2
-python .\scripts\timelapse.py data/test.gif
+python .\scripts\timelapse.py data/test-20211003.gif
 ```
 
 ## notes
