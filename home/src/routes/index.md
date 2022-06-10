@@ -66,6 +66,7 @@ Here is an assortment of content on the site.
 - [BirdCLEF 2022](https://github.com/acmiyaguchi/birdclef-2022), a Kaggle
   competition that I finished with a team at the DS@GT club and submitted a
   working notes paper
+- [Statistical Rethinking](rethinking)
 
 ## Site Changelog
 
