@@ -61,10 +61,7 @@ any case, with updated bios, I've been able to run my RAM at its intended clock
 rate without running into stability issues (at least for the last few hours,
 during the time of writing).
 
-<div style="height: 300px">
-<img src="assets/2021-09-15/tm5-test.png" alt="tm5 test" style="max-height: 100%"/>
-</div>
-<i><b>Figured</b>: An in-progress
+![tm5-test](assets/2021-09-15/tm5-test.png) <i><b>Figured</b>: An in-progress
 TestMem5 test that shows general stability (i.e. no blue screens yet).</i>
 
 If I were to do this again, I probably would have bought a slightly more
