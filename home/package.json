@@ -9,11 +9,11 @@
     "start": "node __sapper__/build"
   },
   "dependencies": {
-    "biwascheme": "git+https://github.com/acmiyaguchi/biwascheme.git#browser-package",
+    "biwascheme": "^0.7.5",
     "compression": "^1.7.4",
     "dayjs": "^1.10.4",
     "lodash": "^4.17.21",
-    "midi-player-js": "git+https://github.com/acmiyaguchi/MidiPlayerJS.git#browser",
+    "midi-player-js": "^2.0.16",
     "node-fetch": "^2.6.1",
     "polka": "next",
     "simple-statistics": "^7.6.0",
