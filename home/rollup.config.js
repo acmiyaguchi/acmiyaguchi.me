@@ -47,10 +47,7 @@ export default {
         delimiters: ["this.d3 = d3;\n", ";"],
       }),
       svelte({
-        compilerOptions: {
-          dev,
-          hydratable: true,
-        },
+        compilerOptions: { dev, hydratable: true },
         extensions: [".svelte", ".svx", ".md"],
         preprocess: preprocess,
       }),
@@ -58,20 +55,10 @@ export default {
         sourceDir: path.resolve(__dirname, "src/node_modules/images"),
         publicPath: "/client/",
       }),
-      resolve({
-        browser: true,
-        dedupe: ["svelte"],
-        preferBuiltins: false,
-      }),
-      string({
-        include: "**/*.txt",
-      }),
-      string({
-        include: "**/*.scm",
-      }),
-      string({
-        include: "**/*.pl",
-      }),
+      resolve({ browser: true, dedupe: ["svelte"], preferBuiltins: false }),
+      string({ include: "**/*.txt" }),
+      string({ include: "**/*.scm" }),
+      string({ include: "**/*.pl" }),
       dsv(),
       copy({
         targets: [
@@ -96,29 +83,14 @@ export default {
           extensions: [".js", ".mjs", ".html", ".svelte"],
           babelHelpers: "runtime",
           exclude: ["node_modules/@babel/**"],
-          presets: [
-            [
-              "@babel/preset-env",
-              {
-                targets: "> 0.25%, not dead",
-              },
-            ],
-          ],
+          presets: [["@babel/preset-env", { targets: "> 0.25%, not dead" }]],
           plugins: [
             "@babel/plugin-syntax-dynamic-import",
-            [
-              "@babel/plugin-transform-runtime",
-              {
-                useESModules: true,
-              },
-            ],
+            ["@babel/plugin-transform-runtime", { useESModules: true }],
           ],
         }),
 
-      !dev &&
-        terser({
-          module: true,
-        }),
+      !dev && terser({ module: true }),
     ],
 
     preserveEntrySignatures: false,
@@ -134,11 +106,7 @@ export default {
         "process.env.NODE_ENV": JSON.stringify(mode),
       }),
       svelte({
-        compilerOptions: {
-          dev,
-          generate: "ssr",
-          hydratable: true,
-        },
+        compilerOptions: { dev, generate: "ssr", hydratable: true },
         emitCss: false,
         extensions: [".svelte", ".svx", ".md"],
         preprocess: preprocess,
@@ -148,20 +116,12 @@ export default {
         publicPath: "/client/",
         emitFiles: false, // already emitted by client build
       }),
-      resolve({
-        dedupe: ["svelte"],
-      }),
+      resolve({ dedupe: ["svelte"] }),
       commonjs(),
       globImport(),
-      string({
-        include: "**/*.txt",
-      }),
-      string({
-        include: "**/*.scm",
-      }),
-      string({
-        include: "**/*.pl",
-      }),
+      string({ include: "**/*.txt" }),
+      string({ include: "**/*.scm" }),
+      string({ include: "**/*.pl" }),
       dsv(),
     ],
     external: Object.keys(pkg.dependencies).concat(
