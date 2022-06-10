@@ -1,5 +1,6 @@
 <script>
   import { stores } from "@sapper/app";
+  import Navbar from "../components/Navbar.svelte";
 
   const { page } = stores();
   $: process.browser &&
@@ -10,6 +11,13 @@
 </script>
 
 <main>
+  <Navbar
+    path={$page.path
+      .split("/")
+      .slice(1)
+      .map((s) => s.trim())
+      .filter((s) => s)}
+  />
   <slot />
 </main>
 
