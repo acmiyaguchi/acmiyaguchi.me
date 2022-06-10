@@ -1,6 +1,5 @@
 <script>
   export let path = [];
-  console.log(path);
 </script>
 
 <nav>
