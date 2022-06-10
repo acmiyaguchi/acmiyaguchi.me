@@ -14,7 +14,7 @@
     "dayjs": "^1.10.4",
     "lodash": "^4.17.21",
     "midi-player-js": "^2.0.16",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.7",
     "polka": "next",
     "simple-statistics": "^7.6.0",
     "sirv": "^1.0.11",
