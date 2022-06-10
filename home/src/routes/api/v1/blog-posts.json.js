@@ -1,4 +1,4 @@
-import posts from "../../blog/*.svx";
+import posts from "../../blog/*.md";
 import path from "path";
 import { sortBy } from "lodash";
 
@@ -7,7 +7,7 @@ function blogPosts() {
     posts.map((p) => {
       let metadata = p.exports.metadata;
       // inject the path name into the metadata
-      metadata.name = path.basename(p.path).split(".svx")[0];
+      metadata.name = path.basename(p.path).split(".md")[0];
       return metadata;
     }),
     ["date"]

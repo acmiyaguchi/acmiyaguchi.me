@@ -10,7 +10,7 @@ tags:
 ---
 
 <script>
-  import ConsistentCoffee from "../toastmasters/speeches/consistent-coffee-transcript.svx"
+  import ConsistentCoffee from "../toastmasters/speeches/consistent-coffee-transcript.md"
   import dayjs from "dayjs"
   import localizedFormat from "dayjs/plugin/localizedFormat";
   dayjs.extend(localizedFormat);

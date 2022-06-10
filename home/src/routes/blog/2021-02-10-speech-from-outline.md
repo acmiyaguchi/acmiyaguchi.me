@@ -9,7 +9,7 @@ tags:
 ---
 
 <script>
-import ConsistentCoffee from "../toastmasters/speeches/consistent-coffee.svx"
+import ConsistentCoffee from "../toastmasters/speeches/consistent-coffee.md"
 import dayjs from "dayjs"
 import localizedFormat from "dayjs/plugin/localizedFormat";
 dayjs.extend(localizedFormat);
