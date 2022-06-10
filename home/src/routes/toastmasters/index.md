@@ -1,4 +1,13 @@
+<script context="module">
+  export async function preload() {
+    let resp = await this.fetch("api/v1/blog-posts.json");
+    let posts = await resp.json();
+    return { metadata: posts.filter(p => p.category == "Toastmasters") };
+  }
+</script>
+
 <script>
+    import Speeches from "./speeches.md";
     import PostListing from "../../components/PostListing.svelte";
     export let metadata;
 </script>
@@ -22,10 +31,4 @@ Compelling Blog ." I continue to write about Toastmasters occasionally.
 [meetup]: https://www.meetup.com/Mountain-View-Toastmasters/
 [pathway]: https://www.toastmasters.org/pathways-overview
 
-## Speeches
-
-I keep some of my speech material here too.
-
-- [[Speech Outline] - A Consistent Cup of Coffee](toastmasters/speeches/consistent-coffee)
-- [[Speech Transcript] - A Consistent Cup of Coffee (2019-07-22)](toastmasters/speeches/consistent-coffee-transcript)
-- [[Speech Feedback] - A Consistent Cup of Coffee (2019-07-22)](https://storage.googleapis.com/acmiyaguchi/toastmasters/feedback/2019-07-22-coffee-eval-3.pdf)
+<Speeches />
