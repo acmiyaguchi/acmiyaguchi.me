@@ -46,7 +46,7 @@ Here's the speech that I presented to the club for reference.
 
 <div style="text-align:center;">
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/aEdUZjOQ9h8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe title="speech" width="560" height="315" src="https://www.youtube-nocookie.com/embed/aEdUZjOQ9h8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 </div>
 

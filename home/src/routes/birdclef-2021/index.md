@@ -254,6 +254,7 @@ Flycatcher](https://www.allaboutbirds.org/guide/Acadian_Flycatcher/sounds).
 
 <figure>
     <figcaption>Listen the motif:</figcaption>
+    <!-- svelte-ignore a11y-media-has-caption -->
     <audio
         controls
         src="/assets/birdclef-2021/2021-04-10-motif-1.ogg">
@@ -264,6 +265,7 @@ Flycatcher](https://www.allaboutbirds.org/guide/Acadian_Flycatcher/sounds).
 
 <figure>
     <figcaption>Listen to the motif's pair:</figcaption>
+    <!-- svelte-ignore a11y-media-has-caption -->
     <audio
         controls
         src="/assets/birdclef-2021/2021-04-10-motif-2.ogg">

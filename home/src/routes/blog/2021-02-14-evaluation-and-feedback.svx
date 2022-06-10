@@ -38,7 +38,7 @@ part of my "Evaluation and Feedback" project, where the objective was to present
 a speech on any topic, receive feedback, and apply the feedback to the second
 speech. Here is the speech.
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/iHDlkUGKVKY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe title="speech" width="560" height="315" src="https://www.youtube-nocookie.com/embed/iHDlkUGKVKY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 <details>
 <summary>Click here for a transcript of the speech.</summary>
@@ -69,10 +69,11 @@ of the speech. I've always acknowledged this as an area of potential
 improvement, so this next speech would be my crucible.
 
 <object
-    data="https://storage.googleapis.com/acmiyaguchi/toastmasters/feedback/2019-07-22-coffee-eval-3.pdf"
-    type="application/pdf"> <embed
-    src="https://storage.googleapis.com/acmiyaguchi/toastmasters/feedback/2019-07-22-coffee-eval-3.pdf"
-    type="application/pdf" /> </object>
+  title="2019-07-22-coffee-eval-3.pdf"
+  data="https://storage.googleapis.com/acmiyaguchi/toastmasters/feedback/2019-07-22-coffee-eval-3.pdf"
+  type="application/pdf"> <embed
+  src="https://storage.googleapis.com/acmiyaguchi/toastmasters/feedback/2019-07-22-coffee-eval-3.pdf"
+  type="application/pdf" /> </object>
 
 _A scanned copy of my evaluation form. Thank you, Steve, for the feedback and
 permission to share this form!_
@@ -99,7 +100,7 @@ interested in this post on <a href="blog/2021-02-10-speech-from-outline"
 rel=external>practicing from an outline</a> for more details on the preparation
 process.
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/aEdUZjOQ9h8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe title="speech" width="560" height="315" src="https://www.youtube-nocookie.com/embed/aEdUZjOQ9h8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Though only a few months difference, these two speeches feel leagues apart in
 terms of quality. The feedback I received had a strong influence on how I

@@ -38,11 +38,13 @@ export default {
     output: config.client.output(),
     plugins: [
       replace({
+        preventAssignment: true,
         "process.browser": true,
         "process.env.NODE_ENV": JSON.stringify(mode),
       }),
       // https://github.com/plotly/plotly.js/issues/3518
       replace({
+        preventAssignment: true,
         "}()": "this.d3 = d3;\n}.apply(self);",
         delimiters: ["this.d3 = d3;\n", ";"],
       }),
@@ -102,6 +104,7 @@ export default {
     output: config.server.output(),
     plugins: [
       replace({
+        preventAssignment: true,
         "process.browser": false,
         "process.env.NODE_ENV": JSON.stringify(mode),
       }),
@@ -138,6 +141,7 @@ export default {
     plugins: [
       resolve(),
       replace({
+        preventAssignment: true,
         "process.browser": true,
         "process.env.NODE_ENV": JSON.stringify(mode),
       }),

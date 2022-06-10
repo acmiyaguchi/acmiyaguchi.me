@@ -14,7 +14,7 @@ computer and thought this would be the right time to capture their growth. Now,
 I have a PineCube attached to a mic-stand overlooking a sundew that I transplanted
 earlier this year.
 
-<img src="assets/2021-09-05/sundew_sprouts.jpeg" alt="A picture of sundew sprouts.">
+<img src="assets/2021-09-05/sundew_sprouts.jpeg" alt="Sundew sprouts." />
 <i>There are dozens of small sundews sprouted from seeds taken from outside
 plants.</i>
 

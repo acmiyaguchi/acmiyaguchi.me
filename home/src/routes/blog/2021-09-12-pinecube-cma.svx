@@ -16,7 +16,7 @@ million). While the 720p image would have been sufficient for a time-lapse, I
 wanted to take advantage of the camera's full power.
 
 <div style="max-width: 400px">
-<img src="assets/2021-09-12/01-cropped-plant.png" alt="720p plant photo">
+<img src="assets/2021-09-12/01-cropped-plant.png" alt="plant in 720p">
 </div>
 <i><b>Figured:</b> A cropped 720p photo of the sundew.</i>
 
@@ -146,6 +146,6 @@ causes the image to be darker. At the very least, I'm happy with the quality of
 the images in storage now.
 
 <div style="max-width: 400px">
-<img src="assets/2021-09-12/sundew-crop-norm-20210913.png" alt="720p plant photo">
+<img src="assets/2021-09-12/sundew-crop-norm-20210913.png" alt="cropped plant">
 </div>
 <i><b>Figured:</b> A cropped 1080p photo of the sundew with Contrast Limited Adaptive Histogram Equalization. Without equalization, the image would be far too dark to make out the smaller plants.</i>
