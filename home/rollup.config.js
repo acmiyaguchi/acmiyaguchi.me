@@ -27,6 +27,7 @@ const onwarn = (warning, onwarn) =>
   onwarn(warning);
 
 const preprocess = mdsvex({
+  extensions: [".svx", ".md"],
   remarkPlugins: [remarkMath],
   rehypePlugins: [rehypeKatexSvelte],
 });
@@ -50,7 +51,7 @@ export default {
           dev,
           hydratable: true,
         },
-        extensions: [".svelte", ".svx"],
+        extensions: [".svelte", ".svx", ".md"],
         preprocess: preprocess,
       }),
       url({
@@ -139,7 +140,7 @@ export default {
           hydratable: true,
         },
         emitCss: false,
-        extensions: [".svelte", ".svx"],
+        extensions: [".svelte", ".svx", ".md"],
         preprocess: preprocess,
       }),
       url({

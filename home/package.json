@@ -1,11 +1,11 @@
 {
   "name": "acmiyaguchi.me",
   "description": "Anthony Miyaguchi's website",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "scripts": {
-    "dev": "sapper dev --ext \".svelte .svx\" --port 3001",
-    "build": "sapper build --legacy --ext \".svelte .svx\"",
-    "export": "sapper export --legacy --ext \".svelte .svx\"",
+    "dev": "sapper dev --ext \".svelte .svx .md\" --port 3001",
+    "build": "sapper build --legacy --ext \".svelte .svx .md\"",
+    "export": "sapper export --legacy --ext \".svelte .svx .md\"",
     "start": "node __sapper__/build"
   },
   "dependencies": {
@@ -32,7 +32,7 @@
     "@rollup/plugin-node-resolve": "^11.2.0",
     "@rollup/plugin-replace": "^2.4.1",
     "@rollup/plugin-url": "^6.0.0",
-    "mdsvex": "^0.8.9",
+    "mdsvex": "^0.10.6",
     "rehype-katex-svelte": "^1.0.2",
     "remark-math": "^3.0.0",
     "rollup": "^2.40.0",
